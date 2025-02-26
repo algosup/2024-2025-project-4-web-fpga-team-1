@@ -3,13 +3,13 @@
 
 ---
 
-<h3 style='text-align: center'>DOCUMENT VERSION 1.0</h3>
-<h3 style='text-align: center'>02/24/2025</h3>
+<h3 style='text-align: center'>DOCUMENT VERSION 1.1</h3>
+<h3 style='text-align: center'>02/25/2025</h3>
 
 
 ---
 
-<h3>Author & Reviewers</h3>
+<h3>Author</h3>
 
 | Name          | Role            |
 | ------------- | --------------- |
@@ -20,6 +20,7 @@
 | Date       | Version | Document Revision Description                                                   |
 | ---------- | :-----: | ------------------------------------------------------------------------------- |
 | 02/24/2025 |   1.0   | - Create the document and make the Overview, A to E. <br> - Start the Glossary. |
+| 02/25/2025 |   1.1   | After meeting with the client, some part have change                            |
 
 
 <h3>Approvals</h3>
@@ -47,8 +48,10 @@
     - [Milestones](#milestones)
     - [Ressources / Financial Plan](#ressources--financial-plan)
 - [II. Requirements](#ii-requirements)
-    - [A. Functional Requirements](#a-functional-requirements)
-      - [FPGA Simulator](#fpga-simulator)
+  - [A. Functional Requirements](#a-functional-requirements)
+    - [FPGA Simulator](#fpga-simulator)
+      - [Teacher View / Backend](#teacher-view--backend)
+      - [Student View / Frontend](#student-view--frontend)
 - [Glossary](#glossary)
 
 
@@ -58,19 +61,19 @@
 
 # I. Overview
 
-Our client, Florant MANNI ask us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals propagate inside an FPGA[^2].
+Our client, Florant MANNI ask us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals propagate inside an FPGA[^2]. For simplicity, we'll use the schematic of an FPGA board and animate it to show the movement of data and electricity in the board.
 
 ## A. Purpose of the document
 
 The purpose of this Functional Specification is to outline the requirements and design considerations for developing a web interface for an FPGA Simulator[^1]. This interface aims to provide an educational tool that visually demonstrates how signals propagate within an FPGA, enhancing users' understanding of FPGA behavior.
 
-The document will detail the functionalities needed to merge a 2D floorplan representation of an FPGA with the dynamic propagation of signals over time. This includes integrating the layout resulting from synthesis and place-and-route (P&R) processes with timing simulation data. The goal is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench and timing netlist[^3], both written in Verilog.
+The document will detail the functionalities needed to merge a 2D floorplan representation of an FPGA with the dynamic propagation of signals over time. This includes integrating the layout resulting from synthesis and place-and-route (P&R) processes with timing simulation data. The goal is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^3] and timing netlist[^4], both written in Verilog.
 
 By defining the scope, features, and user interactions, this specification will serve as a comprehensive guide for the development team to ensure the final product meets the educational objectives and technical requirements.
 
 ## B. Project Scope 
 
-The project scope for developing the web interface[^4] for the FPGA Simulator includes the following key components and functionalities:
+The project scope for developing the web interface[^5] for the FPGA Simulator includes the following key components and functionalities:
 
 1. 2D floorplan Visualization:
 
@@ -82,13 +85,13 @@ The project scope for developing the web interface[^4] for the FPGA Simulator in
 2. Signal Propagation Simulation:
    
    * Integrate a timing simulator to visualize the propagation of electrical signals within the FPGA with an animation.
-   * Use a testbench and timing netlist[^5], both written in Verilog, to drive the simulation and demonstrate signal behavior over time.
+   * Use a testbench and timing netlist, both written in Verilog, to drive the simulation and demonstrate signal behavior over time.
 
 <br>
 
 3. Double Interface:
 
-   * An a web interface used by a student to interact with the program.
+   * An a web interface used by a student to interact with the webpage to explore and understand what append in the system.
    * A backend interface used by a teacher to give a script to the program to train the student with the web interface.
 
 <br>  
@@ -140,7 +143,7 @@ By focusing on these components, the project aims to deliver a comprehensive and
 
 | Project Owner | Represented by...                              |
 | ------------- | ---------------------------------------------- |
-| Florant       | Represented by himself                         |
+| Florant MANNI | Represented by himself                         |
 | Loïc NOGUES   | Represented by Alexis SANTOS (Program Manager) |
 
 * Defining the vision and the high-level objectives for the project.
@@ -158,7 +161,7 @@ By focusing on these components, the project aims to deliver a comprehensive and
 
 | Stakeholder      | Might have/find an interest in...                                                            |
 | ---------------- | -------------------------------------------------------------------------------------------- |
-| Florant          | X                                                                                            |
+| Florant MANNI    | Have a tool to help him when he need to explain the Verilog / VHDL to a young user of FPGA.  |
 | ALGOSUP Students | Learning the association with web language (HTML / CSS / JavaScript) with the Verilog (FPGA) |
 
 ### Project Roles
@@ -167,12 +170,12 @@ As defined at the beginning, the team is arranged in the following manner :
 
 | Role              | Description  (Can Change)                                                                                                                                             | Name             |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| Project Manager   | *Is in charge of organization, planning and budgeting. <br> Keep the team motivated.*                                                                                 | Loïc NUGUES      |
+| Project Manager   | *Is in charge of organization, planning, and budgeting. <br> Keep the team motivated.*                                                                                | Loïc NOGUES      |
 | Program Manager   | *Makes sure the project meets expectation. <br> Is responsible for writing the Functional Specifications*                                                             | Alexis SANTOS    |
 | Technical Leader  | *Makes the technical decision in the project. <br> Translates the Functional Specification into Technical Specifications. <br> Does code review.*                     | Yann-Maël BOUTON |
 | Software Engineer | *Writes the code. <br> Participate in the technical design.*                                                                                                          | Lucas MEGNAN     |
 | Quality Assurance | *Tests all the functionalities of a product to find bugs and issue. <br> Document bugs and issues. <br> Write the test plan. <br> Check that issues have been fixed.* | Mathis LEBEL     |
-| Technical Writter | *Writes documentation. <br> Participate in the technical design.*                                                                                                     | Grégory PAGNOUX  |
+| Technical Writter | *Writes the user manual. <br> Participate in the technical design.*                                                                                                     | Grégory PAGNOUX  |
 
 ## E. Project Plan 
 
@@ -182,30 +185,46 @@ As defined at the beginning, the team is arranged in the following manner :
 
 ### Ressources / Financial Plan
 
-We have estimated ### man-hours total to complete this project.
+We have an estimated total of 70 man-hours to complete this project. We have access to these resources:
 
 * The team (6 people)
 * Teachers
-* 1 computer per team member
-* 1 Linux machine (tested on ubuntu)
+* 1 computer per team member 
+
+This project is centered on an animation of an FPGA Simulator to explain how an FPGA system works.  
 
 # II. Requirements
 
-### A. Functional Requirements
+## A. Functional Requirements
 
-This project is centered on a FPGA Simulator.  
+This project is centered on an animation of an FPGA Simulator to explain how works an FPGA system.  
 
-#### FPGA Simulator
+### FPGA Simulator
 
-The project is based on a FPGA simulator. This one need to follow these requirements: 
-* A 2D floorplan of a FPGA board
-* The possibility to see the road taken by the electrical signal in the board
+The project is based on an FPGA simulator. This one needs to follow these requirements: 
+* A 2D floor plan of three views.
+* The possibility of seeing the road taken by the electrical signal in the board
 
-However, the client requiested to have two view on this website / webapp.
+However, the client requested two views / two main possibilities on this website/web app. The **student view** and the **teacher view**.
 
-| Student View / Frontend                                                                       | Teacher View / Backend |
-| --------------------------------------------------------------------------------------------- | ---------------------- |
-| The 2D view of FPGA Simulator. <br> Navigation into the view with **zoom** and **move**. <br> |                        |
+#### Teacher View / Backend
+
+The teacher views being to be used by the teacher for severals reason: 
+
+-  
+
+#### Student View / Frontend
+
+The student views in this way where the student can explore and discover FPGA properties and functionalities. However, this view needs to follow these requirements:   
+
+- The **2D view** of FPGA Simulator. 
+- Navigation into the view with **zoom** and **move**. 
+- Select the **default example** or the **teacher example** and see it by a view. 
+- Select one of this three view : **board**, **binary graphic** or the **components schematic**.
+- Click on a play button to **pause** or **resume** the animation. 
+- Click on a button to select the **speed of the animation** : x0.25 / x0.5 / x0.75 / x1 / x1.5 / x2 / x4.
+
+
 
 
 # Glossary
@@ -214,8 +233,8 @@ However, the client requiested to have two view on this website / webapp.
 
 [^2]: An FPGA (Field-Programmable Gate Array) is a customizable chip that can be programmed to do different tasks. Unlike regular chips that do one thing, an FPGA can change its function, making it versatile for various jobs.
 
-[^3]: A description of all the devices (gates) and all of the connections (wires) between each device
+[^3]: A testbench is a crucial tool in the design and verification process, helping to ensure that digital circuits and systems function correctly before they are manufactured.
 
-[^4]: A web interface is a user-friendly website or online tool that lets you interact with a system or application through your web browser. It's like a control panel on the internet where you can click buttons, enter information, and see results without needing special software.
+[^4]: A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to put them together (connections) to create a functioning circuit.
 
-[^5]: A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to put them together (connections) to create a functioning circuit.
+[^5]: A web interface is a user-friendly website or online tool that lets you interact with a system or application through your web browser. It's like a control panel on the internet where you can click buttons, enter information, and see results without needing special software.
