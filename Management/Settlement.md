@@ -22,4 +22,4 @@ In agreement with the whole team, the following rules have been defined below:
 
 | NOGUES Loïc | SANTOS Alexis | BOUTON Yann-Maël | MEGNAN Lucas | LEBEL Mathis | PAGNOUX Grégory |
 | :---------: | :-----------: | :--------------: | :----------: | :----------: | :-------------: |
-|    agree    |     agree     |                  |              |              |                 |
+|    agree    |     agree     |                  |              |    agree     |                 |
