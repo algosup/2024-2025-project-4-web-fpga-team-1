@@ -1,4 +1,4 @@
-# FPGA TEAM 1
+# ⚡️ FPGA TEAM 1 ⚡️
 ## 👤 Team Members :
 | 📸 Photo | 🏷️ Name | 🎯 Role | 🔗 GitHub | 🔗 LinkedIn |
 |:--------:|:------:|:------:|:---------:|:----------:|
