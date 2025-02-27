@@ -17,19 +17,19 @@
 
 <h3>Document History</h3>
 
-| Date       | Version | Document Revision Description                                                   |
-| ---------- | :-----: | ------------------------------------------------------------------------------- |
-| 02/24/2025 |   1.0   | - Create the document and make the Overview, A to E. <br> - Start the Glossary. |
-| 02/25/2025 |   1.1   | After meeting with the client, some part have change                            |
+| Date       | Version | Document Revision Description                                                                                                                                                                        |
+| ---------- | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 02/24/2025 |   1.0   | <li> Create the document and make the Overview, A to E. </li> <li> Start the Glossary. </li>                                                                                                         |
+| 02/25/2025 |   1.1   | After meeting with the client, some parts have changed. <li>Part of the client has been filled</li> <li>Fonctional Requirements have been partially wrotten</li> <li>Expected Deliverables has been added</li> |
 
 
 <h3>Approvals</h3>
 
-| Approval <br> Date | Approved <br> Version | Approver Role | Approver |
-| ------------------ | --------------------- | ------------- | -------- |
-|                    |                       |               |          |
-|                    |                       |               |          |
-|                    |                       |               |          |
+| Approval <br> Date | Approved <br> Version | Approver <br> Role | Approver <br> Name | Approvement |
+| ------------------ | --------------------- | ------------------ | ------------------ | ----------- |
+|                    |                       |                    |                    |             |
+|                    |                       |                    |                    |             |
+|                    |                       |                    |                    |             |
 
 ---
 
@@ -44,6 +44,7 @@
     - [Project Representatives](#project-representatives)
     - [Stakholders](#stakholders)
     - [Project Roles](#project-roles)
+    - [Expected Deliverables](#expected-deliverables)
   - [E. Project Plan](#e-project-plan)
     - [Milestones](#milestones)
     - [Ressources / Financial Plan](#ressources--financial-plan)
@@ -52,6 +53,11 @@
     - [FPGA Simulator](#fpga-simulator)
       - [Teacher View / Backend](#teacher-view--backend)
       - [Student View / Frontend](#student-view--frontend)
+    - [Three Views](#three-views)
+      - [All Views](#all-views)
+      - [Shematics Representation](#shematics-representation)
+      - [Signals Graph](#signals-graph)
+      - [FPGA board's Schematic](#fpga-boards-schematic)
 - [Glossary](#glossary)
 
 
@@ -61,7 +67,7 @@
 
 # I. Overview
 
-Our client, Florant MANNI ask us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals propagate inside an FPGA[^2]. For simplicity, we'll use the schematic of an FPGA board and animate it to show the movement of data and electricity in the board.
+Our client, Florant MANNI ask us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals propagate inside an FPGA[^2]. For simplicity, we'll use the schematic of an FPGA board and animate it to show the movement of data and clock in the board.
 
 ## A. Purpose of the document
 
@@ -77,44 +83,44 @@ The project scope for developing the web interface[^5] for the FPGA Simulator in
 
 1. 2D floorplan Visualization:
 
-   * Develop a graphical representation of the FPGA layout, displaying the arrangement of basic elements (BELs) and their interconnections.
-   * Ensure the layout accurately reflects the post-synthesis and place-and-route (P&R) design.
+   * Develop a graphical representation of the **FPGA layout**, displaying the arrangement of basic elements (BELs) and their interconnections.
+   * Ensure the layout accurately **reflects** the post-synthesis and place-and-route (P&R) design.
 
 <br>
 
 2. Signal Propagation Simulation:
    
-   * Integrate a timing simulator to visualize the propagation of electrical signals within the FPGA with an animation.
-   * Use a testbench and timing netlist, both written in Verilog, to drive the simulation and demonstrate signal behavior over time.
+   * Integrate a timing simulator to **visualize** the propagation of clock signals within the FPGA with an animation.
+   * Use a testbench and timing netlist, both written in Verilog, to drive the simulation and **demonstrate signal** behavior over time.
 
 <br>
 
 3. Double Interface:
 
-   * An a web interface used by a student to interact with the webpage to explore and understand what append in the system.
-   * A backend interface used by a teacher to give a script to the program to train the student with the web interface.
+   * A web interface is used by a student to interact with the webpage to **explore** and **understand** what happens in the system.
+   * A backend interface is used by a teacher to give a script to the program to train the student with the web interface.
 
 <br>  
 
 4. Interactive User Interface:
 
-   * Create an intuitive web interface that allows users to interact with the FPGA layout and observe signal propagation.
-   * Include controls for starting, pausing, and resetting the simulation, as well as options to inspect signal states at specific points in time.
+   * Create an **intuitive** web interface that allows users to interact with the FPGA layout and observe signal propagation.
+   * Include controls for **starting**, **pausing**, and **resetting** the simulation, as well as options to inspect signal states at specific points in time.
 
 <br>
 
 5. Educational Features:
 
-   * Implement features that enhance learning, such as tooltips, annotations, and step-by-step guides to explain FPGA concepts and signal behavior.
-   * Provide options for users to load different FPGA designs and testbenches to explore various scenarios.
+   * Implement features that enhance learning, such as tooltips, annotations to explain FPGA concepts and signal behavior.
+   * Provide options for users to **load different FPGA designs** and testbenches to explore various scenarios.
 
 <br>
 
 6. Technical Requirements:
 
-    * Ensure the web interface is compatible with modern web browsers and responsive to different screen sizes.
+    * Ensure the web interface is **compatible** with modern **web browsers** and responsive to different screen sizes.
     * Optimize performance to handle complex FPGA designs and real-time signal propagation simulations.
-    * Implement security measures to protect user data and ensure the integrity of the simulation environment.
+    * **If it share on the web**, implement security measures to protect user data and ensure the integrity of the simulation environment.
 
 <br>
 
@@ -135,7 +141,7 @@ By focusing on these components, the project aims to deliver a comprehensive and
 | Technical Specifications Document   | Document (Markdown)                  | 03/25/2025   | [technicalSpecifications.md]()                             |
 | Test Plan Document                  | Document (Markdown)                  | 03/25/2025   | [testPlan.md]()                                            |
 | Development                         | Programing (HTML / CSS / JavaScript) | 04/01/2025   |                                                            |
-| Weekly Reports                      | Document (Markdown)                  | Every Friday |                                                            |
+| Weekly Reports                      | Document (Markdown)                  | Every Friday | [Weekly Report Folder](Management/WeeklyReport)            |
 
 ## D. Project Organisation
 
@@ -168,19 +174,35 @@ By focusing on these components, the project aims to deliver a comprehensive and
 
 As defined at the beginning, the team is arranged in the following manner : 
 
-| Role              | Description  (Can Change)                                                                                                                                             | Name             |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| Project Manager   | *Is in charge of organization, planning, and budgeting. <br> Keep the team motivated.*                                                                                | Loïc NOGUES      |
-| Program Manager   | *Makes sure the project meets expectation. <br> Is responsible for writing the Functional Specifications*                                                             | Alexis SANTOS    |
-| Technical Leader  | *Makes the technical decision in the project. <br> Translates the Functional Specification into Technical Specifications. <br> Does code review.*                     | Yann-Maël BOUTON |
-| Software Engineer | *Writes the code. <br> Participate in the technical design.*                                                                                                          | Lucas MEGNAN     |
-| Quality Assurance | *Tests all the functionalities of a product to find bugs and issue. <br> Document bugs and issues. <br> Write the test plan. <br> Check that issues have been fixed.* | Mathis LEBEL     |
-| Technical Writter | *Writes the user manual. <br> Participate in the technical design.*                                                                                                     | Grégory PAGNOUX  |
+| Role              | Description  (Can Change)                                                                                                                                           | Name             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| Project Manager   | Is in charge of organization, planning, and budgeting. <br> Keep the team motivated.                                                                                | Loïc NOGUES      |
+| Program Manager   | Makes sure the project meets expectation. <br> Is responsible for writing the Functional Specifications                                                             | Alexis SANTOS    |
+| Technical Leader  | Makes the technical decision in the project. <br> Translates the Functional Specification into Technical Specifications. <br> Does code review.                     | Yann-Maël BOUTON |
+| Software Engineer | Writes the code. <br> Participate in the technical design.                                                                                                          | Lucas MEGNAN     |
+| Quality Assurance | Tests all the functionalities of a product to find bugs and issue. <br> Document bugs and issues. <br> Write the test plan. <br> Check that issues have been fixed. | Mathis LEBEL     |
+| Technical Writter | Writes the user manual. <br> Participate in the technical design.                                                                                                   | Grégory PAGNOUX  |
+
+### Expected Deliverables
+
+For this project, the customer requested us to respect some deliverables:
+* The source code need to be on a Git repository.
+* An explainaton of how to run the software have to be present on the repository and/or in the website.
+* An explaination of how to add an application example have to be present on the repository and/or in the website.
+* In the website, minimum two applications examples must be usable on the website:
+  * One for the flipflop.
+  * One for the LUT4. 
 
 ## E. Project Plan 
 
 ### Milestones
 
+| Milestones                   | Deadline   |
+| ---------------------------- | ---------- |
+| Functional Specifications V1 | 03/13/2025 |
+| Technical Specifications V1  | 03/25/2025 |
+| End of Development           | 04/01/2025 |
+| Oral Presentation            | 04/04/2025 |
 
 
 ### Ressources / Financial Plan
@@ -203,28 +225,90 @@ This project is centered on an animation of an FPGA Simulator to explain how wor
 
 The project is based on an FPGA simulator. This one needs to follow these requirements: 
 * A 2D floor plan of three views.
-* The possibility of seeing the road taken by the electrical signal in the board
+* The possibility of seeing the road taken by the clock signal in the board
 
-However, the client requested two views / two main possibilities on this website/web app. The **student view** and the **teacher view**.
+However, the client requested two views / two main possibilities on this website/web app. The student view and the teacher view.
 
 #### Teacher View / Backend
 
 The teacher views being to be used by the teacher for severals reason: 
 
--  
+-  Have a possibility to add another example with his/her own Verilog file.
+-  Have an access to a testbench.
 
 #### Student View / Frontend
 
 The student views in this way where the student can explore and discover FPGA properties and functionalities. However, this view needs to follow these requirements:   
 
-- The **2D view** of FPGA Simulator. 
-- Navigation into the view with **zoom** and **move**. 
-- Select the **default example** or the **teacher example** and see it by a view. 
-- Select one of this three view : **board**, **binary graphic** or the **components schematic**.
-- Click on a play button to **pause** or **resume** the animation. 
-- Click on a button to select the **speed of the animation** : x0.25 / x0.5 / x0.75 / x1 / x1.5 / x2 / x4.
+- The 2D view of FPGA Simulator. 
+- Navigation into the view with zoom and move. 
+- Select the default example or the teacher example and see it by a view. 
+- Select one of this three view : board, binary graphic or the components schematic.
+- Click on a play button to pause or resume the animation. 
+- Click on a button to select the speed of the animation.
+
+### Three Views
+
+In order to have a large amount of information, the student need to have three views. A view of a shematics representation of components, a graph of signals, and an FPGA board's schematic.
+
+#### All Views
+
+In this three views, the user have some features :
+
+| 2D View & Navigation                                                                                                                                  | Time Control                                                                                                                                                                                                                                                          | Example used & Visualization                                                                                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <li>Navigate trough the the screen with delimitation </li> <li>Zoom on the screen to see more details or zoom out to watch the global schematic.</li> | <li>Have a pause and resume button to stop or continue the animation</li> <li>Have a controller / a button to select the speed of the animation between these choices : <br> <div style='text-align: center;'> x0.25 / x0.5 / x0.75 / x1 / x1.5 / x2 / x4 </div></li> | <li>Choose the exercise between the default example and the example from the file provided by the Teacher </li> <li>Select witch view we want to have information between those three views. </li> |
 
 
+#### Shematics Representation
+
+<div style='align-items: flex-start; overflow: hidden'>
+   <img src='pictures\FPGAShematics.png' style='float: right; margin-left: 20px; max-width: 45%; width: 500px; height: auto; position: relative' alt='picture of a Schematic Representation' >
+   <div style='flex: 1'>
+   <p>
+   The schematic view is a 2D plan representing components such as a flip-flop, BRAM or LUT4. The aim of this view is to understand how data and clock move through the components, and how the program works with the components from start to finish. <br> 
+   The representation of data and clock signal travel are displayed thank to an animation. <br>
+   
+   For each components, some information about it must be displayed:
+   <li>The type of the components (LUT / BRAM / Clock...) </li>
+   <li>The id of the components (Q1, Clk...)</li>
+   <li>Inputs and Outputs</li>
+   Between all components, somme information must be displayed:
+   <li>The delay to pass from the first to the second</li>
+   <li>The type of data is transfered (clock, status...)</li> 
+   </p>
+</div>
+<div style='clear: both'></div> 
+
+#### Signals Graph
+
+<div style='align-items: flex-start; overflow: hidden'>
+   <img src='' style='float: right; margin-left: 20px; max-width: 45%; width: 500px; height: auto; position: relative' alt='signals graph' >
+   <div style='flex: 1'>
+   <p>
+
+   </p>
+</div>
+<div style='clear: both'></div> 
+
+#### FPGA board's Schematic
+
+
+<div style='align-items: flex-start; overflow: hidden'>
+   <img src='pictures\FPGABoardRepresentation.png' alt='picture of a part of the FPGA board' style='float: right; margin-left: 20px; max-width: 45%; width: 500px; height: auto; position: relative' >
+   <div style='flex: 1'>
+   <p>
+   The FPGA board's schematic is a 2D floorplan used by the student to understand how the program send data and clock by signals. <br>
+   In this view, the student need to have these features :<br>
+   <li>Have an animation to show these clock and data signals.</li>
+   <li></li>
+
+   <br><br><br><br>
+   However, in the conseption of the schematic, we need to make the best balance between reality and schematic to make it real and user friendly.
+   </p>
+</div>
+<div style='clear: both'></div> 
+ 
 
 
 # Glossary
