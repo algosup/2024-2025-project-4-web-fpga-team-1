@@ -15,7 +15,7 @@ Overall the week was good, everyone did progress on there documents and no major
 
 # 3.Work Done
 
-- The design of the site is finised.
+- The design of the site is finished.
 - Settlement document.
 - Project chart.
 
