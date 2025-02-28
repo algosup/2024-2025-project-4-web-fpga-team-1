@@ -20,7 +20,7 @@
 | Date       | Version | Document Revision Description                                                                                                                                                                    |
 | ---------- | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 02/24/2025 |   1.0   | <li> Created the document and wrote sections Overview, A to E. </li> <li> Started the Glossary. </li>                                                                                            |
-| 02/25/2025 |   1.1   | After meeting with the client, some parts have been updated. <li>Filled in the client's section</li> <li>Partially wrote the Functional Requirements.</li> <li>Added Expected Deliverables.</li> |
+| 02/25/2025 |   1.1   | After meeting with the client, some parts have been updated. <li>Filled customers-relative sections</li> <li>Partially wrote Functional Requirements.</li> <li>Added Expected Deliverables.</li> |
 | 02/27/2025 |   1.2   | Made a lot of corrections and rewriting to have a clear document.                                                                                                                                |
 | 02/28/2025 |   1.3   | <li>Added the Test Cases Analysis</li> <li>Added Personas</li>                                                                                                                                   |
 
@@ -70,44 +70,44 @@
 
 # I. Overview
 
-Our client, Florant MANNI has asked us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals propagate inside an FPGA[^2]. For simplicity, we will use the schematic of an FPGA board and animate it to show the movement of data and clock within the board.
+Our client, Florant MANNI has solicited us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals spread inside an FPGA[^2]. For simplicity, we will represente the board with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
 
 ## A. Purpose of the document
 
-The purpose of this Functional Specification is to outline the requirements and design considerations for developing a web interface for an FPGA Simulator[^1]. This interface aims to provide an educational tool that visually demonstrates how signals propagate within an FPGA, enhancing users' understanding of FPGA behavior.
+The purpose of this document is to outline the requirements and design considerations for developing a web interface for an FPGA Simulator[^1]. This interface aims to provide an educational tool that visually demonstrates how signals spread within an FPGA system, enhancing users' understanding of FPGA behavior.
 
-The document will detail the functionalities needed to merge a 2D floorplan representation of an FPGA with the dynamic propagation of signals over time. This includes integrating the layout resulting from synthesis and place-and-route (P&R) processes with timing simulation data. The goal is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^3] and timing netlist[^4], both written in Verilog.
+The document will detail the functionalities needed to merge a 2D floorplan representation of an FPGA with the dynamic propagation of signals over time. This includes integrating the layout resulting from synthesis[^3] and place-and-route (P&R)[^4] processes with timing simulation data. The goal is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^5] and timing netlist[^6], both written in Verilog[^7].
 
 By defining the scope, features, and user interactions, this specification will serve as a comprehensive guide for the development team to ensure the final product meets the educational objectives and technical requirements.
 
 ## B. Project Scope 
 
-The project scope for developing the web interface[^5] for the FPGA Simulator includes the following key components and functionalities:
+The project scope for developing the web interface[^8] for the FPGA Simulator includes the following key components and functionalities:
 
 1. 2D floorplan Visualization:
 
-   * Develop a graphical representation of the **FPGA layout**, displaying the arrangement of basic elements (BELs) and their interconnections.
+   * Develop a graphical representation of the **FPGA layout**, displaying the arrangement of basic elements (BELs)[^9] and their interconnections.
    * Ensure the layout accurately **reflects** the post-synthesis and place-and-route (P&R) design.
 
 <br>
 
 2. Signal Propagation Simulation:
    
-   * Integrate a timing simulator to **visualize** the propagation of clock signals within the FPGA with an animation.
+   * Integrate a timing simulator to **visualize** the propagation of clock signals within the FPGA through an animation.
    * Use a testbench and timing netlist, both written in Verilog, to drive the simulation and **demonstrate signal** behavior over time.
 
 <br>
 
 3. Double Interface:
 
-   * A web interface used by students to interact with the webpage to **explore** and **understand** the system.
-   * A backend interface used by teachers to provide scripts to the program to train students with the web interface.
+   * A web interface used by students to interact with the web app[^10] to **explore** and **understand** the system.
+   * A backend interface[^11] used by teachers to provide scripts to the program to train students with the web interface.
 
 <br>  
 
 4. Interactive User Interface:
 
-   * Create an **intuitive** web interface that allows users to interact with the FPGA layout and observe signal propagation.
+   * Create an **intuitive** web interface that allows users to interact with the with the view and observe signal propagation. //
    * Include controls for **starting**, **pausing**, and **resetting** the simulation, as well as options to inspect signal states at specific points in time.
 
 <br>
@@ -122,7 +122,7 @@ The project scope for developing the web interface[^5] for the FPGA Simulator in
 6. Technical Requirements:
 
     * Ensure the web interface is **compatible** with modern **web browsers** and responsive to different screen sizes.
-    * Optimize performance to handle complex FPGA designs and real-time signal propagation simulations.
+    * Optimize performance to handle complex FPGA designs.
     * **If share on the web**, implement security measures to protect user data and ensure the integrity of the simulation environment.
 
 <br>
@@ -130,7 +130,6 @@ The project scope for developing the web interface[^5] for the FPGA Simulator in
 7. Testing and Validation:
 
    * Conduct thorough testing to validate the accuracy of the signal propagation simulation and the usability of the interface.
-   * Gather feedback from users to iteratively improve the educational value and user experience of the tool.
 
 <br>
 
@@ -170,8 +169,8 @@ By focusing on these components, the project aims to deliver a comprehensive and
 
 | Stakeholder      | Might have/find an interest in...                                                 |
 | ---------------- | --------------------------------------------------------------------------------- |
-| Florant MANNI    | Needs a tool to help explain Verilog/VHDL system to young FPGA users.             |
-| ALGOSUP Students | Learning the association between web languages (HTML/CSS/JavaScript) and Verilog. |
+| Florant MANNI    | Needs a tool to help him to explain Verilog/VHDL system to young FPGA users.      |
+| ALGOSUP Students | Learning the association between web languages (HTML/CSS/JavaScript)[^12] and Verilog. |
 
 ### Project Roles
 
@@ -193,8 +192,8 @@ For this project, the customer has requested us to meet the following deliverabl
 * An explainaton of how to run the software must be present on the repository and/or in the website.
 * An explaination of how to add an application example must be present on the repository and/or in the website.
 * The website must include at least two application examples:
-  * One for the flipflop.
-  * One for the LUT4. 
+  * One for the flipflop[^13].
+  * One for the LUT4[^14]. 
 
 ## E. Project Plan 
 
@@ -258,13 +257,13 @@ To provide a comprehensive amount of information, the student needs access to th
 
 In this three views, the user has the following features :
 
-| 2D View & Navigation                                                                                                                              | Time Control                                                                                                                                                                                                                                             | Example used & Visualization                                                                                                                                                                   |
-| ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <li>Navigate trough the screen with delimitation. </li> <li>Zoom on the screen to see more details or zoom out to view the global schematic.</li> | <li>Pause and resume button to stop or continue the animation.</li> <li>Controller/button to select the speed of the animation with the following choices: <br> <div style='text-align: center;'> x0.25 / x0.5 / x0.75 / x1 / x1.5 / x2 / x4 </div></li> | <li>Choose the exercise between the default example and the example from the file provided by the teacher </li> <li>Select which view to display information from among the three views. </li> |
+| 2D View & Navigation                                                                                                                              | Time Control                                                                                                                                                                                                                                                 | Example used & Visualization                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <li>Navigate trough the screen with delimitation. </li> <li>Zoom on the screen to see more details or zoom out to view the global schematic.</li> | <li>Pause and resume button to stop or continue the animation.</li> <li>Controller/button to select the speed of the animation with the following choices: <br> <div style='text-align: center;'> 0.25 / 0.5 / 0.75 / 1 / 1.25 / 1.5 / 1.75 / 2. </div></li> | <li>Choose the exercise between the default example and the example from the file provided by the teacher </li> <li>Select which view to display information from among the three views. </li> |
 
 To organize the screen, we'll follow the model below. 
 
-![webAppDisplay](pictures/webAppDisplay.png)
+<img src='pictures/webAppDisplay.png' style='border: 1px solid black'>
 
 For the next three views, they will displayed on the display part.
 
@@ -351,7 +350,7 @@ When we start the Web app, firstly the program check if you are connected. If ye
 
 <h4>Log out</h4>
 
-Above the sidebar located in parameter 1 of the model, we have a `log out` button. If we press it, we should be disconnected and a login page should be displayed.
+Above the sidebar located in parameter 1 of the model, we have a `log out button`. If we press it, we should be disconnected and a login page should be displayed.
 
 ![log out](pictures/logOut.png)
 
@@ -369,18 +368,42 @@ The sidebar should have a button `Switch View`. With it, the user should select 
 
 <h4>Animation</h4>
 
-The project's goal is to have an animation to illustrate program action. So, with a play button, we should be allowed to pause and resume animation.
+The project's goal is to have an animation to illustrate program action. So, with a `play button`, we should be allowed to pause and resume animation.
 
 ![animation](pictures/Animation.png)
+
+<h4>Animation Speed</h4>
+
+Near to the play button, we should have a `drop-down list`. With it, the animation speed up or slow down. We should be allowed to select the speed between this speed values : 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2. The **default value** is x1.
+
+![Speed Animation](pictures/speedAnimation.png)
 
 # Glossary
 
 [^1]: An FPGA Simulator is a tool that helps designers test digital circuits before they are built. It uses special languages like Verilog or VHDL to simulate how signals move through an FPGA, ensuring everything works correctly.
 
-[^2]: An FPGA (Field-Programmable Gate Array) is a customizable chip that can be programmed to do different tasks. Unlike regular chips that do one thing, an FPGA can change its function, making it versatile for various jobs.
+[^2]: An FPGA (Field-Programmable Gate Array)  is an integrated circuit with basic elements and preconfigured electrical signal routes between them.
 
-[^3]: A testbench is a crucial tool in the design and verification process, helping to ensure that digital circuits and systems function correctly before they are manufactured.
+[^3]: Translation of the application into an electrical equivalent. It creates a netlist (which can be exported as a netlist). 
 
-[^4]: A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to put them together (connections) to create a functioning circuit.
+[^4]: Place and Route is the packing of the netlist component in the FPGA available BEL (Place). Then a route for signals between each BEL is selected (Route). A timing netlist is created and can be exported in verilog.
 
-[^5]: A web interface is a user-friendly website or online tool that lets you interact with a system or application through your web browser. It's like a control panel on the internet where you can click buttons, enter information, and see results without needing special software.
+[^5]: A testbench is a crucial tool in the design and verification process, helping to ensure that digital circuits and systems function correctly before they are manufactured.
+
+[^6]: A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to put them together (connections) to create a functioning circuit.
+
+[^7]: Verilog is a language used to program a system using the FPGA layout. It use to writting instruction to the system.
+
+[^8]: A web interface is a user-friendly website or online tool that lets you interact with a system or application through your web browser. It's like a control panel on the internet where you can click buttons, enter information, and see results without needing special software.
+
+[^9]: These are the hardware electrical ressources available inside the FPGA like fliflop, Look-Up-Table (LUT), Block RAM....
+
+[^10]: A web app is like a website that you can interact with, it like an application you can use on your phone, hence instead of use an application store to download it, you use it through a web browser like Chrome or Safari.
+
+[^11]: A backend interface is a part of a software application working behing the display. In this case, that indicate a part of the software where the teacher could add an example with a Verilog file.
+
+[^12]: HTML, CSS and JavaScript are pagramations languages usually used for the web. It is what we use for this project.  
+
+[^13]: 
+
+[^14]: 
