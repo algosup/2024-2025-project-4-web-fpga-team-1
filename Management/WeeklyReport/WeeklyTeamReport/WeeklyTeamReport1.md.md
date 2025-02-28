@@ -1,4 +1,4 @@
-# Week Team Report 1
+# Weekly Team Report 1
 
 | Questions                                                                                  | Names                                                                                                                                                                                     |
 | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -46,7 +46,7 @@
 
 # Summary
 
-- Overall the members of the team like the project. They say it is interesting and unique.
+-Overall the members of the team like the project. They say it is interesting and unique.
 - Some members use AI to do there document and I tell them that they can use it as a tool but not to do all their work
 - No major issues encountered.
   
