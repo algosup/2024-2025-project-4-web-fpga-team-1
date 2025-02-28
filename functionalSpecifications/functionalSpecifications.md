@@ -262,6 +262,11 @@ In this three views, the user has the following features :
 | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | <li>Navigate trough the screen with delimitation. </li> <li>Zoom on the screen to see more details or zoom out to view the global schematic.</li> | <li>Pause and resume button to stop or continue the animation.</li> <li>Controller/button to select the speed of the animation with the following choices: <br> <div style='text-align: center;'> x0.25 / x0.5 / x0.75 / x1 / x1.5 / x2 / x4 </div></li> | <li>Choose the exercise between the default example and the example from the file provided by the teacher </li> <li>Select which view to display information from among the three views. </li> |
 
+To organize the screen, we'll follow the model below. 
+
+![webAppDisplay](pictures/webAppDisplay.png)
+
+For the next three views, they will displayed on the display part.
 
 #### Shematics Representation
 
@@ -342,11 +347,31 @@ In this three views, the user has the following features :
 
 When we start the Web app, firstly the program check if you are connected. If yes, you look at your last example used. If not, you arrive in a log in/sign up page.
 
-![Start the page](pictures\LunchThePage.png)
+![Start the page](pictures\startThePage.png)
+
+<h4>Log out</h4>
+
+Above the sidebar located in parameter 1 of the model, we have a `log out` button. If we press it, we should be disconnected and a login page should be displayed.
+
+![log out](pictures/logOut.png)
 
 <h4>Switch Example</h4>
 
-In a side bar, located on the left side, should have a lot of functionalities. One of them is the button `Switch Example`. With it, the user should select one of default examples or the teacher example.
+A sidebar located in parameter 1 of the model should have a lot of functionalities. One of them is the button `Switch Example`. With it, the user should select one of default examples or the teacher example.
+
+![Select Example](pictures/selectExample.png)
+
+<h4>Switch View</h4>
+
+The sidebar should have a button `Switch View`. With it, the user should select one of those three views.
+
+![Select View](pictures/selectView.png)
+
+<h4>Animation</h4>
+
+The project's goal is to have an animation to illustrate program action. So, with a play button, we should be allowed to pause and resume animation.
+
+![animation](pictures/Animation.png)
 
 # Glossary
 
