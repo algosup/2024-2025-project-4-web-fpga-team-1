@@ -1,0 +1,21 @@
+hr {
+    color: #060F6D;
+}
+
+header {
+    text-align: center;
+    color: #060F6D;
+}
+
+header h1 {
+    font-size: 2.5em;
+}
+
+.tableOfContents {
+    margin-top: 20px;
+    border-right: 1px solid #060F6D;
+}
+
+content {
+    margin-top: 20px;
+}
