@@ -3,8 +3,8 @@
 
 ---
 
-<h3 style='text-align: center'>DOCUMENT VERSION 1.1</h3>
-<h3 style='text-align: center'>02/25/2025</h3>
+<h3 style='text-align: center'>DOCUMENT VERSION 1.2</h3>
+<h3 style='text-align: center'>02/27/2025</h3>
 
 
 ---
@@ -17,19 +17,20 @@
 
 <h3>Document History</h3>
 
-| Date       | Version | Document Revision Description                                                   |
-| ---------- | :-----: | ------------------------------------------------------------------------------- |
-| 02/24/2025 |   1.0   | - Create the document and make the Overview, A to E. <br> - Start the Glossary. |
-| 02/25/2025 |   1.1   | After meeting with the client, some part have change                            |
+| Date       | Version | Document Revision Description                                                                                                                                                                    |
+| ---------- | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 02/24/2025 |   1.0   | <li> Created the document and wrote sections Overview, A to E. </li> <li> Started the Glossary. </li>                                                                                            |
+| 02/25/2025 |   1.1   | After meeting with the client, some parts have been updated. <li>Filled in the client's section</li> <li>Partially wrote the Functional Requirements.</li> <li>Added Expected Deliverables.</li> |
+| 02/27/2025 |   1.2   | Made a lot of corrections and rewriting to have a clear document.                                                                                                                                                                                                 |
 
 
 <h3>Approvals</h3>
 
-| Approval <br> Date | Approved <br> Version | Approver Role | Approver |
-| ------------------ | --------------------- | ------------- | -------- |
-|                    |                       |               |          |
-|                    |                       |               |          |
-|                    |                       |               |          |
+| Approval <br> Date | Approved <br> Version | Approver <br> Role | Approver <br> Name | Approvement <br> Status |
+| ------------------ | --------------------- | ------------------ | ------------------ | ----------------------- |
+|                    |                       |                    |                    |                         |
+|                    |                       |                    |                    |                         |
+|                    |                       |                    |                    |                         |
 
 ---
 
@@ -44,6 +45,7 @@
     - [Project Representatives](#project-representatives)
     - [Stakholders](#stakholders)
     - [Project Roles](#project-roles)
+    - [Expected Deliverables](#expected-deliverables)
   - [E. Project Plan](#e-project-plan)
     - [Milestones](#milestones)
     - [Ressources / Financial Plan](#ressources--financial-plan)
@@ -52,6 +54,11 @@
     - [FPGA Simulator](#fpga-simulator)
       - [Teacher View / Backend](#teacher-view--backend)
       - [Student View / Frontend](#student-view--frontend)
+    - [Three Views](#three-views)
+      - [All Views](#all-views)
+      - [Shematics Representation](#shematics-representation)
+      - [Signals Graph](#signals-graph)
+      - [FPGA board's Schematic](#fpga-boards-schematic)
 - [Glossary](#glossary)
 
 
@@ -61,7 +68,7 @@
 
 # I. Overview
 
-Our client, Florant MANNI ask us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals propagate inside an FPGA[^2]. For simplicity, we'll use the schematic of an FPGA board and animate it to show the movement of data and electricity in the board.
+Our client, Florant MANNI has asked us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals propagate inside an FPGA[^2]. For simplicity, we will use the schematic of an FPGA board and animate it to show the movement of data and clock within the board.
 
 ## A. Purpose of the document
 
@@ -77,44 +84,44 @@ The project scope for developing the web interface[^5] for the FPGA Simulator in
 
 1. 2D floorplan Visualization:
 
-   * Develop a graphical representation of the FPGA layout, displaying the arrangement of basic elements (BELs) and their interconnections.
-   * Ensure the layout accurately reflects the post-synthesis and place-and-route (P&R) design.
+   * Develop a graphical representation of the **FPGA layout**, displaying the arrangement of basic elements (BELs) and their interconnections.
+   * Ensure the layout accurately **reflects** the post-synthesis and place-and-route (P&R) design.
 
 <br>
 
 2. Signal Propagation Simulation:
    
-   * Integrate a timing simulator to visualize the propagation of electrical signals within the FPGA with an animation.
-   * Use a testbench and timing netlist, both written in Verilog, to drive the simulation and demonstrate signal behavior over time.
+   * Integrate a timing simulator to **visualize** the propagation of clock signals within the FPGA with an animation.
+   * Use a testbench and timing netlist, both written in Verilog, to drive the simulation and **demonstrate signal** behavior over time.
 
 <br>
 
 3. Double Interface:
 
-   * An a web interface used by a student to interact with the webpage to explore and understand what append in the system.
-   * A backend interface used by a teacher to give a script to the program to train the student with the web interface.
+   * A web interface used by students to interact with the webpage to **explore** and **understand** the system.
+   * A backend interface used by teachers to provide scripts to the program to train students with the web interface.
 
 <br>  
 
 4. Interactive User Interface:
 
-   * Create an intuitive web interface that allows users to interact with the FPGA layout and observe signal propagation.
-   * Include controls for starting, pausing, and resetting the simulation, as well as options to inspect signal states at specific points in time.
+   * Create an **intuitive** web interface that allows users to interact with the FPGA layout and observe signal propagation.
+   * Include controls for **starting**, **pausing**, and **resetting** the simulation, as well as options to inspect signal states at specific points in time.
 
 <br>
 
 5. Educational Features:
 
-   * Implement features that enhance learning, such as tooltips, annotations, and step-by-step guides to explain FPGA concepts and signal behavior.
-   * Provide options for users to load different FPGA designs and testbenches to explore various scenarios.
+   * Implement features that enhance learning, such as tooltips, annotations to explain FPGA concepts and signal behavior.
+   * Provide options for users to **load different FPGA designs** and testbenches to explore various scenarios.
 
 <br>
 
 6. Technical Requirements:
 
-    * Ensure the web interface is compatible with modern web browsers and responsive to different screen sizes.
+    * Ensure the web interface is **compatible** with modern **web browsers** and responsive to different screen sizes.
     * Optimize performance to handle complex FPGA designs and real-time signal propagation simulations.
-    * Implement security measures to protect user data and ensure the integrity of the simulation environment.
+    * **If share on the web**, implement security measures to protect user data and ensure the integrity of the simulation environment.
 
 <br>
 
@@ -129,13 +136,13 @@ By focusing on these components, the project aims to deliver a comprehensive and
 
 ## C. Deliverables
 
-| Name                                | Type                                 | Deadline     | Link                                                       |
-| ----------------------------------- | ------------------------------------ | ------------ | ---------------------------------------------------------- |
-| Functional Specifications  Document | Document (Markdown)                  | 03/13/2025   | [functionalSpecifications.md](functionalSpecifications.md) |
-| Technical Specifications Document   | Document (Markdown)                  | 03/25/2025   | [technicalSpecifications.md]()                             |
-| Test Plan Document                  | Document (Markdown)                  | 03/25/2025   | [testPlan.md]()                                            |
-| Development                         | Programing (HTML / CSS / JavaScript) | 04/01/2025   |                                                            |
-| Weekly Reports                      | Document (Markdown)                  | Every Friday |                                                            |
+| Name                               | Type                                 | Deadline     | Link                                                       |
+| ---------------------------------- | ------------------------------------ | ------------ | ---------------------------------------------------------- |
+| Functional Specifications Document | Document (Markdown)                  | 03/13/2025   | [functionalSpecifications.md](functionalSpecifications.md) |
+| Technical Specifications Document  | Document (Markdown)                  | 03/25/2025   | [technicalSpecifications.md]()                             |
+| Test Plan Document                 | Document (Markdown)                  | 03/25/2025   | [testPlan.md]()                                            |
+| Development                        | Programing (HTML / CSS / JavaScript) | 04/01/2025   |                                                            |
+| Weekly Reports                     | Document (Markdown)                  | Every Friday | [Weekly Report Folder](Management/WeeklyReport)            |
 
 ## D. Project Organisation
 
@@ -146,90 +153,170 @@ By focusing on these components, the project aims to deliver a comprehensive and
 | Florant MANNI | Represented by himself                         |
 | Loïc NOGUES   | Represented by Alexis SANTOS (Program Manager) |
 
-* Defining the vision and the high-level objectives for the project.
-* Approving the requirements, timetable, resources and budjet (if necessary).
-* Authorising the provision of funds/resources (internal or external) (if necessary).
+* Defining the vision and high-level objectives for the project.
+* Approving the requirements, timetable, resources, and budget (if necessary).
+* Authorizing the provision of funds/resources (internal or external) (if necessary).
 * Approving the functional and technical specifications written by the team.
 * Ensuring that major business risks are identified and managed by the team.
 * Approving any major changes in scope.
-* Received Project Weekly Reports and take action accordingly to resolve issues escalated by the Project Manager.
+* Receiving Project Weekly Reports and taking action accordingly to resolve issues escalated by the Project Manager.
 * Ensuring business/operational support arrangements are put in place.
 * Ensuring the participation of a business resource (if required).
 * Providing final acceptance of the solution upon project completion.
 
 ### Stakholders
 
-| Stakeholder      | Might have/find an interest in...                                                            |
-| ---------------- | -------------------------------------------------------------------------------------------- |
-| Florant MANNI    | Have a tool to help him when he need to explain the Verilog / VHDL to a young user of FPGA.  |
-| ALGOSUP Students | Learning the association with web language (HTML / CSS / JavaScript) with the Verilog (FPGA) |
+| Stakeholder      | Might have/find an interest in...                                                 |
+| ---------------- | --------------------------------------------------------------------------------- |
+| Florant MANNI    | Needs a tool to help explain Verilog/VHDL system to young FPGA users.             |
+| ALGOSUP Students | Learning the association between web languages (HTML/CSS/JavaScript) and Verilog. |
 
 ### Project Roles
 
-As defined at the beginning, the team is arranged in the following manner : 
+As defined at the beginning, the team is arranged as follows: 
 
-| Role              | Description  (Can Change)                                                                                                                                             | Name             |
+| Role              | Description                                                                                                                                                           | Name             |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| Project Manager   | *Is in charge of organization, planning, and budgeting. <br> Keep the team motivated.*                                                                                | Loïc NOGUES      |
-| Program Manager   | *Makes sure the project meets expectation. <br> Is responsible for writing the Functional Specifications*                                                             | Alexis SANTOS    |
-| Technical Leader  | *Makes the technical decision in the project. <br> Translates the Functional Specification into Technical Specifications. <br> Does code review.*                     | Yann-Maël BOUTON |
-| Software Engineer | *Writes the code. <br> Participate in the technical design.*                                                                                                          | Lucas MEGNAN     |
-| Quality Assurance | *Tests all the functionalities of a product to find bugs and issue. <br> Document bugs and issues. <br> Write the test plan. <br> Check that issues have been fixed.* | Mathis LEBEL     |
-| Technical Writter | *Writes the user manual. <br> Participate in the technical design.*                                                                                                     | Grégory PAGNOUX  |
+| Project Manager   | Responsible for organization, planning, and budgeting. <br> Keeps the team motivated.                                                                                 | Loïc NOGUES      |
+| Program Manager   | Ensures the project meets expectations.<br> Responsible for writing the Functional Specifications.                                                                    | Alexis SANTOS    |
+| Technical Leader  | Makes technical decisions in the project. <br> Translates the Functional Specification into Technical Specifications. <br> Conducts code reviews.                     | Yann-Maël BOUTON |
+| Software Engineer | Writes the code. <br> Participate in the technical design.                                                                                                            | Lucas MEGNAN     |
+| Quality Assurance | Tests all functionalities of the product to find bugs and issues. <br> Documents bugs and issues. <br> Writes the test plan. <br> Checks that issues have been fixed. | Mathis LEBEL     |
+| Technical Writter | Writes the user manual. <br> Participate in the technical design.                                                                                                     | Grégory PAGNOUX  |
+
+### Expected Deliverables
+
+For this project, the customer has requested us to meet the following deliverables:
+* The source code need to be on a Git repository.
+* An explainaton of how to run the software must be present on the repository and/or in the website.
+* An explaination of how to add an application example must be present on the repository and/or in the website.
+* The website must include at least two application examples:
+  * One for the flipflop.
+  * One for the LUT4. 
 
 ## E. Project Plan 
 
 ### Milestones
 
+| Milestones                   | Deadline   |
+| ---------------------------- | ---------- |
+| Functional Specifications V1 | 03/13/2025 |
+| Technical Specifications V1  | 03/25/2025 |
+| End of Development           | 04/01/2025 |
+| Oral Presentation            | 04/04/2025 |
 
 
 ### Ressources / Financial Plan
 
-We have an estimated total of 70 man-hours to complete this project. We have access to these resources:
+We have an estimated total of 70 man-hours to complete this project. We have access to the following resources:
 
 * The team (6 people)
 * Teachers
 * 1 computer per team member 
 
-This project is centered on an animation of an FPGA Simulator to explain how an FPGA system works.  
+This project focuses on creating an animation of an FPGA Simulator to explain how an FPGA system works.
 
 # II. Requirements
 
 ## A. Functional Requirements
 
-This project is centered on an animation of an FPGA Simulator to explain how works an FPGA system.  
+This project focuses on creating an **animation** of an FPGA Simulator to explain how an FPGA system works.
 
 ### FPGA Simulator
 
 The project is based on an FPGA simulator. This one needs to follow these requirements: 
-* A 2D floor plan of three views.
-* The possibility of seeing the road taken by the electrical signal in the board
+* A 2D floor plan with three views.
+* The ability to see the path taken by signals in the board
 
-However, the client requested two views / two main possibilities on this website/web app. The **student view** and the **teacher view**.
+However, the client requested two views/main functionalities on this website/web app: The student view and the teacher view.
 
 #### Teacher View / Backend
 
-The teacher views being to be used by the teacher for severals reason: 
+The teacher views is to be used by the teacher for severals reason: 
 
--  
+-  The ability to add another example with their own Verilog file.
+-  Access to a testbench.
 
 #### Student View / Frontend
 
-The student views in this way where the student can explore and discover FPGA properties and functionalities. However, this view needs to follow these requirements:   
+The student view allows the student to explore and discover FPGA properties and functionalities. However, this view needs to follow these requirements: 
 
-- The **2D view** of FPGA Simulator. 
-- Navigation into the view with **zoom** and **move**. 
-- Select the **default example** or the **teacher example** and see it by a view. 
-- Select one of this three view : **board**, **binary graphic** or the **components schematic**.
-- Click on a play button to **pause** or **resume** the animation. 
-- Click on a button to select the **speed of the animation** : x0.25 / x0.5 / x0.75 / x1 / x1.5 / x2 / x4.
+- The 2D view of FPGA Simulator. 
+- Navigation within the view with zoom and move functionality. 
+- Selection of the default example or the teacher's example and viewing it in a specific view. 
+- Selection of one of the three view :the components schematic, binary graphic or board.
+- A play button to pause or resume the animation.
+- A button to select the speed of the animation.
+
+### Three Views
+
+To provide a comprehensive amount of information, the student needs access to three views: a schematic representation of components, a graph of signals, and an FPGA board's schematic.
+
+#### All Views
+
+In this three views, the user has the following features :
+
+| 2D View & Navigation                                                                                                                              | Time Control                                                                                                                                                                                                                                             | Example used & Visualization                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <li>Navigate trough the screen with delimitation. </li> <li>Zoom on the screen to see more details or zoom out to view the global schematic.</li> | <li>Pause and resume button to stop or continue the animation.</li> <li>Controller/button to select the speed of the animation with the following choices: <br> <div style='text-align: center;'> x0.25 / x0.5 / x0.75 / x1 / x1.5 / x2 / x4 </div></li> | <li>Choose the exercise between the default example and the example from the file provided by the teacher </li> <li>Select which view to display information from among the three views. </li> |
 
 
+#### Shematics Representation
+
+<div style='align-items: flex-start; overflow: hidden'>
+   <img src='pictures\FPGAShematics.png' style='float: right; margin-left: 20px; max-width: 45%; width: 500px; height: auto; position: relative' alt='picture of a Schematic Representation' >
+   <div style='flex: 1'>
+   <p>
+   The schematic view is a 2D diagram representing components such as flip-flops, BRAMs, or LUT4s. The aim of this view is to understand how data and clock signals move through the components and how the program interacts with them from start to finish.
+
+   The movement of data and clock signals is illustrated through animation. For each component, the following information must be displayed:
+
+   <li>The type of component (LUT, BRAM, Clock, etc.)</li>
+   <li>The ID of the component (e.g., Q1, Clk, etc.)</li>
+   <li>Inputs and outputs</li>
+   <br>
+   Additionally, the following information must be displayed between components:
+
+   <li>The delay in signal transmission from one component to another</li>
+   <li>The type of data being transferred (clock, status, etc.)</li>
+   </p>
+</div>
+<div style='clear: both'></div> 
+
+#### Signals Graph
+
+<div style='align-items: flex-start; overflow: hidden'>
+   <img src='pictures\FPGASignals.png' style='float: right; margin-left: 20px; max-width: 45%; width: 500px; height: auto; position: relative' alt='signals graph' >
+   <div style='flex: 1'>
+   <p>
+   FPGAs, like other digital systems, use the binary system. Each component has a binary state or is used to change the binary state. Therefore, it is important to monitor the status of these components. <br> With this view, we should be able to see the clock status and the status of each component. This would be useful for observing how many clock cycles each step of the program takes. With this information, students can better understand why certain events occur.
+   </p>
+</div>
+<div style='clear: both'></div> 
+
+#### FPGA board's Schematic
+
+
+<div style='align-items: flex-start; overflow: hidden'>
+   <img src='pictures\FPGABoardRepresentation.png' alt='picture of a part of the FPGA board' style='float: right; margin-left: 20px; max-width: 45%; width: 500px; height: auto; position: relative' >
+   <div style='flex: 1'>
+   <p>
+   The FPGA board's schematic is a 2D floorplan used by the student to understand how the program sends data and clock signals. <br> 
+   In this view, the student needs the following features:<br>
+   <li>An animation to show these clock and data signals.</li>
+   <li></li>
+
+   <br><br><br><br>
+   However, in the conception of the schematic, we need to strike the best balance between reality and schematic representation to make it realistic and user-friendly.
+   </p>
+</div>
+<div style='clear: both'></div> 
+ 
 
 
 # Glossary
 
-[^1]: An FPGA Simulator is a tool that helps designers test digital circuits before they are built. It uses special languages like Verilog or VHDL to mimic how signals move through an FPGA, ensuring everything works correctly.
+[^1]: An FPGA Simulator is a tool that helps designers test digital circuits before they are built. It uses special languages like Verilog or VHDL to simulate how signals move through an FPGA, ensuring everything works correctly.
 
 [^2]: An FPGA (Field-Programmable Gate Array) is a customizable chip that can be programmed to do different tasks. Unlike regular chips that do one thing, an FPGA can change its function, making it versatile for various jobs.
 
