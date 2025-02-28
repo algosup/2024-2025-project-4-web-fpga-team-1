@@ -3,8 +3,8 @@
 
 ---
 
-<h3 style='text-align: center'>DOCUMENT VERSION 1.2</h3>
-<h3 style='text-align: center'>02/27/2025</h3>
+<h3 style='text-align: center'>DOCUMENT VERSION 1.3</h3>
+<h3 style='text-align: center'>02/28/2025</h3>
 
 
 ---
@@ -21,8 +21,8 @@
 | ---------- | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 02/24/2025 |   1.0   | <li> Created the document and wrote sections Overview, A to E. </li> <li> Started the Glossary. </li>                                                                                            |
 | 02/25/2025 |   1.1   | After meeting with the client, some parts have been updated. <li>Filled in the client's section</li> <li>Partially wrote the Functional Requirements.</li> <li>Added Expected Deliverables.</li> |
-| 02/27/2025 |   1.2   | Made a lot of corrections and rewriting to have a clear document.                                                                                                                                                                                                 |
-
+| 02/27/2025 |   1.2   | Made a lot of corrections and rewriting to have a clear document.                                                                                                                                |
+| 02/28/2025 |   1.3   | <li>Added the Test Cases Analysis</li> <li>Added Personas</li>                                                                                                                                   |
 
 <h3>Approvals</h3>
 
@@ -59,6 +59,8 @@
       - [Shematics Representation](#shematics-representation)
       - [Signals Graph](#signals-graph)
       - [FPGA board's Schematic](#fpga-boards-schematic)
+    - [Personas Definition](#personas-definition)
+    - [Use Cases Analysis](#use-cases-analysis)
 - [Glossary](#glossary)
 
 
@@ -304,15 +306,47 @@ In this three views, the user has the following features :
    The FPGA board's schematic is a 2D floorplan used by the student to understand how the program sends data and clock signals. <br> 
    In this view, the student needs the following features:<br>
    <li>An animation to show these clock and data signals.</li>
-   <li></li>
+   <li>Differents color between data and clock signals to distinguish them.</li>
+   <li>Components used by the program would by glowed.</li>
 
-   <br><br><br><br>
+   <br>
    However, in the conception of the schematic, we need to strike the best balance between reality and schematic representation to make it realistic and user-friendly.
    </p>
 </div>
 <div style='clear: both'></div> 
  
+ ### Personas Definition
 
+<h4>Florent Manni</h4>
+
+* **About**
+  * **Job Title**: Electronic Engineer for over 20 years
+  * **Experience**: 20 years of experience
+
+* **Description**
+  * Florent Manni is a Senior Electronic Engineer who has requested the team to develop the project. He has extensive experience in FPGA engineering. Typically, he teaches junior engineers the FPGA system to enhance their productivity. He has requested this tool to upgrade his support capabilities.  
+
+<h4>Alexandra Dupont</h4>
+
+* **About**
+  * **Job Title**: Junior Electronic Engineer
+  * **Experience**: 
+    * Recently graduated with a Bachelor's degree in Electrical Engineering
+    * Limited hands-on experience with FPGA, but eager to learn and grow in the field.
+* **Description**:
+  * Alex is a recent graduate who has joined the team as a Junior Electronic Engineer. With a strong foundation in electrical engineering concepts, she is excited to dive into the world of FPGA. Alex is highly motivated and eager to learn from experienced colleagues like Florant Manni. She is looking forward to contributing to innovative projects and expanding her skill set in FPGA design and implementation. 
+
+### Use Cases Analysis
+
+<h4>Start the Web App</h4> 
+
+When we start the Web app, firstly the program check if you are connected. If yes, you look at your last example used. If not, you arrive in a log in/sign up page.
+
+![Start the page](pictures\LunchThePage.png)
+
+<h4>Switch Example</h4>
+
+In a side bar, located on the left side, should have a lot of functionalities. One of them is the button `Switch Example`. With it, the user should select one of default examples or the teacher example.
 
 # Glossary
 
