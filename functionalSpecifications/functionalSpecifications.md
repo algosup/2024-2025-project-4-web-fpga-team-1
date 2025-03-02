@@ -270,7 +270,7 @@ For the next three views, they will displayed on the display part.
 #### Shematics Representation
 
 <div style='align-items: flex-start; overflow: hidden'>
-   <p style='float: right; margin-left: 20px; max-width: 45%; width: 500px; height: auto; position: relative'><img src='pictures\FPGAShematics.png' alt='picture of a Schematic Representation' ></p>
+   <p style='float: right; margin-left: 20px; max-width: 45%; width: 500px; height: auto; position: relative; align: right'><img src='pictures\FPGAShematics.png' alt='picture of a Schematic Representation' ></p>
    <div style='flex: 1'>
    <p>
    The schematic view is a 2D diagram representing components such as flip-flops, BRAMs, or LUT4s. The aim of this view is to understand how data and clock signals move through the components and how the program interacts with them from start to finish.
