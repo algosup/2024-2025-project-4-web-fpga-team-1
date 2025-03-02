@@ -346,7 +346,7 @@ For the next three views, they will displayed on the display part.
 
 When we start the Web app, firstly the program check if you are connected. If yes, you look at your last example used. If not, you arrive in a log in/sign up page.
 
-![Start the page](pictures\startThePage.png)
+![Start the page](pictures/startThePage.png)
 
 <h4>Log out</h4>
 
