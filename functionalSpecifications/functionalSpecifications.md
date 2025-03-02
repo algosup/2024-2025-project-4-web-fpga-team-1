@@ -167,9 +167,9 @@ By focusing on these components, the project aims to deliver a comprehensive and
 
 ### Stakholders
 
-| Stakeholder      | Might have/find an interest in...                                                 |
-| ---------------- | --------------------------------------------------------------------------------- |
-| Florant MANNI    | Needs a tool to help him to explain Verilog/VHDL system to young FPGA users.      |
+| Stakeholder      | Might have/find an interest in...                                                      |
+| ---------------- | -------------------------------------------------------------------------------------- |
+| Florant MANNI    | Needs a tool to help him to explain Verilog/VHDL system to young FPGA users.           |
 | ALGOSUP Students | Learning the association between web languages (HTML/CSS/JavaScript)[^12] and Verilog. |
 
 ### Project Roles
@@ -213,7 +213,7 @@ We have an estimated total of 70 man-hours to complete this project. We have acc
 
 * The team (6 people)
 * Teachers
-* 1 computer per team member 
+* A computer per team member 
 
 This project focuses on creating an animation of an FPGA Simulator to explain how an FPGA system works.
 
