@@ -3,7 +3,7 @@
 
 ---
 
-<h3 style='text-align: center'>DOCUMENT VERSION 1.3</h3>
+<h3 style='text-align: center'>DOCUMENT VERSION 2.0</h3>
 <h3 style='text-align: center'>02/28/2025</h3>
 
 
@@ -23,6 +23,7 @@
 | 02/25/2025 |   1.1   | After meeting with the client, some parts have been updated. <li>Filled customers-relative sections</li> <li>Partially wrote Functional Requirements.</li> <li>Added Expected Deliverables.</li> |
 | 02/27/2025 |   1.2   | Made a lot of corrections and rewriting to have a clear document.                                                                                                                                |
 | 02/28/2025 |   1.3   | <li>Added the Test Cases Analysis</li> <li>Added Personas</li> <il>Added Non Functional Requirement</il> <il>Fix issues between Functional and Call for Tender</il>                              |
+|03/03/2025|2.0|<li>Rewrite A and B</li>|
 
 <h3>Approvals</h3>
 
@@ -38,8 +39,8 @@
 <summary>Table of Content</summary>
 
 - [I. Overview](#i-overview)
-  - [A. Purpose of the document](#a-purpose-of-the-document)
-  - [B. Project Scope](#b-project-scope)
+  - [A. Product Description](#a-product-description)
+  - [B. Product Functional Capabilities](#b-product-functional-capabilities)
   - [C. Deliverables](#c-deliverables)
   - [D. Project Organisation](#d-project-organisation)
     - [Project Representatives](#project-representatives)
@@ -71,31 +72,27 @@
 
 # I. Overview
 
-Our client, Florant MANNI has solicited us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals propagate inside an FPGA[^2]. For simplicity, we will represente the board with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
+Our client, Florant MANNI has solicited us to develop a web interface for an FPGA Simulator[^1]. This web interface[^3] will be used to teach people how the signals propagate inside an FPGA[^2]. For simplicity, we will represente the board with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
 
-## A. Purpose of the document
+## A. Product Description
 
-The purpose of this document is to outline the requirements and design considerations for developing a web interface for an FPGA Simulator[^1]. This interface aims to provide an educational tool that visually demonstrates how signals spread within an FPGA system, enhancing users' understanding of FPGA behavior.
+The aim of this web application is to help Florant MANNI and/or his team teach new FPGA users how the system works. The application has to combine a more or less realistic 2D representation of an FPGA with dynamic signal propagation over time. This includes integrating the layout resulting from the synthesis[^4] and placement and routing (P&R)[^5] processes with timing simulation data. The aim is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^6] and a timing netlist[^7], both written in Verilog[^8].
 
-The document will detail the functionalities needed to merge a 2D floorplan representation of an FPGA with the dynamic propagation of signals over time. This includes integrating the layout resulting from synthesis[^3] and place-and-route (P&R)[^4] processes with timing simulation data. The goal is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^5] and timing netlist[^6], both written in Verilog[^7].
+## B. Product Functional Capabilities
 
-By defining the scope, features, and user interactions, this specification will serve as a comprehensive guide for the development team to ensure the final product meets the educational objectives and technical requirements.
-
-## B. Project Scope 
-
-The project scope for developing the web interface[^8] for the FPGA Simulator includes the following key components and functionalities:
+The product, responding to customer demands, should be able to have: 
 
 1. 2D floorplan Visualization:
 
-   * Develop a graphical representation of the **FPGA layout**, displaying the arrangement of basic elements (BELs)[^9] and their interconnections.
-   * Ensure the layout accurately **reflects** the post-synthesis and place-and-route (P&R) design.
+   * A graphical model of the **FPGA layout**, displaying the arrangement of basic elements (BELs)[^9] and their connections dictated by a Verilog file.
+   * Ensure the layout accurately reflects the post-synthesis and place-and-route (P&R) design.
 
 <br>
 
 2. Signal Propagation Simulation:
    
    * Integrate a timing simulator to **visualize** the propagation of clock signals within the FPGA through an animation.
-   * Use a testbench and timing netlist, both written in Verilog, to drive the simulation and **demonstrate signal** behavior over time.
+   * These animation should be dictated by a SDF (standard delay file). Whose one used to discribe the itinerary to complete the program in Verilog. 
 
 <br>
 
@@ -400,17 +397,17 @@ The project is to create a web interface. Therefore, this interface should work 
 
 [^2]: An FPGA (Field-Programmable Gate Array)  is an integrated circuit with basic elements and preconfigured electrical signal routes between them.
 
-[^3]: Translation of the application into an electrical equivalent. It creates a netlist (which can be exported as a netlist). 
+[^3]: A web interface is a user-friendly website or online tool that lets you interact with a system or application through your web browser. It's like a control panel on the internet where you can click buttons, enter information, and see results without needing special software.
 
-[^4]: Place and Route is the packing of the netlist component in the FPGA available BEL (Place). Then a route for signals between each BEL is selected (Route). A timing netlist is created and can be exported in verilog.
+[^4]: Translation of the application into an electrical equivalent. It creates a netlist (which can be exported as a netlist). 
 
-[^5]: A testbench is a crucial tool in the design and verification process, helping to ensure that digital circuits and systems function correctly before they are manufactured.
+[^5]: Place and Route is the packing of the netlist component in the FPGA available BEL (Place). Then a route for signals between each BEL is selected (Route). A timing netlist is created and can be exported in verilog.
 
-[^6]: A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to put them together (connections) to create a functioning circuit.
+[^6]: A testbench is a crucial tool in the design and verification process, helping to ensure that digital circuits and systems function correctly before they are manufactured.
 
-[^7]: Verilog is a language used to program a system using the FPGA layout. It use to writting instruction to the system.
+[^7]: A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to put them together (connections) to create a functioning circuit.
 
-[^8]: A web interface is a user-friendly website or online tool that lets you interact with a system or application through your web browser. It's like a control panel on the internet where you can click buttons, enter information, and see results without needing special software.
+[^8]: Verilog is a language used to program a system using the FPGA layout. It use to writting instruction to the system.
 
 [^9]: These are the hardware electrical ressources available inside the FPGA like fliflop, Look-Up-Table (LUT), Block RAM....
 
