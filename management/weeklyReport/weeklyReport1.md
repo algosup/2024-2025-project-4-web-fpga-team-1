@@ -17,7 +17,7 @@ Overall the week was good, everyone did progress on there documents and no major
 
 - The design of the site is finished.
 - Settlement document.
-- Project chart.
+- Project charter.
 
 # 4.Issues
 
