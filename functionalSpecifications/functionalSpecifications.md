@@ -92,7 +92,7 @@ The product, responding to customer demands, should be able to have:
 2. Signal Propagation Simulation:
    
    * Integrate a timing simulator to **visualize** the propagation of clock signals within the FPGA through an animation.
-   * These animation should be dictated by a SDF (standard delay file). Whose one used to discribe the itinerary to complete the program in Verilog. 
+   * These animations should be dictated by an SDF (standard delay file). Which one is used to describe the itinerary to complete the program in Verilog.
 
 <br>
 
