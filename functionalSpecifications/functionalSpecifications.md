@@ -22,7 +22,7 @@
 | 02/24/2025 |   1.0   | <li> Created the document and wrote sections Overview, A to E. </li> <li> Started the Glossary. </li>                                                                                            |
 | 02/25/2025 |   1.1   | After meeting with the client, some parts have been updated. <li>Filled customers-relative sections</li> <li>Partially wrote Functional Requirements.</li> <li>Added Expected Deliverables.</li> |
 | 02/27/2025 |   1.2   | Made a lot of corrections and rewriting to have a clear document.                                                                                                                                |
-| 02/28/2025 |   1.3   | <li>Added the Test Cases Analysis</li> <li>Added Personas</li>                                                                                                                                   |
+| 02/28/2025 |   1.3   | <li>Added the Test Cases Analysis</li> <li>Added Personas</li> <il>Added Non Functional Requirement</il> <il>Fix issues between Functional and Call for Tender</il>                              |
 
 <h3>Approvals</h3>
 
@@ -61,6 +61,7 @@
       - [FPGA board's Schematic](#fpga-boards-schematic)
     - [Personas Definition](#personas-definition)
     - [Use Cases Analysis](#use-cases-analysis)
+  - [B. Non Functional Requirements](#b-non-functional-requirements)
 - [Glossary](#glossary)
 
 
@@ -70,7 +71,7 @@
 
 # I. Overview
 
-Our client, Florant MANNI has solicited us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals spread inside an FPGA[^2]. For simplicity, we will represente the board with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
+Our client, Florant MANNI has solicited us to develop a web interface for an FPGA Simulator[^1]. This web interface will be used to teach people how the signals propagate inside an FPGA[^2]. For simplicity, we will represente the board with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
 
 ## A. Purpose of the document
 
@@ -257,9 +258,9 @@ To provide a comprehensive amount of information, the student needs access to th
 
 In this three views, the user has the following features :
 
-| 2D View & Navigation                                                                                                                              | Time Control                                                                                                                                                                                                                                                 | Example used & Visualization                                                                                                                                                                   |
-| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <li>Navigate trough the screen with delimitation. </li> <li>Zoom on the screen to see more details or zoom out to view the global schematic.</li> | <li>Pause and resume button to stop or continue the animation.</li> <li>Controller/button to select the speed of the animation with the following choices: <br> <div style='text-align: center;'> 0.25 / 0.5 / 0.75 / 1 / 1.25 / 1.5 / 1.75 / 2. </div></li> | <li>Choose the exercise between the default example and the example from the file provided by the teacher </li> <li>Select which view to display information from among the three views. </li> |
+| 2D View & Navigation                                                                                                                              | Time Control                                                                                                                                                                                                                                      | Example used & Visualization                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <li>Navigate trough the screen with delimitation. </li> <li>Zoom on the screen to see more details or zoom out to view the global schematic.</li> | <li>Pause and resume button to stop or continue the animation.</li> <li>Controller/button to select the speed of the animation with the following choices: <br> <div style='text-align: center;'> 0.5 / 0.75 / 1 / 1.25 / 1.5 / 2 / 4 </div></li> | <li>Choose the exercise between the default example and the example from the file provided by the teacher </li> <li>Select which view to display information from among the three views. </li> |
 
 To organize the screen, we'll follow the model below. 
 
@@ -374,9 +375,24 @@ The project's goal is to have an animation to illustrate program action. So, wit
 
 <h4>Animation Speed</h4>
 
-Near to the play button, we should have a `drop-down list`. With it, the animation speed up or slow down. We should be allowed to select the speed between this speed values : 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2. The **default value** is x1.
+Near to the play button, we should have a `drop-down list`. With it, the animation speed up or slow down. We should be allowed to select the speed between this speed values : 0.5, 0.75, 1, 1.25, 1.5, 2, 4. The **default value** is x1.
 
 ![Speed Animation](pictures/speedAnimation.png)
+
+## B. Non Functional Requirements
+
+<h4> Input File </h4>
+
+The software should not accept any input except for importing files for another example provided by the teacher. Therefore, the software must filter the data supplied by the teacher.
+Accepted entries are: 
+* A **schematic netlist** (in Verilog format) => elements to be represented on screen
+* A **standard delay file** (SDF format) => signal propagation time between each element
+
+Whole Example should be in a folder `Example`.  
+
+<h4> Compatibility </h4>
+
+The project is to create a web interface. Therefore, this interface should work with every computer (Windows, Linux, MacOS). However, compatibility with mobile devices is not a priority.
 
 # Glossary
 
@@ -404,6 +420,6 @@ Near to the play button, we should have a `drop-down list`. With it, the animati
 
 [^12]: HTML, CSS and JavaScript are pagramations languages usually used for the web. It is what we use for this project.  
 
-[^13]: 
+[^13]: A flip-flop is a tiny switch in circuits that store one bit of data (0 or 1) and helps control when data changes.
 
-[^14]: 
+[^14]: A LUT4 is a small table that can execute simple logical operations, such as AND, OR or NOT, on up to four inputs.
