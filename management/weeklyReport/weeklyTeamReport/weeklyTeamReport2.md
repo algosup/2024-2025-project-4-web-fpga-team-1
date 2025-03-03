@@ -47,7 +47,14 @@
 # Summary
 
 - Members of the team did not appreciate the lack of project time this week.
+<<<<<<< Updated upstream
 - Gregroy and Lucas are scared that some people in the team will not work enough and put the group can be impacted.
 
 Overall this week is very short and for the only project time we had, there is two absents. Its fine because they did tell me and it is justified.
 They will all do overtime to compensate the lack project time.
+=======
+- Gregroy and Lucas are scared that some people in the team will not work enough and the group can be impacted.
+
+Overall this week is very short and for the only project time we have, there is two absents. Its fine because they told me and it is justified.
+They will all do overtime to compensate the lack project time.
+>>>>>>> Stashed changes
