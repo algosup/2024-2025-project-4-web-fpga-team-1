@@ -23,7 +23,7 @@
 | 02/25/2025 |   1.1   | After meeting with the client, some parts have been updated. <li>Filled customers-relative sections</li> <li>Partially wrote Functional Requirements.</li> <li>Added Expected Deliverables.</li> |
 | 02/27/2025 |   1.2   | Made a lot of corrections and rewriting to have a clear document.                                                                                                                                |
 | 02/28/2025 |   1.3   | <li>Added the Test Cases Analysis</li> <li>Added Personas</li> <il>Added Non Functional Requirement</il> <il>Fix issues between Functional and Call for Tender</il>                              |
-|03/03/2025|2.0|<li>Rewrite A and B</li>|
+|03/03/2025|2.0|<li>Rewrited A and B</li>|
 
 <h3>Approvals</h3>
 
@@ -41,6 +41,9 @@
 - [I. Overview](#i-overview)
   - [A. Product Description](#a-product-description)
   - [B. Product Functional Capabilities](#b-product-functional-capabilities)
+    - [Visualization](#visualization)
+    - [Examples](#examples)
+    - [Time Control](#time-control)
   - [C. Deliverables](#c-deliverables)
   - [D. Project Organisation](#d-project-organisation)
     - [Project Representatives](#project-representatives)
@@ -76,36 +79,39 @@ Our client, Florant MANNI has solicited us to develop a web interface for an FPG
 
 ## A. Product Description
 
-The aim of this web application is to help Florant MANNI and/or his team teach new FPGA users how the system works. The application has to combine a more or less realistic 2D representation of an FPGA with dynamic signal propagation over time. This includes integrating the layout resulting from the synthesis[^4] and placement and routing (P&R)[^5] processes with timing simulation data. The aim is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^6] and a timing netlist[^7], both written in Verilog[^8].
+The aim of this web application[^4] is to help Florant MANNI and/or his team teach new FPGA users how the system works. The application has to combine a more or less realistic 2D representation of an FPGA with dynamic signal propagation over time. This includes integrating the layout resulting from the synthesis[^5] and placement and routing (P&R)[^6] processes with timing simulation data. The aim is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^7] and a timing netlist[^8], both written in Verilog[^9].
 
 ## B. Product Functional Capabilities
 
-The product, responding to customer demands, should be able to have: 
+The product, responding to customer demands, should be able to have a lot of functionality.
 
-1. 2D floorplan Visualization:
+### Visualization
 
-   * A graphical model of the **FPGA layout**, displaying the arrangement of basic elements (BELs)[^9] and their connections dictated by a Verilog file.
-   * Ensure the layout accurately reflects the post-synthesis and place-and-route (P&R) design.
+As a web application, the project must have an interface. This interface should be a 2D View where the user must have the ability to navigate through the view to visualize what happened in the **FPGA system**.
 
-<br>
+This graphical model should illustrated :
+  * An arrangement of basic elements(BELs)[^10],
+  * Connections dictated by a Verilog file,
 
-2. Signal Propagation Simulation:
-   
-   * Integrate a timing simulator to **visualize** the propagation of clock signals within the FPGA through an animation.
-   * These animations should be dictated by an SDF (standard delay file). Which one is used to describe the itinerary to complete the program in Verilog.
+Therefore, the model should reflect the post-synthesis and place-and-route(P&R) design.
 
-<br>
+However, to understand what happened in this system, every signal must be represented graphically with animations dictated by an SDF (standard delay file). These signals must be: 
+  * The propagation of a clock signal
+  * The propagation of data
 
-3. Double Interface:
+### Examples
 
-   * A web interface used by students to interact with the web app[^10] to **explore** and **understand** the system.
-   * A backend interface[^11] used by teachers to provide scripts to the program to train students with the web interface.
+An interface or view without content is useless. That's why we have examples. These examples are Verilog files that we can use to provide the views with something to focus on. Thanks to them, we can visualize the basic uses of the FPGA system.
 
-<br>  
+However, these examples couldn't be enough. It is for that why the customer would to have the ability to add other Verilog files to become additional examples.
+
+### Time Control
+
+//
 
 4. Interactive User Interface:
 
-   * Create an **intuitive** web interface that allows users to interact with the with the view and observe signal propagation. //
+   * An **intuitive** web interface that lets users to interact with the view and observe signal propagation.
    * Include controls for **starting**, **pausing**, and **resetting** the simulation, as well as options to inspect signal states at specific points in time.
 
 <br>
@@ -129,9 +135,7 @@ The product, responding to customer demands, should be able to have:
 
    * Conduct thorough testing to validate the accuracy of the signal propagation simulation and the usability of the interface.
 
-<br>
-
-By focusing on these components, the project aims to deliver a comprehensive and interactive web interface that effectively teaches users about FPGA signal propagation.
+//
 
 ## C. Deliverables
 
@@ -168,7 +172,7 @@ By focusing on these components, the project aims to deliver a comprehensive and
 | Stakeholder      | Might have/find an interest in...                                                      |
 | ---------------- | -------------------------------------------------------------------------------------- |
 | Florant MANNI    | Needs a tool to help him to explain Verilog/VHDL system to young FPGA users.           |
-| ALGOSUP Students | Learning the association between web languages (HTML/CSS/JavaScript)[^12] and Verilog. |
+| ALGOSUP Students | Learning the association between web languages (HTML/CSS/JavaScript)[^11] and Verilog. |
 
 ### Project Roles
 
@@ -190,8 +194,8 @@ For this project, the customer has requested us to meet the following deliverabl
 * An explainaton of how to run the software must be present on the repository and/or in the website.
 * An explaination of how to add an application example must be present on the repository and/or in the website.
 * The website must include at least two application examples:
-  * One for the flipflop[^13].
-  * One for the LUT4[^14]. 
+  * One for the flipflop[^12].
+  * One for the LUT4[^13]. 
 
 ## E. Project Plan 
 
@@ -399,24 +403,22 @@ The project is to create a web interface. Therefore, this interface should work 
 
 [^3]: A web interface is a user-friendly website or online tool that lets you interact with a system or application through your web browser. It's like a control panel on the internet where you can click buttons, enter information, and see results without needing special software.
 
-[^4]: Translation of the application into an electrical equivalent. It creates a netlist (which can be exported as a netlist). 
+[^4]: A web app is like a website that you can interact with, it like an application you can use on your phone, hence instead of use an application store to download it, you use it through a web browser like Chrome or Safari.
 
-[^5]: Place and Route is the packing of the netlist component in the FPGA available BEL (Place). Then a route for signals between each BEL is selected (Route). A timing netlist is created and can be exported in verilog.
+[^5]: Translation of the application into an electrical equivalent. It creates a netlist (which can be exported as a netlist). 
 
-[^6]: A testbench is a crucial tool in the design and verification process, helping to ensure that digital circuits and systems function correctly before they are manufactured.
+[^6]: Place and Route is the packing of the netlist component in the FPGA available BEL (Place). Then a route for signals between each BEL is selected (Route). A timing netlist is created and can be exported in verilog.
 
-[^7]: A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to put them together (connections) to create a functioning circuit.
+[^7]: A testbench is a crucial tool in the design and verification process, helping to ensure that digital circuits and systems function correctly before they are manufactured.
 
-[^8]: Verilog is a language used to program a system using the FPGA layout. It use to writting instruction to the system.
+[^8]: A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to put them together (connections) to create a functioning circuit.
 
-[^9]: These are the hardware electrical ressources available inside the FPGA like fliflop, Look-Up-Table (LUT), Block RAM....
+[^9]: Verilog is a language used to program a system using the FPGA layout. It use to writting instruction to the system.
 
-[^10]: A web app is like a website that you can interact with, it like an application you can use on your phone, hence instead of use an application store to download it, you use it through a web browser like Chrome or Safari.
+[^10]: These are the hardware electrical ressources available inside the FPGA like fliflop, Look-Up-Table (LUT), Block RAM....
 
-[^11]: A backend interface is a part of a software application working behing the display. In this case, that indicate a part of the software where the teacher could add an example with a Verilog file.
+[^11]: HTML, CSS and JavaScript are pagramations languages usually used for the web. It is what we use for this project.  
 
-[^12]: HTML, CSS and JavaScript are pagramations languages usually used for the web. It is what we use for this project.  
+[^12]: A flip-flop is a tiny switch in circuits that store one bit of data (0 or 1) and helps control when data changes.
 
-[^13]: A flip-flop is a tiny switch in circuits that store one bit of data (0 or 1) and helps control when data changes.
-
-[^14]: A LUT4 is a small table that can execute simple logical operations, such as AND, OR or NOT, on up to four inputs.
+[^13]: A LUT4 is a small table that can execute simple logical operations, such as AND, OR or NOT, on up to four inputs.
