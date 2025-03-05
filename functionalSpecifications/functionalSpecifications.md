@@ -65,7 +65,7 @@
       - [Shematics Representation](#shematics-representation)
       - [Signals Graph](#signals-graph)
       - [FPGA board's Schematic](#fpga-boards-schematic)
-    - [Personas Definition](#personas-definition)
+    - [Persona Definition](#persona-definition)
     - [Use Cases Analysis](#use-cases-analysis)
   - [B. Non Functional Requirements](#b-non-functional-requirements)
 - [Glossary](#glossary)
@@ -77,11 +77,11 @@
 
 # I. Overview
 
-Our client, Florant MANNI has solicited us to develop a web interface for an FPGA Simulator[^1]. This web interface[^3] will be used to teach people how signals propagated inside an FPGA[^2]. For simplicity, we will represente the board with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
+Our client, Florant MANNI has solicited us to develop a web interface for an FPGA Simulator[^1]. This web interface[^3] will be used to teach people how signals propagated inside an FPGA[^2]. For simplicity, we will represent the board with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
 
 ## A. Product Description
 
-The aim of this web application[^4] is to help Florant MANNI and/or his team to teach to new FPGA users how the system works. The application has to combine a more or less realistic 2D representation of an FPGA with dynamic signal propagation over time. This includes integrating the layout resulting from the synthesis[^5] and placement and routing (P&R)[^6] processes with timing simulation data. The aim is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^7] and a timing netlist[^8], both written in Verilog[^9].
+This web application[^4] is focused on helping Florant MANNI and/or his team to teach to new FPGA users how the system works. The application has to combine a more or less realistic 2D representation of an FPGA with dynamic signal propagation over time. This includes integrating the layout resulting from the synthesis[^5] and placement and routing (P&R)[^6] processes with timing simulation data. The aim is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^7] and a timing netlist[^8], both written in Verilog[^9].
 
 ## B. Product Functional Capabilities
 
@@ -92,14 +92,14 @@ The product, responding to customer demands, should be able to have a lot of fun
 As a web application, the project must have an interface. This interface should be a 2D View where the user must have the ability to navigate through the view to visualize what happened in the **FPGA system**.
 
 This graphical model should illustrated :
-  * An arrangement of basic elements(BELs)[^10],
-  * Connections dictated by a Verilog file,
+  * An arrangement of basic elements(BELs)[^10],
+  * Connections dictated by a Verilog file,
 
 Therefore, the model should reflect the post-synthesis and place-and-route(P&R) design.
 
 However, to understand what happened in this system, every signals must be represented graphically with animations dictated by an SDF (standard delay file). These signals must be: 
-  * The propagation of a clock signal
-  * The propagation of data
+  * The propagation of a clock signal
+  * The propagation of data
 
 ### Examples
 
@@ -229,7 +229,7 @@ The teacher interface is to be used by the teacher for severals reason:
 
 The student interface allows the student to explore and discover FPGA properties and functionalities. However, this view needs to follow these requirements: 
 
-- The 2D view of FPGA Simulator. 
+- The 2D view of an FPGA Simulator. 
 - Navigation within the view with zoom and move functionalities. 
 - Selection of the default example or the teacher's example and viewing it in a specific view. 
 - Selection of one of the three view :the components schematic, binary graphic, or board.
@@ -306,7 +306,7 @@ For the next three views, they will displayed on the **display part**.
 </div>
 <div style='clear: both'></div> 
  
- ### Personas Definition
+ ### Persona Definition
 
 <h4>Florent Manni</h4>
 
@@ -378,7 +378,7 @@ Whole Example should be in a folder `Example`.
 
 <h4> Compatibility </h4>
 
-The project is to create a web interface. Therefore, this interface should work with every computer (Windows, Linux, MacOS). However, compatibility with mobile devices is not a priority.
+The project focuses on creating a web interface. Therefore, this interface should work with every computer (Windows, Linux, MacOS). However, compatibility with mobile devices is not a priority.
 
 # Glossary
 
