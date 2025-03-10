@@ -23,7 +23,7 @@
 | 02/25/2025 |   1.1   | After meeting with the client, some parts have been updated. <li>Filled customers-relative sections</li> <li>Partially wrote Functional Requirements.</li> <li>Added Expected Deliverables.</li> |
 | 02/27/2025 |   1.2   | Made a lot of corrections and rewriting to have a clear document.                                                                                                                                |
 | 02/28/2025 |   1.3   | <li>Added the Test Cases Analysis</li> <li>Added Personas</li> <il>Added Non Functional Requirement</il> <il>Fix issues between Functional and Call for Tender</il>                              |
-|03/03/2025|2.0|<li>Rewrited A and B</li>|
+| 03/03/2025 |   2.0   | <li>Rewrited A and B</li>                                                                                                                                                                        |
 
 <h3>Approvals</h3>
 
@@ -124,13 +124,13 @@ For that, we should use in the web app only components and styles recognized in 
 
 ## C. Deliverables
 
-| Name                               | Type                                 | Deadline     | Link                                                       |
-| ---------------------------------- | ------------------------------------ | ------------ | ---------------------------------------------------------- |
-| Functional Specifications Document | Document (Markdown)                  | 03/13/2025   | [functionalSpecifications.md](functionalSpecifications.md) |
-| Technical Specifications Document  | Document (Markdown)                  | 03/25/2025   | [technicalSpecifications.md](../technicalSpecifications/technicalSpecifications.md)                             |
-| Test Plan Document                 | Document (Markdown)                  | 03/25/2025   | [testPlan.md]()                                            |
-| Development                        | Programing (HTML / CSS / JavaScript) | 04/01/2025   |                                                            |
-| Weekly Reports                     | Document (Markdown)                  | Every Friday | [Weekly Report Folder](../management/weeklyReport)            |
+| Name                               | Type                                 | Deadline     | Link                                                                                |
+| ---------------------------------- | ------------------------------------ | ------------ | ----------------------------------------------------------------------------------- |
+| Functional Specifications Document | Document (Markdown)                  | 03/13/2025   | [functionalSpecifications.md](functionalSpecifications.md)                          |
+| Technical Specifications Document  | Document (Markdown)                  | 03/25/2025   | [technicalSpecifications.md](../technicalSpecifications/technicalSpecifications.md) |
+| Test Plan Document                 | Document (Markdown)                  | 03/25/2025   | [testPlan.md]()                                                                     |
+| Development                        | Programing (HTML / CSS / JavaScript) | 04/01/2025   |                                                                                     |
+| Weekly Reports                     | Document (Markdown)                  | Every Friday | [Weekly Report Folder](../management/weeklyReport)                                  |
 
 ## D. Project Organisation
 
@@ -231,22 +231,21 @@ The student interface allows the student to explore and discover FPGA properties
 
 - The 2D view of an FPGA Simulator. 
 - Navigation within the view with zoom and move functionalities. 
-- Selection of the default example or the teacher's example and viewing it in a specific view. 
-- Selection of one of the three view :the components schematic, binary graphic, or board.
+- Selection of the default example or the teacher's example(s) with associated visualization. 
 - A play button to pause or resume the animation.
 - A button to select the speed of the animation.
 
 ### Three Views
 
-To provide a comprehensive amount of information, the student needs access to three views: a schematic representation of components, a graph of signals, and an FPGA board's schematic.
+Depending on which example the student uses, he could view one of these views :
 
 #### All Views
 
 In this three views, the user has the following features :
 
-| 2D View & Navigation                                                                                                                              | Time Control                                                                                                                                                                                                                                      | Example used & Visualization                                                                                                                                                                   |
-| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <li>Navigate trough the screen with delimitation. </li> <li>Zoom on the screen to see more details or zoom out to view the global schematic.</li> | <li>Pause and resume button to stop or continue the animation.</li> <li>Controller/button to select the speed of the animation with the following choices: <br> <div style='text-align: center;'> 0.5 / 0.75 / 1 / 1.25 / 1.5 / 2 / 4 </div></li> | <li>Choose the exercise between the default example and the example from the file provided by the teacher </li> <li>Select which view to display information from among the three views. </li> |
+| 2D View & Navigation                                                                                                                              | Time Control                                                                                                                                                                                                                                      | Example used & Visualization                                                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <li>Navigate trough the screen with delimitation. </li> <li>Zoom on the screen to see more details or zoom out to view the global schematic.</li> | <li>Pause and resume button to stop or continue the animation.</li> <li>Controller/button to select the speed of the animation with the following choices: <br> <div style='text-align: center;'> 0.5 / 0.75 / 1 / 1.25 / 1.5 / 2 / 4 </div></li> | <li>Choose the exercise between the default example and the example from the file provided by the teacher </li> <li> Depending on the example used by the student, one of the three views defined below will be used.</li> |
 
 To organize the screen, we'll follow the model below. 
 
@@ -346,12 +345,6 @@ Above the sidebar located in parameter 1 of the model, we have a `log out button
 A sidebar located in parameter 1 of the model should have a lot of functionalities. One of them is the button `Switch Example`. With it, the user should select one of default examples or the teacher example.
 
 ![Select Example](pictures/selectExample.png)
-
-<h4>Switch View</h4>
-
-The sidebar should have a button `Switch View`. With it, the user should select one of those three views.
-
-![Select View](pictures/selectView.png)
 
 <h4>Animation</h4>
 
