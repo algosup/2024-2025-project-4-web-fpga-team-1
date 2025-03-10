@@ -334,12 +334,6 @@ When we start the Web app, firstly the program check if you are connected. If ye
 
 ![Start the page](pictures/startThePage.png)
 
-<h4>Log out</h4>
-
-Above the sidebar located in parameter 1 of the model, we have a `log out button`. If we press it, we should be disconnected and a login page should be displayed.
-
-![log out](pictures/logOut.png)
-
 <h4>Switch Example</h4>
 
 A sidebar located in parameter 1 of the model should have a lot of functionalities. One of them is the button `Switch Example`. With it, the user should select one of default examples or the teacher example.
