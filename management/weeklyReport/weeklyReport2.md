@@ -6,7 +6,7 @@ Short week with only one hour of project time, but with some overtime that the m
 | Functional specification | 30%        |
 | Technical specification  | 15%        |
 | Code                     | 10%         |
-| Test Plan/Test Automation | 5%         |
+| Test Plan/Test Automation | 10%         |
 
 
 # 3.Work Accomplished

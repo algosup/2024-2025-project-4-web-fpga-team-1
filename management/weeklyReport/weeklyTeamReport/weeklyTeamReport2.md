@@ -31,10 +31,10 @@
 | Questions                                                                                  | Names  |
 | ------------------------------------------------------------------------------------------ | ------ |
 |                                                                                            | Mathis |
-| How was your week                                                                          |        |
-| What was your task and did you manage to do it (if not, put the percentage of progression) |        |
-| Your feeling about the project ?                                                           |        |
-| Its the end of the week are you happy for what you've done during this week ?              |
+| How was your week                                                                          |nice        |
+| What was your task and did you manage to do it (if not, put the percentage of progression) | 10%      |
+| Your feeling about the project ?                                                           |good        |
+| Its the end of the week are you happy for what you've done during this week ?              | yes
 
 | Questions                                                                                  | Names   |
 | ------------------------------------------------------------------------------------------ | ------- |
