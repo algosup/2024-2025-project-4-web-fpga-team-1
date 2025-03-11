@@ -1,5 +1,9 @@
 # Team Week Report
 
+|Author|Role|
+|------|----|
+|NOGUES Loïc|Project Manager|
+
 | Questions                                                                                  | Names  |
 | ------------------------------------------------------------------------------------------ | ------ |
 |                                                                                            | Alexis |

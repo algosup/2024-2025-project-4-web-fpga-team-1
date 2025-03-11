@@ -1,4 +1,12 @@
+# Weekly Report 1
+|Author|Role|
+|------|----|
+|NOGUES Loïc|Project Manager|
+
 # 1.Overview Of The Week
+
+
+
 Overall the week was good, everyone made progress on their documents and no major issues were detected.
 
 # 2.Work In Progress

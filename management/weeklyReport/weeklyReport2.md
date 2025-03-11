@@ -1,3 +1,7 @@
+# Weekly Report 2
+|Author|Role|
+|------|----|
+|NOGUES Loïc|Project Manager|
 # 1.Overview Of The Week
 Short week with only one hour of project time, but with some overtime that the members did we manage to do whatwe wanted.
 # 2.Work In Progress

@@ -1,5 +1,9 @@
+# Weekly Report
+|Author|Role|
+|------|----|
+|NOGUES Loïc|Project Manager|
 # 1.Overview Of The Week
-
+|
 
 
 
