@@ -24,15 +24,6 @@
 | 02/27/2025 |   1.2   | Made a lot of corrections and rewriting to have a clear document.                                                                                                                                |
 | 02/28/2025 |   1.3   | <li>Added the Test Cases Analysis</li> <li>Added Personas</li> <il>Added Non Functional Requirement</il> <il>Fix issues between Functional and Call for Tender</il>                              |
 | 03/03/2025 |   2.0   | <li>Rewrited A and B</li>                                                                                                                                                                        |
-
-<h3>Approvals</h3>
-
-| Approval <br> Date | Approved <br> Version | Approver <br> Role | Approver <br> Name | Approvement <br> Status |
-| ------------------ | --------------------- | ------------------ | ------------------ | ----------------------- |
-|                    |                       |                    |                    |                         |
-|                    |                       |                    |                    |                         |
-|                    |                       |                    |                    |                         |
-
 ---
 
 <details> 
