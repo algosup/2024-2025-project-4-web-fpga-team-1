@@ -31,10 +31,10 @@
 | Questions                                                                                  | Names  |
 | ------------------------------------------------------------------------------------------ | ------ |
 |                                                                                            | Mathis |
-| How was your week                                                                          |        |
-| What was your task and did you manage to do it (if not, put the percentage of progression) |        |
-| Your feeling about the project ?                                                           |        |
-| Its the end of the week are you happy for what you've done during this week ?              |
+| How was your week                                                                          |nice        |
+| What was your task and did you manage to do it (if not, put the percentage of progression) | 10%      |
+| Your feeling about the project ?                                                           |good        |
+| Its the end of the week are you happy for what you've done during this week ?              | yes
 
 | Questions                                                                                  | Names   |
 | ------------------------------------------------------------------------------------------ | ------- |
@@ -47,9 +47,9 @@
 # Summary
 
 - Members of the team did not appreciate the lack of project time this week.
-- Gregroy and Lucas are scared that some people in the team will not work enough and put the group can be impacted.
+- Gregroy and Lucas are scared that some people in the team will not work enough and put the group in a bad situation.
 
 
-Overall this week is very short and for the only project time we have, there is two absents. Its fine because they told me and it is justified.
+Overall this week is very short and for the only project time we had, there is two absents. Its fine because they told me and it is justified.
 They will all do overtime to compensate the lack project time.
 
