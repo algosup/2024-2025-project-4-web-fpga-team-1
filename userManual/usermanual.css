@@ -4,7 +4,7 @@ hr {
 
 header {
     text-align: center;
-    color: #060F6D;
+    color: #004e8d;
 }
 
 header h1 {
@@ -12,10 +12,19 @@ header h1 {
 }
 
 .tableOfContents {
+    display: flex;
+    flex-direction: column;
     margin-top: 20px;
-    border-right: 1px solid #060F6D;
+    border-right: 2px solid #004e8d;
 }
 
 content {
-    margin-top: 20px;
+    display: flex;
+    margin-top: 35px;
+}
+
+footer {
+    text-align: center;
+    color: #004e8d;
+    margin: 20px;
 }
