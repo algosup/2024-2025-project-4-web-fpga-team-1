@@ -68,11 +68,11 @@
 
 # I. Overview
 
-Our client, Florant MANNI has solicited us to develop a web interface for an FPGA Simulator[^1]. This web interface[^3] will be used to teach people how signals propagated inside an FPGA[^2]. For simplicity, we will represent the board with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
+Our client, Florent MANNI has solicited us to develop a web interface for an FPGA Simulator[^1]. This web interface[^3] will be used to teach people how signals propagated inside an FPGA[^2]. For simplicity, we will represent the board with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
 
 ## A. Product Description
 
-This web application[^4] is focused on helping Florant MANNI and/or his team to teach to new FPGA users how the system works. The application has to combine a more or less realistic 2D representation of an FPGA with dynamic signal propagation over time. This includes integrating the layout resulting from the synthesis[^5] and placement and routing (P&R)[^6] processes with timing simulation data. The aim is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^7] and a timing netlist[^8], both written in Verilog[^9].
+This web application[^4] is focused on helping Florent MANNI and/or his team to teach to new FPGA users how the system works. The application has to combine a more or less realistic 2D representation of an FPGA with dynamic signal propagation over time. This includes integrating the layout resulting from the synthesis[^5] and placement and routing (P&R)[^6] processes with timing simulation data. The aim is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^7] and a timing netlist[^8], both written in Verilog[^9].
 
 ## B. Product Functional Capabilities
 
@@ -129,7 +129,7 @@ For that, we should use in the web app only components and styles recognized in 
 
 | Project Owner | Represented by...                              |
 | ------------- | ---------------------------------------------- |
-| Florant MANNI | Represented by himself                         |
+| Florent MANNI | Represented by himself                         |
 | Loïc NOGUES   | Represented by Alexis SANTOS (Program Manager) |
 
 * Defining the vision and high-level objectives for the project.
@@ -147,7 +147,7 @@ For that, we should use in the web app only components and styles recognized in 
 
 | Stakeholder      | Might have/find an interest in...                                                      |
 | ---------------- | -------------------------------------------------------------------------------------- |
-| Florant MANNI    | Needs a tool to help him to explain Verilog/VHDL system to young FPGA users.           |
+| Florent MANNI    | Needs a tool to help him to explain FPGA system to young FPGA users.                   |
 | ALGOSUP Students | Learning the association between web languages (HTML/CSS/JavaScript)[^11] and Verilog. |
 
 ### Project Roles
@@ -177,12 +177,12 @@ For this project, the customer has requested us to meet the following deliverabl
 
 ### Milestones
 
-| Milestones                   | Deadline   |
-| ---------------------------- | ---------- |
-| Functional Specifications V1 | 03/13/2025 |
-| Technical Specifications V1  | 03/25/2025 |
-| End of Development           | 04/01/2025 |
-| Oral Presentation            | 04/04/2025 |
+| Milestones                                  | Deadline   |
+| ------------------------------------------- | ---------- |
+| Functional Specifications V1                | 03/13/2025 |
+| Technical Specifications V1 & Test Plan V1  | 03/25/2025 |
+| End of Development                          | 04/01/2025 |
+| Oral Presentation                           | 04/04/2025 |
 
 
 ### Ressources / Financial Plan
@@ -315,7 +315,7 @@ For the next three views, they will displayed on the **display part**.
     * Recently graduated with a Bachelor's degree in Electrical Engineering
     * Limited hands-on experience with FPGA, but eager to learn and grow in the field.
 * **Description**:
-  * Alexandra is a recent graduate who has joined the team as a Junior Electronic Engineer. With a strong foundation in electrical engineering concepts, she is excited to dive into the world of FPGA. Alex is highly motivated and eager to learn from experienced colleagues like Florant Manni. She is looking forward to contributing to innovative projects and expanding her skill set in FPGA design and implementation. 
+  * Alexandra is a recent graduate who has joined the team as a Junior Electronic Engineer. With a strong foundation in electrical engineering concepts, she is excited to dive into the world of FPGA. Alex is highly motivated and eager to learn from experienced colleagues like Florent Manni. She is looking forward to contributing to innovative projects and expanding her skill set in FPGA design and implementation. 
 
 ### Use Cases Analysis
 
