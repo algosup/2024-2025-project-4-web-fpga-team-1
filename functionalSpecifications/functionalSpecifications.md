@@ -1,4 +1,4 @@
-<h1 style='text-align: center'>Project's Name</h1>
+<h1 style='text-align: center'>Web FPGA</h1>
 <h2 style='text-align: center'> Functional Specification Document</h2>
 
 ---
