@@ -53,7 +53,7 @@
       - [Student interface / Frontend](#student-interface--frontend)
     - [Three Views](#three-views)
       - [All Views](#all-views)
-      - [Shematics Representation](#shematics-representation)
+      - [Schematics Representation](#schematics-representation)
       - [Signals Graph](#signals-graph)
       - [FPGA board's Schematic](#fpga-boards-schematic)
     - [Persona Definition](#persona-definition)
@@ -68,11 +68,11 @@
 
 # I. Overview
 
-Our client, Florant MANNI has solicited us to develop a web interface for an FPGA Simulator[^1]. This web interface[^3] will be used to teach people how signals propagated inside an FPGA[^2]. For simplicity, we will represent the board with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
+Our client, the CNES[^1] has solicited us to develop a web interface for an FPGA Simulator[^2]. This web interface[^3] will be used to teach people how signals propagated inside an FPGA[^4]. For simplicity, we will represent the FPGA system with differents views (define in the document) to understand the FPGA system through animations. Those animations mainly symbolize signals transfers. 
 
 ## A. Product Description
 
-This web application[^4] is focused on helping Florant MANNI and/or his team to teach to new FPGA users how the system works. The application has to combine a more or less realistic 2D representation of an FPGA with dynamic signal propagation over time. This includes integrating the layout resulting from the synthesis[^5] and placement and routing (P&R)[^6] processes with timing simulation data. The aim is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^7] and a timing netlist[^8], both written in Verilog[^9].
+This web application[^5] is focused on helping Florent MANNI and/or his team teach new FPGA users how the system works. The application has to combine a more or less realistic 2D representation of an FPGA with dynamic signal propagation over time. This includes integrating the layout resulting from the synthesis[^6] and placement and routing (P&R)[^7] processes with timing simulation data. The aim is to create an interactive and intuitive platform that allows users to observe and analyze signal propagation using a testbench[^8] and a timing netlist[^9], both written in Verilog[^10].
 
 ## B. Product Functional Capabilities
 
@@ -80,15 +80,15 @@ The product, responding to customer demands, should be able to have a lot of fun
 
 ### Visualization
 
-As a web application, the project must have an interface. This interface should be a 2D View where the user must have the ability to navigate through the view to visualize what happened in the **FPGA system**.
+As a web application, the project must have an interface. This interface should be a 2D View and the user must have the ability to navigate through the view to visualize what happened in the **FPGA system**.
 
 This graphical model should illustrated :
-  * An arrangement of basic elements(BELs)[^10],
+  * An arrangement of basic elements(BELs)[^11],
   * Connections dictated by a Verilog file,
 
 Therefore, the model should reflect the post-synthesis and place-and-route(P&R) design.
 
-However, to understand what happened in this system, every signals must be represented graphically with animations dictated by an SDF (standard delay file). These signals must be: 
+However, to understand what happened in this system, every signal must be represented graphically with animations dictated by an SDF (standard delay file). These signals must be: 
   * The propagation of a clock signal
   * The propagation of data
 
@@ -100,18 +100,18 @@ However, these examples couldn't be enough. It is for that why the customer woul
 
 ### Time Control
 
-This web app has an educational goal. Hence, any animation should be able to be manipulate to watch again animations, slow it down, or speed it up. 
-To acheive this objective, we should have a button(s) to **resume**, **pause**, and/or **reset** animations.
+This web app has an educational goal. Hence, any animation should be able to be manipulated to watch again animations, slow it down, or speed it up. 
+To achieve this objective, we should have a button(s) to **resume**, **pause**, and/or **reset** animations.
 To manipulate animations' speed, we should have an option to select which speed we want.   
 
 ### Compatibility
 
-Chrome, Edge, Safari, Firefox... A lot of browser exist in the market. As a consequence, our web application should be usable on every web browser existing on the market. 
+Chrome, Edge, Safari, Firefox... A lot of browsers exist in the market. As a consequence, our web application should be usable on every web browser existing on the market. 
 For that, we should use in the web app only components and styles recognized in each browser. Therefore, the web app should be responsive to different screen sizes.
 
 ### Security
 
-**If the web app will be share on the web**, we should implement security measures to protect user data and ensure the integrity of the application.
+**If the web app will be shared on the web**, we should implement security measures to protect user data and ensure the integrity of the application.
 
 ## C. Deliverables
 
@@ -129,7 +129,7 @@ For that, we should use in the web app only components and styles recognized in 
 
 | Project Owner | Represented by...                              |
 | ------------- | ---------------------------------------------- |
-| Florant MANNI | Represented by himself                         |
+| CNES          | Represented by Florent Manni                   |
 | Loïc NOGUES   | Represented by Alexis SANTOS (Program Manager) |
 
 * Defining the vision and high-level objectives for the project.
@@ -138,7 +138,7 @@ For that, we should use in the web app only components and styles recognized in 
 * Approving the functional and technical specifications written by the team.
 * Ensuring that major business risks are identified and managed by the team.
 * Approving any major changes in scope.
-* Receiving Project Weekly Reports and taking action accordingly to resolve issues escalated by the Project Manager.
+* Receiving weekly project reports and taking necessary actions to address issues escalated by the Project Manager.
 * Ensuring business/operational support arrangements are put in place.
 * Ensuring the participation of a business resource (if required).
 * Providing final acceptance of the solution upon project completion.
@@ -147,8 +147,8 @@ For that, we should use in the web app only components and styles recognized in 
 
 | Stakeholder      | Might have/find an interest in...                                                      |
 | ---------------- | -------------------------------------------------------------------------------------- |
-| Florant MANNI    | Needs a tool to help him to explain Verilog/VHDL system to young FPGA users.           |
-| ALGOSUP Students | Learning the association between web languages (HTML/CSS/JavaScript)[^11] and Verilog. |
+| CNES             | Needs a tool to help him to explain FPGA system to young FPGA users.                   |
+| ALGOSUP Students | Learning the association between web languages (HTML/CSS/JavaScript)[^12] and Verilog. |
 
 ### Project Roles
 
@@ -166,23 +166,23 @@ As defined at the beginning, the team is arranged as follows:
 ### Expected Deliverables
 
 For this project, the customer has requested us to meet the following deliverables:
-* The source code need to be on a Git repository.
-* An explainaton of how to run the software must be present on the repository and/or in the website.
-* An explaination of how to add an application example must be present on the repository and/or in the website.
+* The source code needs to be on a Git repository.
+* An explanaton of how to run the software must be present on the repository and/or in the website.
+* An explanation of how to add an application example must be present on the repository and/or on the website.
 * The website must include at least two application examples:
-  * One for the flipflop[^12].
-  * One for the LUT4[^13]. 
+  * One for the flipflop[^13].
+  * One for the LUT4[^14]. 
 
 ## E. Project Plan 
 
 ### Milestones
 
-| Milestones                   | Deadline   |
-| ---------------------------- | ---------- |
-| Functional Specifications V1 | 03/13/2025 |
-| Technical Specifications V1  | 03/25/2025 |
-| End of Development           | 04/01/2025 |
-| Oral Presentation            | 04/04/2025 |
+| Milestones                                 | Deadline   |
+| ------------------------------------------ | ---------- |
+| Functional Specifications V1               | 03/13/2025 |
+| Technical Specifications V1 & Test Plan V1 | 03/25/2025 |
+| End of Development                         | 04/01/2025 |
+| Oral Presentation                          | 04/04/2025 |
 
 
 ### Ressources / Financial Plan
@@ -211,7 +211,7 @@ However, the client requested two interfaces/main functionalities on this web ap
 
 #### Teacher interface / Backend
 
-The teacher interface is to be used by the teacher for severals reason: 
+The teacher interface is to be used by the teacher for several reasons: 
 
 -  The ability to **add another example** with their own Verilog file.
 -  Access to a testbench.
@@ -244,7 +244,7 @@ To organize the screen, we'll follow the model below.
 
 For the next three views, they will displayed on the **display part**.
 
-#### Shematics Representation
+#### Schematics Representation
 
 <div style='align-items: flex-start; overflow: hidden'>
    <img src='pictures\FPGAShematics.png' style='float: right; margin-left: 20px; max-width: 45%; width: 500px; height: auto; position: relative' alt='picture of a Schematic Representation' >
@@ -287,7 +287,7 @@ For the next three views, they will displayed on the **display part**.
    The FPGA board's schematic is a <b>2D floorplan</b> used by the student to understand how the program sends data and clock signals. <br> 
    In this view, the student needs the following features:<br>
    <li>An animation to show these clock and data signals.</li>
-   <li>Differents color between data and clock signals to distinguish them.</li>
+   <li>Different colors between data and clock signals to distinguish them.</li>
    <li>Components used by the program would by glowed.</li>
 
    <br>
@@ -315,7 +315,7 @@ For the next three views, they will displayed on the **display part**.
     * Recently graduated with a Bachelor's degree in Electrical Engineering
     * Limited hands-on experience with FPGA, but eager to learn and grow in the field.
 * **Description**:
-  * Alexandra is a recent graduate who has joined the team as a Junior Electronic Engineer. With a strong foundation in electrical engineering concepts, she is excited to dive into the world of FPGA. Alex is highly motivated and eager to learn from experienced colleagues like Florant Manni. She is looking forward to contributing to innovative projects and expanding her skill set in FPGA design and implementation. 
+  * Alexandra is a recent graduate who has joined the team as a Junior Electronic Engineer. With a strong foundation in electrical engineering concepts, she is excited to dive into the world of FPGA. Alex is highly motivated and eager to learn from experienced colleagues like Florent Manni. She is looking forward to contributing to innovative projects and expanding her skill set in FPGA design and implementation. 
 
 ### Use Cases Analysis
 
@@ -327,7 +327,7 @@ When we start the Web app, firstly the program check if you are connected. If ye
 
 <h4>Switch Example</h4>
 
-A sidebar located in parameter 1 of the model should have a lot of functionalities. One of them is the button `Switch Example`. With it, the user should select one of default examples or the teacher example.
+A sidebar located in parameter 1 of the model should have a lot of functionalities. One of them is the button `Switch Example`. With it, the user should select one of the default examples or the teacher example.
 
 ![Select Example](pictures/selectExample.png)
 
@@ -352,7 +352,7 @@ Accepted entries are:
 * A **schematic netlist** (in Verilog format) => elements to be represented on screen
 * A **standard delay file** (SDF format) => signal propagation time between each element
 
-Whole Example should be in a folder `Example`.  
+The whole Example should be in the folder `Example`.  
 
 <h4> Compatibility </h4>
 
@@ -360,28 +360,30 @@ The project focuses on creating a web interface. Therefore, this interface shoul
 
 # Glossary
 
-[^1]: An FPGA Simulator is a tool that helps designers test digital circuits before they are built. It uses special languages like Verilog or VHDL to simulate how signals move through an FPGA, ensuring everything works correctly.
+[^1]: The CNES is France's space agency, established in 1961. It leads France's space strategy and collaborates internationally on space projects, focusing on technology advancement and Earth observation.
 
-[^2]: An FPGA (Field-Programmable Gate Array)  is an integrated circuit with basic elements and preconfigured electrical signal routes between them.
+[^2]: An FPGA Simulator is a tool that helps designers test digital circuits before they are built. It uses special languages like Verilog or VHDL to simulate how signals move through an FPGA, ensuring everything works correctly.
 
 [^3]: A web interface is a user-friendly website or online tool that lets you interact with a system or application through your web browser. It's like a control panel on the internet where you can click buttons, enter information, and see results without needing special software.
 
-[^4]: A web app is like a website that you can interact with, it like an application you can use on your phone, hence instead of use an application store to download it, you use it through a web browser like Chrome or Safari.
+[^4]: An FPGA (Field-Programmable Gate Array)  is an integrated circuit with basic elements and preconfigured electrical signal routes between them.
 
-[^5]: Translation of the application into an electrical equivalent. It creates a netlist (which can be exported as a netlist). 
+[^5]: A web app is like a website that you can interact with, it like an application you can use on your phone, hence instead of use an application store to download it, you use it through a web browser like Chrome or Safari.
 
-[^6]: Place and Route is the packing of the netlist component in the FPGA available BEL (Place). Then a route for signals between each BEL is selected (Route). A timing netlist is created and can be exported in verilog.
+[^6]: Translation of the application into an electrical equivalent. It creates a netlist (which can be exported as a netlist). 
 
-[^7]: A testbench is a crucial tool in the design and verification process, helping to ensure that digital circuits and systems function correctly before they are manufactured.
+[^7]: Place and Route is the packing of the netlist component in the FPGA available BEL (Place). Then a route for signals between each BEL is selected (Route). A timing netlist is created and can be exported in Verilog.
 
-[^8]: A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to put them together (connections) to create a functioning circuit.
+[^8]: A testbench is a crucial tool in the design and verification process, helping to ensure that digital circuits and systems function correctly before they are manufactured.
 
-[^9]: Verilog is a language used to program a system using the FPGA layout. It use to writting instruction to the system.
+[^9]: A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to put them together (connections) to create a functioning circuit.
 
-[^10]: These are the hardware electrical ressources available inside the FPGA like fliflop, Look-Up-Table (LUT), Block RAM....
+[^10]: Verilog is a language used to program a system using the FPGA layout. It use to writting instruction to the system.
 
-[^11]: HTML, CSS and JavaScript are pagramations languages usually used for the web. It is what we use for this project.  
+[^11]: These are the hardware electrical resources available inside the FPGA like Fliflop, Look-Up-Table (LUT), Block RAM...
 
-[^12]: A flip-flop is a tiny switch in circuits that store one bit of data (0 or 1) and helps control when data changes.
+[^12]: HTML, CSS and JavaScript are pagramations languages usually used for the web. It is what we use for this project.  
 
-[^13]: A LUT4 is a small table that can execute simple logical operations, such as AND, OR or NOT, on up to four inputs.
+[^13]: A flip-flop is a tiny switch in circuits that stores one bit of data (0 or 1) and helps control when data changes.
+
+[^14]: A LUT4 is a small table that can execute simple logical operations, such as AND, OR, or NOT, on up to four inputs.
