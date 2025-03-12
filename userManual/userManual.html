@@ -9,47 +9,71 @@
 <body>
     <div>
         <header>
-            <h1>User Manual</h1>
+            <h1>User Manual <small>v.0.3</small></h1>
             <p>A step-by-step user guide to getting started.<br>You can download it <a href="#">here</a>.</p>
             <hr>
         </header>
     </div>
-    <div class="tableOfContents">
-        <h2>Table of Contents</h2>
-        <ul>
-            <li><a href="#The website">The website</a></li>
-            <li><a href="#What">What can you do?</a></li>
+    <div class="siteContent">
+        <div class="tableOfContents">
+            <h2>Table of Contents</h2>
             <ul>
-                <li><a href="#feature1">feature 1</a></li>
-                <li><a href="#feature2">feature 2</a></li>
-                <li><a href="#feature3">feature 3</a></li>
+                <li><a href="#website">The website</a></li>
+                <li class="deroulant"><a href="#What">What can you do?</a></li>
+                <ul class="sous">
+                    <li><a href="#feature1">feature 1</a></li>
+                    <li><a href="#feature2">feature 2</a></li>
+                    <li><a href="#feature3">feature 3</a></li>
+                </ul>
+                <li><a href="#definitions">Definitions</a></li>
+                <li><a href="#Warnings">Warnings</a></li>
+                <li><a href="#QnA">Q&A</a></li>
+                <li><a href="#Ressources">Ressources</a></li>
+                <li><a href="#Copyrights">Copyrights</a></li>
             </ul>
-            <li><a href="#Warnings">Warnings</a></li>
-            <li><a href="#ressources">FPGA ressources</a></li>
-            <li><a href="#Copyright">Copyrights</a></li>
-        </ul>
-    </div>
-    <div class="content">
-        <h2 id="The website">The website</h2>
-        <p>This is section 1</p>
-        <h2 id="What">What can you do?</h2>
-        <p>This is section 2</p>
-        <h3 id="feature1">feature 1</h3>
-        <p>This is section 3</p>
-        <h3 id="feature2">feature 2</h3>
-        <p>This is section 3</p>
-        <h3 id="feature3">feature 3</h3>
-        <p>This is section 3</p>
-        <h2 id="Warning">Warning</h2>
-        <p>This is section 3</p>
-        <h2 id="ressources">FPGA ressources</h2>
-        <p>This is section 3</p>
-        <h2 id="Copyright">Copyright</h2>
-        <p>This is section 3</p>
+        </div>
+        <div class="content">
+            <h2 id="website">The website</h2>
+            <p>
+                This website is focused on helping you teach or learn how the FPGA board system works.
+                It combine a realistic 2D representation with a dynamic signal propagation over time.
+                The aim is to create an interactive and intuitive platform that allow you to observe and analyze signal propagation.
+            </p>
+            <p>
+                For simplicity, we will represent the FPGA system with different view to understand the FPGA system through animations that symbolize signals transfers.
+            </p>
+            <p>
+                This includes integrating the layout resulting from the synthesis and P&R processes with timing simulation data.
+                You can analyze using a test bench and a timing netlist, both written in Verilog.
+            </p>
+            <h2 id="What">What can you do?</h2>
+            <p>.</p>
+            <h3 id="feature1">feature 1</h3>
+            <p>.</p>
+            <h3 id="feature2">feature 2</h3>
+            <p>.</p>
+            <h3 id="feature3">feature 3</h3>
+            <p>.</p>
+            <h2 id="Definitions">Definitions</h2>
+            <p>.</p>
+            <h2 id="Warning">Warning</h2>
+            <p>.</p>
+            <h2 id="QnA">Q&A</h2>
+            <p>.</p>
+            <h2 id="Ressources">Ressources</h2>
+            <h3>How to code in Verilog?</h3>
+            <p>To have more documentation about Verilog, you can search on the following site: <a href="https://nandland.com/learn-verilog/">www.Nandland.com</a> or buy <a href="https://www.amazon.com/Getting-Started-FPGAs-Russell-Merrick/dp/171850294X">Getting Started FPGAs</a> from Russell Merrick.</p>
+            <h3>What is FPGA?</h3>
+            <p>To have more information about FPGA, you can search on the following site: <a href="https://en.wikipedia.org/wiki/Field-programmable_gate_array">www.wikipedia.org/wiki/FPGA</a>.</p>
+            <h3>?</h3>
+            <p>.</p>
+            <h2 id="Copyrights">Copyrights</h2>
+            <p>This is section 3</p>
+        </div>
     </div>
     <hr>
     <footer>
-        <small>Copyrights &copy; 2025</small>
+        <small>Copyrights &copy; 2025 CNES</small>
     </footer>
 </body>
 </html>
