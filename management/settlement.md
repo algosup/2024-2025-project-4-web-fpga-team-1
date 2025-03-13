@@ -1,4 +1,9 @@
-# Settlement
+<h1 align="center"> Settlement </h1>
+
+| Author      | Role            |
+| ----------- | --------------- |
+| NOGUES Loïc | Project Manager | 
+
 
 In agreement with the whole team, the following rules have been defined below:
 
