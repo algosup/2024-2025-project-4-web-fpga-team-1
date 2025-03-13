@@ -34,8 +34,10 @@ app.use((req, res, next) => {
 });
 
 const route = require('./routes/routes');
+const animationroute = require('./routes/animation');
 
 app.use('/', route);
+app.use('/animation', animationroute);
 
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '../frontend'));
