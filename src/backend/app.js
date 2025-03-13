@@ -10,7 +10,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'static')));
+
+// Serve static files from the frontend/assets directory
+app.use(express.static(path.join(__dirname, '../frontend/assets')));
 
 app.use(session({
     secret: 'your_secret_key',
@@ -41,7 +43,7 @@ app.set('views', path.join(__dirname, '../frontend'));
 app.engine('hbs', hbs.engine({
     extname: '.hbs',
     defaultLayout: false,
-    partialsDir: path.join(__dirname, '../frontend/partials'), // Update this path
+    partialsDir: path.join(__dirname, '../frontend/templates'),
     runtimeOptions: {
         allowProtoPropertiesByDefault: true,
         allowProtoMethodsByDefault: true

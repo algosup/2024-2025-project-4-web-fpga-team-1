@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="/css/header.css" />
+
+<header>
+  <nav class="main-page-nav">
+    <div class="nav-container">
+
+      <!-- Left Section -->
+      <div class="nav-left">
+        <!-- Replace [Logo] by <img src=" path/for/logo.png" alt="Logo"> to add the logo -->
+        <a href="/" class="title">FPGA Explorer</a>
+      </div>
+
+      <!-- Right Section -->
+      <div class="nav-right">
+        <ul>
+          <li><a href="/FPGA-Room">FPGA Room</a></li>
+          <li><a href="/about-us">About Us</a></li>
+          <li><a href="/help">Help</a></li>
+          <li><a href="/contact">Contact</a></li>
+          {{#if username}}
+            <li class="dropdown">
+              <span class="username">{{username}}</span>
+              <div class="dropdown-content">
+                <a href="/my-Rooms">My Rooms</a>
+                <a href="/create-room">Create a Room</a>
+                <a href="/logout">Log Out</a>
+              </div>
+            </li>
+          {{else}}
+            <li><a href="/login">Login</a></li>
+          {{/if}}
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+</header>

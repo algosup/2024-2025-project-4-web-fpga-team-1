@@ -1,0 +1,117 @@
+/* Navbar with semi-transparent background and blur effect */
+.main-page-nav {
+    background: rgba(124, 30, 186, 0.5);
+    backdrop-filter: blur(5px);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding: 15px 0;
+    z-index: 1000;
+  }
+  
+  /* Container to align the title and navigation links */
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Maximum width for the content */
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* Style for the left section (logo and title) */
+  .nav-left .title {
+    text-decoration: none;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    font-family: 'Saira Stencil One';
+  }
+  
+  /* Style for the right section (navigation links) */
+  .nav-right ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  .nav-right li {
+    margin-left: 20px;
+  }
+  
+  .nav-right li:last-child a {
+    border-right: none;
+  }
+  
+  .nav-right a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: color 0.2s ease-in-out;
+    padding-right: 20px;
+  }
+  
+  .nav-right a:hover {
+    color: rgb(255, 99, 71);
+  }
+  
+  /* Dropdown container */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Dropdown content (hidden by default) */
+  .dropdown-content {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(124, 30, 186, 0.9);
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1;
+    margin-top: 20px;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  }
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.2s ease-in-out;
+  }
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  /* Style for the username span */
+  .username {
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    padding-right: 20px;
+  }
+  
+  .username:hover {
+    color: rgb(255, 99, 71);
+    transition: 0.2s ease-in-out;
+  }
