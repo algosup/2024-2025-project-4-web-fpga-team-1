@@ -11,16 +11,34 @@ header h1 {
     font-size: 2.5em;
 }
 
+h1 small {
+    font-size: 1%;
+}
+
+.siteContent {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
 .tableOfContents {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    width: 15%;
     border-right: 2px solid #004e8d;
 }
 
-content {
+/*
+.deroulant > a::after {
+    content: " \25BC";
+}
+*/
+
+.content {
     display: flex;
-    margin-top: 35px;
+    flex-direction: column;
+    margin-left: 2%;
+    width: 85%;
 }
 
 footer {
