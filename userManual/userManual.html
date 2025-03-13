@@ -9,23 +9,23 @@
 <body>
     <div>
         <header>
-            <h1>User Manual <small>v.0.3</small></h1>
+            <h1>User Manual <small>v.0.4</small></h1>
             <p>A step-by-step user guide to getting started.<br>You can download it <a href="#">here</a>.</p>
             <hr>
         </header>
     </div>
     <div class="siteContent">
         <div class="tableOfContents">
-            <h2>Table of Contents</h2>
+            <h2 id="title">Table of Contents</h2>
             <ul>
-                <li><a href="#website">The website</a></li>
+                <li><a href="#title">The website</a></li>
                 <li class="deroulant"><a href="#What">What can you do?</a></li>
                 <ul class="sous">
                     <li><a href="#feature1">feature 1</a></li>
                     <li><a href="#feature2">feature 2</a></li>
                     <li><a href="#feature3">feature 3</a></li>
                 </ul>
-                <li><a href="#definitions">Definitions</a></li>
+                <li><a href="#Definitions">Definitions</a></li>
                 <li><a href="#Warnings">Warnings</a></li>
                 <li><a href="#QnA">Q&A</a></li>
                 <li><a href="#Ressources">Ressources</a></li>
@@ -33,7 +33,7 @@
             </ul>
         </div>
         <div class="content">
-            <h2 id="website">The website</h2>
+            <h2 id="title">The website</h2>
             <p>
                 This website is focused on helping you teach or learn how the FPGA board system works.
                 It combine a realistic 2D representation with a dynamic signal propagation over time.
@@ -55,20 +55,132 @@
             <h3 id="feature3">feature 3</h3>
             <p>.</p>
             <h2 id="Definitions">Definitions</h2>
+            <p>Here are the definitions of words whose meaning is important to know:</p>
+            <li>FPGA</li>
+            <p>A Field-Programmable Gate Array is an integrated circuit with basic elements and preconfigured electrical signal routes between them.</p>
+            <li>Netlist</li>
+            <p>A netlist is like a recipe for building an electronic circuit. It tells you what components you need and how to connect them together to create a functioning circuit.</p>
+            <li>P&R</li>
+            <p>
+                Place and Route is the packing of the netlist component in the FPGA available BEL (Place). 
+                Then a route for signals between each BEL is selected (Route). 
+                A timing netlist is created and can be exported in Verilog.
+            </p>
+            <li>Test bench</li>
+            <p>A test bench is a crucial tool in the design and verification process, helping to ensure that digital circuits and systems function correctly before they are manufactured.</p>
+            <li>Verilog</li>
+            <p>Verilog is a language used to program a system using the FPGA layout. It use to writting instruction to the system.</p>
+            <li>.</li>
             <p>.</p>
-            <h2 id="Warning">Warning</h2>
+            <h2 id="Warnings">Warnings</h2>
             <p>.</p>
             <h2 id="QnA">Q&A</h2>
             <p>.</p>
             <h2 id="Ressources">Ressources</h2>
             <h3>How to code in Verilog?</h3>
-            <p>To have more documentation about Verilog, you can search on the following site: <a href="https://nandland.com/learn-verilog/">www.Nandland.com</a> or buy <a href="https://www.amazon.com/Getting-Started-FPGAs-Russell-Merrick/dp/171850294X">Getting Started FPGAs</a> from Russell Merrick.</p>
+            <p>
+                To have more documentation about Verilog, you can search on the following site: 
+                <a href="https://nandland.com/learn-verilog/">www.Nandland.com</a>
+                or buy 
+                <a href="https://www.amazon.com/Getting-Started-FPGAs-Russell-Merrick/dp/171850294X">Getting Started FPGAs</a> 
+                from Russell Merrick.
+            </p>
             <h3>What is FPGA?</h3>
-            <p>To have more information about FPGA, you can search on the following site: <a href="https://en.wikipedia.org/wiki/Field-programmable_gate_array">www.wikipedia.org/wiki/FPGA</a>.</p>
+            <p>
+                To have more information about FPGA, you can search on the following site: 
+                <a href="https://en.wikipedia.org/wiki/Field-programmable_gate_array">www.wikipedia.org/wiki/FPGA</a>.
+            </p>
             <h3>?</h3>
             <p>.</p>
             <h2 id="Copyrights">Copyrights</h2>
-            <p>This is section 3</p>
+            <p>
+                Unless explicit mention is made of intellectual property held by third parties, the content of this site is offered under the following conditions 
+                <a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md">Licence Etalab-2.0</a>.
+            </p>
+            <h3>Reuse of 'Information' under this licence</h3>
+            <p>
+                The 'Licensor' grants the 'Re-user' a non-exclusive and free right to freely 'Re-use' the 'Information' that is the subject of this licence, 
+                for commercial or non-commercial purposes, throughout the world and for an unlimited period of time, under the conditions set out below.
+                <br>
+                <br>
+                The 'Re-user' is free to re-use the 'Information':
+                <br>
+                <li>communicate, reproduce or copy it ;</li>
+                <li>adapt, modify, extract and transform it, in particular to create 'Derived Information';</li>
+                <li>to disseminate, redistribute, publish and transmit it, to exploit it commercially, for example by combining it with other information, or by including it in your own product or application.</li>
+                <br>
+                Subject to :
+                <br>
+                <br>
+                <li>mention the authorship of the 'Information': its source (at least the name of the 'Licensor') and the date of the last update of the reused 'Information'.</li>
+                <br>
+                The 'Re-user' may in particular fulfil this condition by indicating the address (URL) referring to the 'Information' and ensuring that its authorship is effectively mentioned.
+            </p>
+            <h3>Personal data</h3>
+            <p>
+                The 'Information' made available may contain 'Personal data' that may be the subject of 'Re-use'. 
+                In this case, the 'Licensor' informs the 'Re-user' (by any means) of their presence, and the 'Information' may be freely re-used, 
+                without hindering the freedoms granted by this licence, provided that the legal framework relating to the protection of personal data is respected.
+            </p>
+            <h3>Intellectual property rights</h3>
+            <p>
+                The 'Re-user' is guaranteed that the 'Information' does not contain any 'Intellectual Property Rights' belonging to third parties which could prevent him from exercising the freedoms granted by this licence.
+            </p>
+            <p>
+                Any 'Intellectual Property Rights' held by the 'Licensor' on the 'Information' do not constitute an obstacle to the freedoms granted by this licence. 
+                When the 'Licensor' holds 'Intellectual Property Rights' on the 'Information', it transfers them to the 'Re-user' on a non-exclusive basis, 
+                free of charge, for the whole world, for the whole duration of the 'Intellectual Property Rights', and the 'Re-user' may make any use thereof in accordance with the freedoms and conditions defined by this licence.
+            </p>
+            <h3>Responsability</h3>
+            <p>
+                The 'Information' is made available as produced or received, without any other express or tacit guarantee not provided for in this licence. 
+                The absence of defects or errors that may be contained in the 'Information', as well as the continuous supply of the 'Information' is not guaranteed by the 'Licensor'. 
+                The 'Licensor' may not be held liable for any loss, prejudice or damage of any kind caused to third parties as a result of the 'Re-use'.
+            </p>
+            <p>The 'Re-user' is solely responsible for the 'Re-use' of the 'Information'.</p>
+            <p>The 'Reuse' must not mislead third parties as to the content of the 'Information', its source and its date of update.</p>
+            <h3>Applicable law</h3>
+            <p>This licence is governed by French law.</p>
+            <h4>Compatibility of this licence</h4>
+            <p>
+                It has been designed to be compatible with any free license that requires at least a mention of authorship. 
+                In particular, it is compatible with the previous version of this licence as well as with the 'Open Government Licence' (OGL) of the United Kingdom, 
+                'Creative Commons Attribution' (CC-BY) of Creative Commons and 'Open Data Commons Attribution' (ODC-BY) of the Open Knowledge Foundation.
+            </p>
+            <h3>Definitions</h3>
+            <p>
+                For the purposes of this licence, the following definitions shall apply:
+                <li>The 'Licensor': any person granting a right of 'Re-use' of the 'Information' under the freedoms and conditions set forth in this license.</li>
+                <li>The 'Information':</li>
+                    <li>any public information appearing in documents communicated or published by an administration mentioned in the first paragraph of article L.300-2 of the CRPA ;</li>
+                    <li>any information made available by any person in accordance with the terms and conditions of this licence.</li>
+                <li>'Reuse': the use of the 'Information' for purposes other than those for which it was produced or received.</li>
+                <li>The 'Re-user': any person who re-uses the 'Information' in accordance with the terms and conditions of this licence.</li>
+                <li>'Personal Data': any information relating to an identified or identifiable natural person, who can be identified directly or indirectly. 
+                    Their 'Re-use' is subject to compliance with the legal framework in force.</li>
+                <li>'Derived Information': any new data or information created directly from the 'Information' or from a combination of the “Information” and other data or information not subject to this licence.</li>
+                <li>'Intellectual property rights': all rights identified as such by the French Intellectual Property Code (copyright, rights related to copyright, sui generis rights of database producers).</li>
+            </p>
+            <h3>About this licence</h3>
+            <p  class="endOfPage">
+                The present licence is intended to be used by administrations for the re-use of their public information. 
+                It may also be used by any person wishing to make 'Information' available under the conditions defined by this licence.
+                <br>
+                France has an overall legal framework aimed at the spontaneous dissemination by public authorities of their public information in order to enable the widest possible re-use.
+                <br>
+                The right to 'Reuse' government information is governed by the Code des Relations entre le Public et l'Administration (CRPA) and, 
+                where applicable, the Code du Patrimoine (Book II on archives).
+                <br>
+                This licence facilitates the free and unrestricted re-use of public information, 
+                and is one of the licences that may be used by the authorities under the terms of the decree issued in application of article L.323-2 of the CRPA.
+                <br>
+                Etalab is the mission responsible, under the authority of the Prime Minister, for opening up as much public data as possible from the State's administrations and its public establishments. 
+                It has produced the Open Licence to facilitate the free and open re-use of this public information, as defined by article L321-1 of the CRPA.
+                <br>
+                This license is a version 2.0 of the Open License.
+                <br>
+                Etalab reserves the right to propose new versions of the Open Licence. However, 'Re-users' will be able to continue to re-use the information available under this licence if they so wish.
+            </p>
         </div>
     </div>
     <hr>
