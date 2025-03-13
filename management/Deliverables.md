@@ -1,8 +1,12 @@
-# Deliverables
+<h1 align="center"> Deliverables </h1>
+
+<h3 align="center"> Date : 03/11/2025 </h3>
+
 
 | Author      | Role            |
 | ----------- | --------------- |
-| NOGUES Loïc | Project Manager |
+| NOGUES Loïc | Project Manager | 
+
 
 | Name                     | Deadlines    | links                                                                               |
 | ------------------------ | ------------ | ----------------------------------------------------------------------------------- |
