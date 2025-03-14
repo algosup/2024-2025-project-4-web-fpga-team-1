@@ -29,8 +29,8 @@ Overall the week is very good. Everyone worked well and if we continue like that
 
 
 # 4.Issues
-One problem was a team member wanted to do the minimal work and not being very efficient during project time.
-During the **Weekly Team Report** a lot of members pointed out this fact and we took a moment to explain and discuss why and how he can be motivated. I did this because I didn't wanted to have a bad ambiance and that nobody speak in anyone's back. The problem is now solve.
+One problem was that a team member wanted to do the minimal work and not being very efficient during project time.
+During the **Weekly Team Report** a lot of members pointed out this fact and we took a moment to explain and discuss why and how he can be motivated. I did this because I didn't wanted to have a bad ambiance and that I don't want that somebody speak in anyone's back. The problem is now solve.
 
 
 
