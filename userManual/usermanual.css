@@ -1,7 +1,10 @@
+/* This file contains the css for the user manual page */
+
 hr {
     color: #060F6D;
 }
 
+/* Header */
 header {
     text-align: center;
     color: #004e8d;
@@ -14,18 +17,21 @@ header h1 {
 h1 small {
     font-size: 1%;
 }
+/*-------------------*/
 
 .siteContent {
     display: flex;
     flex-direction: row;
 }
 
+/* Table of contents */
 .tableOfContents {
     display: flex;
     flex-direction: column;
     width: 15%;
     border-right: 2px solid #004e8d;
 }
+/*-------------------*/
 
 #title {
     margin-top: 35px;
@@ -44,12 +50,34 @@ h1 small {
     width: 85%;
 }
 
+/* table */
+table{
+    border-collapse: collapse
+}
+
+td{
+    border: 1px solid black;
+    padding: 10px;
+}
+
+th{
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#words {
+    width: 25%;
+}
+/*-------------------*/
+
 .endOfPage {
     margin-bottom: 35px;
 }
 
+/* Footer */
 footer {
     text-align: center;
     color: #004e8d;
     margin: 20px;
 }
+/*-------------------*/
