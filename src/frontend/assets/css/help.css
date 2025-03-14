@@ -1,0 +1,88 @@
+/* This file contains the css for the user manual page */
+
+body {
+    color: white;
+}
+
+hr {
+    color: #060F6D;
+}
+
+/* Header */
+header {
+    text-align: center;
+    color: #004e8d;
+    margin-top: 100px;
+}
+
+header h1 {
+    font-size: 2.5em;
+}
+
+h1 small {
+    font-size: 1%;
+}
+/*-------------------*/
+
+.siteContent {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Table of contents */
+.tableOfContents {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    border-right: 2px solid #004e8d;
+}
+/*-------------------*/
+
+#title {
+    margin-top: 35px;
+}
+
+/*
+.deroulant > a::after {
+    content: " \25BC";
+}
+*/
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2%;
+    width: 85%;
+}
+
+/* table */
+table{
+    border-collapse: collapse
+}
+
+td{
+    border: 1px solid white;
+    padding: 10px;
+}
+
+th{
+    border: 1px solid white;
+    padding: 10px;
+}
+
+#words {
+    width: 25%;
+}
+/*-------------------*/
+
+.endOfPage {
+    margin-bottom: 35px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: #004e8d;
+    margin: 20px;
+}
+/*-------------------*/

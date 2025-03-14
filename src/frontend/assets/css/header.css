@@ -1,6 +1,6 @@
 /* Navbar with semi-transparent background and blur effect */
 .main-page-nav {
-    background: rgba(124, 30, 186, 0.5);
+    background: rgba(124, 30, 186);
     backdrop-filter: blur(5px);
     position: fixed;
     width: 100%;
