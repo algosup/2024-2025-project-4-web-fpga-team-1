@@ -1,9 +1,10 @@
+src/frontend/animation.hbs }}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verilog to JSON Converter</title>
+    <title>Verilog to FPGA Animation</title>
 
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/animation.css">
@@ -12,7 +13,9 @@
 
     {{> header}}
 
-    <div class="container">        
+    <div class="container">  
+        <h1>FPGA Circuit Visualizer</h1>
+        
         <div id="drop-zone" class="drop-area">
             <div class="drop-icon">
                 <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -29,6 +32,34 @@
             <h3>Loaded Files:</h3>
             <p>No files loaded yet</p>
         </div>
+        
+        <div id="board-container" class="board-container hidden">
+            <h2>FPGA Board Visualization</h2>
+            <div id="animation-controls" class="animation-controls hidden">
+                <button id="animate-button" class="animate-button">Start Animation</button>
+            </div>
+            <div class="canvas-container">
+                <canvas id="fpga-canvas"></canvas>
+            </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #dc3545;"></span>
+                    <span>Inactive Input/Output</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #28a745;"></span>
+                    <span>Active Input/Output</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #007bff;"></span>
+                    <span>LUT</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #6610f2;"></span>
+                    <span>DFF (Flip-flop)</span>
+                </div>
+            </div>
+        </div>
 
         <div class="result-container">
             <h2>Converted JSON</h2>
@@ -37,6 +68,7 @@
     </div>
 
     <script src="/animation/converter.js"></script>
+    <script src="js/board-animation.js"></script>
     <script src="js/animation.js"></script>
 </body>
 </html>

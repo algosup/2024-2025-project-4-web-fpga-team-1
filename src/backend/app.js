@@ -45,7 +45,7 @@ app.set('views', path.join(__dirname, '../frontend'));
 app.engine('hbs', hbs.engine({
     extname: '.hbs',
     defaultLayout: false,
-    partialsDir: path.join(__dirname, '../frontend/templates'),
+    partialsDir: path.join(__dirname, '../frontend/partials'),
     runtimeOptions: {
         allowProtoPropertiesByDefault: true,
         allowProtoMethodsByDefault: true

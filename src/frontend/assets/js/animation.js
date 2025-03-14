@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const browseButton = document.getElementById('browse-button');
     const jsonOutput = document.getElementById('jsonOutput');
     const fileInfo = document.getElementById('file-info');
+    const animateButton = document.getElementById('animate-button');
+    
+    // Initialize FPGA board animation
+    const boardAnimation = new FPGABoardAnimation('fpga-canvas');
     
     // File storage
     const supportedFiles = {
@@ -18,6 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
     dropZone.addEventListener('drop', handleDrop);
     fileInput.addEventListener('change', handleFileSelect);
     browseButton.addEventListener('click', () => fileInput.click());
+    
+    if (animateButton) {
+        animateButton.addEventListener('click', toggleAnimation);
+    }
 
     function handleDragOver(event) {
         event.preventDefault();
@@ -72,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             updateFileDisplay();
             
-            // Automatically convert to JSON when a Verilog file is loaded
+            // Automatically convert to JSON and visualize
             convertVerilogToJson();
         };
         reader.readAsText(file);
@@ -88,6 +96,16 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             updateFileDisplay();
+            
+            // If we already have a verilog file converted, update the visualization with timing info
+            if (supportedFiles.verilog && jsonOutput.textContent && jsonOutput.textContent.trim() !== "JSON will appear here after loading a Verilog file") {
+                try {
+                    const designJson = JSON.parse(jsonOutput.textContent);
+                    boardAnimation.loadData(designJson, sdfContent);
+                } catch (err) {
+                    console.error("Error updating board with SDF data:", err);
+                }
+            }
         };
         reader.readAsText(file);
     }
@@ -106,6 +124,11 @@ document.addEventListener('DOMContentLoaded', () => {
         infoHtml += '</ul>';
         
         fileInfo.innerHTML = infoHtml;
+        
+        // Show animation controls if we have at least one file
+        if (supportedFiles.verilog || supportedFiles.sdf) {
+            document.getElementById('animation-controls').classList.remove('hidden');
+        }
     }
 
     function convertVerilogToJson() {
@@ -119,8 +142,25 @@ document.addEventListener('DOMContentLoaded', () => {
             // Call the parseVerilog function from converter.js
             const designJson = parseVerilog(supportedFiles.verilog.content);
             jsonOutput.textContent = JSON.stringify(designJson, null, 2);
+            
+            // Update the board visualization
+            boardAnimation.loadData(designJson, supportedFiles.sdf ? supportedFiles.sdf.content : null);
+            
+            // Show the board container
+            document.getElementById('board-container').classList.remove('hidden');
         } catch (err) {
             jsonOutput.textContent = "Error: " + err.message;
+        }
+    }
+    
+    // Add this to make sure we handle errors during rendering
+    function toggleAnimation() {
+        try {
+            const isPlaying = boardAnimation.toggleAnimation();
+            animateButton.textContent = isPlaying ? 'Stop Animation' : 'Start Animation';
+        } catch (err) {
+            console.error("Animation error:", err);
+            alert("Error in animation: " + err.message);
         }
     }
 });
