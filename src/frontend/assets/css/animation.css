@@ -1,61 +1,87 @@
-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif, 'Saira Stencil One', cursive;
-    background-color: rgb(18, 8, 51);
-    color: white;
-}
-
-.drop-zone {
-    border: 2px dashed rgba(124, 30, 186, 0.5);
-    border-radius: 10px;
+.container {
+    max-width: 900px;
+    margin: 0 auto;
     padding: 20px;
-    text-align: center;
-    font-size: 18px;
-    color: rgba(124, 30, 186, 0.5);
-    background-color: rgba(255, 255, 255, 0.1);
-    transition: border-color 0.3s, color 0.3s;
-    cursor: pointer;
-    width: 80%;
-    max-width: 600px;
-    margin-bottom: 20px;
-}
-
-.drop-zone.dragover {
-    border-color: rgba(255, 99, 71, 0.8);
-    color: rgba(255, 99, 71, 0.8);
 }
 
 h1, h2 {
-    color: white;
+    color: #333;
+    margin-bottom: 20px;
 }
 
-pre {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    border: 1px solid rgba(124, 30, 186, 0.5);
-    border-radius: 5px;
+.drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: background-color 0.3s, border-color 0.3s;
+    cursor: pointer;
+}
+
+.drop-area.dragover {
+    background-color: rgba(0, 123, 255, 0.1);
+    border-color: #007bff;
+}
+
+.drop-icon {
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.or-divider {
+    margin: 15px 0;
+    color: #999;
+}
+
+#browse-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+#browse-button:hover {
+    background-color: #0069d9;
+}
+
+.file-info {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.file-info h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.file-info ul {
+    padding-left: 20px;
+}
+
+.file-info li {
+    margin-bottom: 5px;
+}
+
+.result-container {
+    margin-top: 30px;
+}
+
+#jsonOutput {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    min-height: 200px;
     white-space: pre-wrap;
-    word-wrap: break-word;
-    width: 80%;
-    max-width: 600px;
     overflow-x: auto;
-    color: white;
-}
-
-#circuit-diagram {
-    width: 80%;
-    max-width: 800px;
-    height: 400px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(124, 30, 186, 0.5);
-    border-radius: 5px;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: monospace;
 }

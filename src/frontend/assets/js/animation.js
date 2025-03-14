@@ -1,107 +1,126 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Elements
     const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.multiple = true;
-    fileInput.accept = '.v,.sdf';
-    fileInput.style.display = 'none';
-    dropZone.appendChild(fileInput);
+    const fileInput = document.getElementById('file-input');
+    const browseButton = document.getElementById('browse-button');
+    const jsonOutput = document.getElementById('jsonOutput');
+    const fileInfo = document.getElementById('file-info');
+    
+    // File storage
+    const supportedFiles = {
+        verilog: null,
+        sdf: null
+    };
 
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
+    // Set up event listeners
+    dropZone.addEventListener('dragover', handleDragOver);
+    dropZone.addEventListener('dragleave', handleDragLeave);
+    dropZone.addEventListener('drop', handleDrop);
+    fileInput.addEventListener('change', handleFileSelect);
+    browseButton.addEventListener('click', () => fileInput.click());
+
+    function handleDragOver(event) {
+        event.preventDefault();
+        event.stopPropagation();
         dropZone.classList.add('dragover');
-    });
+    }
 
-    dropZone.addEventListener('dragleave', () => {
+    function handleDragLeave(event) {
+        event.preventDefault();
+        event.stopPropagation();
         dropZone.classList.remove('dragover');
-    });
+    }
 
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
+    function handleDrop(event) {
+        event.preventDefault();
+        event.stopPropagation();
         dropZone.classList.remove('dragover');
-        const files = e.dataTransfer.files;
-        handleFiles(files);
-    });
-
-    dropZone.addEventListener('click', () => {
-        fileInput.click();
-    });
-
-    fileInput.addEventListener('change', () => {
-        const files = fileInput.files;
-        handleFiles(files);
-    });
-
-    async function handleFiles(files) {
-        const formData = new FormData();
-        for (const file of files) {
-            if (file.name.endsWith('.v') || file.name.endsWith('.sdf')) {
-                formData.append('files', file);
-            } else {
-                alert('Only .v and .sdf files are allowed.');
-                return;
-            }
-        }
-
-        try {
-            const response = await fetch('/animation/upload', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
-            if (data.message === 'Files uploaded and processed successfully') {
-                createAnimation(data.data);
-            } else {
-                alert('Error processing files.');
-            }
-        } catch (error) {
-            console.error(error);
-            alert('Error uploading files.');
-        }
-    }
-
-    function createAnimation(data) {
-        console.log('Animation data:', data);
-
-        const verilogContent = data.verilog;
-        try {
-            const designJson = parseVerilog(verilogContent);
-            document.getElementById('jsonOutput').textContent = JSON.stringify(designJson, null, 2);
-            visualizeCircuit(designJson);
-        } catch (err) {
-            document.getElementById('jsonOutput').textContent = "Error: " + err.message;
-        }
-    }
-
-    function parseVerilog(verilog) {
-        const moduleRegex = /module\s+(\w+)\s*\(([^)]*)\)\s*;/;
-        const match = verilog.match(moduleRegex);
-        if (!match) return null;
-
-        const moduleName = match[1];
-        const ports = match[2].split(',').map(p => p.trim());
-        return { moduleName, ports, components: [] };
-    }
-
-    function visualizeCircuit(circuit) {
-        const svg = d3.select('#circuit-diagram')
-                      .append('svg')
-                      .attr('width', 800)
-                      .attr('height', 400);
         
-        svg.selectAll('circle')
-           .data(circuit.ports)
-           .enter()
-           .append('circle')
-           .attr('cx', (d, i) => 100 + i * 50)
-           .attr('cy', 200)
-           .attr('r', 20)
-           .style('fill', 'lightblue')
-           .on('mouseover', function() {
-               d3.select(this).style('fill', 'orange');
-           })
-           .on('mouseout', function() {
-               d3.select(this).style('fill', 'lightblue');
-           });
+        const files = event.dataTransfer.files;
+        if (files.length > 0) {
+            Array.from(files).forEach(file => processFile(file));
+        }
+    }
+
+    function handleFileSelect(event) {
+        const files = event.target.files;
+        if (files.length > 0) {
+            Array.from(files).forEach(file => processFile(file));
+        }
+    }
+
+    function processFile(file) {
+        const extension = file.name.split('.').pop().toLowerCase();
+        
+        if (extension === 'v' || extension === 'sv') {
+            processVerilogFile(file);
+        } else if (extension === 'sdf') {
+            processSdfFile(file);
+        } else {
+            alert('Please select Verilog (.v, .sv) or SDF (.sdf) files only');
+        }
+    }
+
+    function processVerilogFile(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const verilogContent = e.target.result;
+            supportedFiles.verilog = {
+                name: file.name,
+                content: verilogContent
+            };
+            
+            updateFileDisplay();
+            
+            // Automatically convert to JSON when a Verilog file is loaded
+            convertVerilogToJson();
+        };
+        reader.readAsText(file);
+    }
+
+    function processSdfFile(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const sdfContent = e.target.result;
+            supportedFiles.sdf = {
+                name: file.name,
+                content: sdfContent
+            };
+            
+            updateFileDisplay();
+        };
+        reader.readAsText(file);
+    }
+
+    function updateFileDisplay() {
+        let infoHtml = '<h3>Loaded Files:</h3><ul>';
+        
+        if (supportedFiles.verilog) {
+            infoHtml += `<li>Verilog: ${supportedFiles.verilog.name}</li>`;
+        }
+        
+        if (supportedFiles.sdf) {
+            infoHtml += `<li>SDF: ${supportedFiles.sdf.name}</li>`;
+        }
+        
+        infoHtml += '</ul>';
+        
+        fileInfo.innerHTML = infoHtml;
+    }
+
+    function convertVerilogToJson() {
+        // Check if we have a verilog file loaded
+        if (!supportedFiles.verilog) {
+            jsonOutput.textContent = "Error: Please upload a Verilog (.v) file first";
+            return;
+        }
+        
+        try {
+            // Call the parseVerilog function from converter.js
+            const designJson = parseVerilog(supportedFiles.verilog.content);
+            jsonOutput.textContent = JSON.stringify(designJson, null, 2);
+        } catch (err) {
+            jsonOutput.textContent = "Error: " + err.message;
+        }
     }
 });
