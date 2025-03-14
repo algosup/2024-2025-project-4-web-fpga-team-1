@@ -131,13 +131,3 @@ function parseVerilog(verilog) {
       }
     };
   }
-
-  function convertVerilog() {
-    const input = document.getElementById('verilogInput').value;
-    try {
-      const designJson = parseVerilog(input);
-      document.getElementById('jsonOutput').textContent = JSON.stringify(designJson, null, 2);
-    } catch (err) {
-      document.getElementById('jsonOutput').textContent = "Error: " + err.message;
-    }
-  }
