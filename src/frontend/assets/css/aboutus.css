@@ -41,7 +41,7 @@
   html {
     --surface-1: oklch(20% 0.03 269);
     --surface-2: oklch(26% 0.04 269);
-    --text-1: oklch(91% 0.03 61);
+    --text-1: rgb(0, 78, 141);
     --body: 400 1rem/1.5rem system-ui, sans-serif;
     --display: 400 3.562rem/4rem system-ui, sans-serif;
     --display-small: 400 2.25rem/2.75rem system-ui, sans-serif;
@@ -155,7 +155,7 @@
 
     /* lg-n-above */
     @media (width >=1024px) {
-      --radius: min(620px, 40cqi);
+      --radius: min(500px, 40cqi);
       --offset-per-child: calc(360deg / (var(--nth-siblings) + 1));
       --angle-offset: calc(var(--nth-child) * var(--offset-per-child));
       --inline-ratio: 1/1;

@@ -10,7 +10,7 @@ h1, h2 {
 }
 
 .drop-area {
-    border: 2px dashed #ccc;
+    border: 2px dashed rgb(0, 78, 141);
     border-radius: 8px;
     padding: 30px;
     text-align: center;
@@ -55,14 +55,15 @@ h1, h2 {
     margin: 20px 0;
     padding: 15px;
     background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 118, 218, 0.3);
     border-radius: 4px;
     border: 1px solid #333;
-    color: #fff;
+    color: black;
 }
 
 .file-info h3 {
     margin-top: 0;
-    color: #fff;
+    color: black;
 }
 
 .file-info ul {
@@ -82,12 +83,12 @@ h1, h2 {
     padding: 15px;
     border: 1px solid #333;
     border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 118, 218, 0.3);
     min-height: 200px;
     white-space: pre-wrap;
     overflow-x: auto;
     font-family: monospace;
-    color: #fff;
+    color: black;
     max-height: 400px;
     overflow-y: auto;
 }
@@ -95,9 +96,13 @@ h1, h2 {
 .board-container {
     margin: 40px 0;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 118, 218, 0.3);
     border-radius: 8px;
     border: 1px solid #333;
+}
+
+.board-container h2 {
+    color: black;
 }
 
 .canvas-container {

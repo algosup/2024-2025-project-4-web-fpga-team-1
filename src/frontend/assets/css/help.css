@@ -1,18 +1,19 @@
 /* This file contains the css for the user manual page */
 
 body {
-    color: white;
+    color: black;
 }
 
 hr {
-    color: #060F6D;
+    color: rgb(00, 51, 91);
 }
 
 /* Header */
 header {
     text-align: center;
-    color: #004e8d;
-    margin-top: 100px;
+    color: rgb(00, 51, 91);
+    padding-top: 35px;
+    background-color: rgba(0, 118, 218, 0.3);
 }
 
 header h1 {
@@ -34,7 +35,7 @@ h1 small {
     display: flex;
     flex-direction: column;
     width: 250px;
-    border-right: 2px solid #004e8d;
+    border-right: 2px solid rgb(00, 51, 91);
 }
 /*-------------------*/
 
@@ -61,12 +62,12 @@ table{
 }
 
 td{
-    border: 1px solid white;
+    border: 1px solid black;
     padding: 10px;
 }
 
 th{
-    border: 1px solid white;
+    border: 1px solid black;
     padding: 10px;
 }
 
@@ -82,7 +83,7 @@ th{
 /* Footer */
 footer {
     text-align: center;
-    color: #004e8d;
+    color: rgb(00, 51, 91);
     margin: 20px;
 }
 /*-------------------*/
