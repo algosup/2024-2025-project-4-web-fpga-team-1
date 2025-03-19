@@ -1,7 +1,7 @@
 # Weekly Report 4
-|Author|Role|
-|------|----|
-|NOGUES Loïc|Project Manager|
+| Author      | Role            |
+| ----------- | --------------- |
+| NOGUES Loïc | Project Manager |
 # 1.Overview Of The Week
 |
 
