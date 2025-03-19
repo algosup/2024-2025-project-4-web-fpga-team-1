@@ -1,0 +1,94 @@
+/* This file contains the css for the main page */
+
+#one {
+    color: rgb(00, 51, 91);
+}
+
+#two {
+    background-color: rgb(00, 51, 91);
+    color: white;
+}
+
+/* Title box */
+.Title {
+    margin-top: 75px;
+    padding-block: 18%;
+    text-align: center;
+}
+
+.Title h1 {
+    font-size: 80px;
+}
+
+.Title h2 {
+    font-size: 35px;
+}
+/*-------------------*/
+
+/* CNES box */
+.CNES {
+    display: flex;
+    flex-direction: line;
+}
+
+.CNES #text {
+    padding-block: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 55%;
+}
+
+.CNES img {
+    width: 35%;
+}
+/*-------------------*/
+
+/* FPGA box */
+.FPGA {
+    display: flex;
+    flex-direction: line;
+}
+
+.FPGA #text {
+    padding-block: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 55%;
+}
+
+.FPGA img {
+    width: 35%;
+}
+/*-------------------*/
+
+/* table */
+table{
+    border-collapse: collapse
+}
+
+td{
+    border: 1px solid black;
+    padding: 10px;
+}
+
+th{
+    border: 1px solid black;
+    padding: 10px;
+}
+/*-------------------*/
+
+hr {
+    color: rgb(00, 51, 91);
+}
+
+.endOfPage {
+    margin-bottom: 35px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: rgb(00, 51, 91);
+    margin: 20px;
+}
+/*-------------------*/
