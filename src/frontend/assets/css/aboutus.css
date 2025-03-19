@@ -13,12 +13,6 @@
 }
 
 @layer reset {
-  *,
-  ::before,
-  ::after {
-    box-sizing: border-box;
-  }
-
   :where(:not(dialog)) {
     margin: 0;
   }
@@ -42,7 +36,7 @@
     --surface-1: oklch(20% 0.03 269);
     --surface-2: oklch(26% 0.04 269);
     --text-1: rgb(0, 78, 141);
-    --body: 400 1rem/1.5rem system-ui, sans-serif;
+    --body: 400 /*1rem/1.5rem*/ system-ui, sans-serif;
     --display: 400 3.562rem/4rem system-ui, sans-serif;
     --display-small: 400 2.25rem/2.75rem system-ui, sans-serif;
     --label: 500 0.875rem/1.25rem system-ui, sans-serif;
