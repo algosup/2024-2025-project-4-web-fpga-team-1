@@ -1,4 +1,4 @@
-# Weekly Report
+# Weekly Report 3
 | Author      | Role            |
 | ----------- | --------------- |
 | NOGUES Loïc | Project Manager |
