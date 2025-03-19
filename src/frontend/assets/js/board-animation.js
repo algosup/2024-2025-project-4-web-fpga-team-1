@@ -22,6 +22,7 @@ class FPGABoardAnimation {
         this.canvas.height = 600;
         if (this.fpgaData) {
             this.layoutBoard();
+            this.draw(); // Explicitly call draw after resizing
         }
     }
 
@@ -33,9 +34,14 @@ class FPGABoardAnimation {
         }
         
         this.layoutBoard();
-        
-        // Add debug info
         this.debugConnections();
+        
+        // Schedule multiple redraws to ensure rendering
+        this.draw();
+        
+        // Force a resize which will trigger redrawing
+        setTimeout(() => this.resizeCanvas(), 100);
+        setTimeout(() => this.forceRedraw(), 300);
     }
     
     parseSDF(sdfContent) {
@@ -279,6 +285,8 @@ class FPGABoardAnimation {
         );
     }
     
+    // Update the draw method to ensure proper rendering order
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
@@ -296,15 +304,22 @@ class FPGABoardAnimation {
         }
         this.ctx.stroke();
         
-        // Draw connections
-        this.connections.forEach(conn => {
-            this.drawConnection(conn);
-        });
+        // IMPORTANT: Draw connections FIRST (before cells)
+        if (this.connections && this.connections.length > 0) {
+            console.log(`Drawing ${this.connections.length} connections`);
+            this.connections.forEach(conn => {
+                this.drawConnection(conn);
+            });
+        } else {
+            console.warn("No connections to draw");
+        }
         
-        // Draw cells
-        this.cellElements.forEach(cell => {
-            this.drawCell(cell);
-        });
+        // Draw cells ON TOP OF connections
+        if (this.cellElements && this.cellElements.length > 0) {
+            this.cellElements.forEach(cell => {
+                this.drawCell(cell);
+            });
+        }
     }
     
     drawCell(cell) {
@@ -657,5 +672,24 @@ class FPGABoardAnimation {
                 console.log(` - No connection data`);
             }
         });
+    }
+
+    forceRedraw() {
+        // Force canvas repaint by modifying a dimension
+        const currentWidth = this.canvas.width;
+        this.canvas.width = currentWidth + 1;
+        this.canvas.width = currentWidth;
+        
+        // Rebuild connections if they're missing
+        if (this.connections.length === 0 && this.fpgaData) {
+            console.log("Rebuilding missing connections");
+            this.layoutBoard();
+        }
+        
+        // Log connection data for debugging
+        console.log(`Force redrawing ${this.connections.length} connections`);
+        
+        // Redraw everything
+        this.draw();
     }
 }

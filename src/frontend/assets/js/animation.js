@@ -5,10 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const browseButton = document.getElementById('browse-button');
     const jsonOutput = document.getElementById('jsonOutput');
     const fileInfo = document.getElementById('file-info');
-    const animateButton = document.getElementById('animate-button');
     
     // Initialize FPGA board animation
-    const boardAnimation = new FPGABoardAnimation('fpga-canvas');
+    let boardAnimation;
+    let animateButton;
+    let canvasInitialized = false;
     
     // File storage
     const supportedFiles = {
@@ -23,10 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInput.addEventListener('change', handleFileSelect);
     browseButton.addEventListener('click', () => fileInput.click());
     
-    if (animateButton) {
-        animateButton.addEventListener('click', toggleAnimation);
-    }
-
     function handleDragOver(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -144,23 +141,77 @@ document.addEventListener('DOMContentLoaded', () => {
             jsonOutput.textContent = JSON.stringify(designJson, null, 2);
             
             // Update the board visualization
-            boardAnimation.loadData(designJson, supportedFiles.sdf ? supportedFiles.sdf.content : null);
-            
-            // Show the board container
-            document.getElementById('board-container').classList.remove('hidden');
+            initializeAnimation(designJson, supportedFiles.sdf ? supportedFiles.sdf.content : null);
         } catch (err) {
             jsonOutput.textContent = "Error: " + err.message;
         }
     }
     
-    // Add this to make sure we handle errors during rendering
+    function initializeAnimation(fpgaJson, sdfContent) {
+        try {
+            if (!canvasInitialized) {
+                boardAnimation = new FPGABoardAnimation('fpga-canvas');
+                canvasInitialized = true;
+            }
+            
+            animateButton = document.getElementById('animate-button');
+            animateButton.addEventListener('click', toggleAnimation);
+            
+            // Load data and force multiple redraws to ensure wires appear
+            boardAnimation.loadData(fpgaJson, sdfContent);
+            
+            // Force immediate redraw
+            boardAnimation.draw();
+            
+            // Schedule additional redraws to ensure visibility
+            setTimeout(() => {
+                boardAnimation.draw();
+                console.log("Redrawing canvas after timeout");
+            }, 200);
+            
+            document.getElementById('board-container').classList.remove('hidden');
+            document.getElementById('animation-controls').classList.remove('hidden');
+        } catch (err) {
+            console.error("Error initializing animation:", err);
+        }
+    }
+
     function toggleAnimation() {
         try {
             const isPlaying = boardAnimation.toggleAnimation();
             animateButton.textContent = isPlaying ? 'Stop Animation' : 'Start Animation';
         } catch (err) {
             console.error("Animation error:", err);
-            alert("Error in animation: " + err.message);
         }
     }
+});
+
+// Add visibility observer to redraw when element comes into viewport
+document.addEventListener('DOMContentLoaded', () => {
+    const boardContainer = document.getElementById('board-container');
+    
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && boardAnimation) {
+                        console.log("Board container is now visible, forcing redraw");
+                        boardAnimation.forceRedraw();
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+        
+        if (boardContainer) {
+            observer.observe(boardContainer);
+        }
+    }
+    
+    // Also redraw on window resize
+    window.addEventListener('resize', () => {
+        if (boardAnimation) {
+            boardAnimation.forceRedraw();
+        }
+    });
 });
