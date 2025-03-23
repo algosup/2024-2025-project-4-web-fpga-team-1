@@ -58,7 +58,8 @@ h1 small {
 
 /* table */
 table{
-    border-collapse: collapse
+    border-collapse: collapse;
+    margin-right: 25px;
 }
 
 td{
@@ -71,7 +72,7 @@ th{
     padding: 10px;
 }
 
-#words {
+.words {
     width: 25%;
 }
 /*-------------------*/
@@ -80,10 +81,4 @@ th{
     margin-bottom: 35px;
 }
 
-/* Footer */
-footer {
-    text-align: center;
-    color: rgb(00, 51, 91);
-    margin: 20px;
-}
 /*-------------------*/

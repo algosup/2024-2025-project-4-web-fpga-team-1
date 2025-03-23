@@ -9,6 +9,10 @@
     color: white;
 }
 
+#two hr {
+    color: white;
+}
+
 /* Title box */
 .Title {
     margin-top: 75px;
@@ -61,6 +65,42 @@
 }
 /*-------------------*/
 
+/* Board box */
+.Board {
+    display: flex;
+    flex-direction: line;
+}
+
+.Board #text {
+    padding-block: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 25%;
+}
+
+.Board img {
+    width: 30%;
+}
+/*-------------------*/
+
+/* Verilog box */
+.Verilog {
+    display: flex;
+    flex-direction: line;
+}
+
+.Verilog #text {
+    padding-block: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 55%;
+}
+
+.Verilog img {
+    width: 35%;
+}
+/*-------------------*/
+
 /* table */
 table{
     border-collapse: collapse
@@ -84,11 +124,3 @@ hr {
 .endOfPage {
     margin-bottom: 35px;
 }
-
-/* Footer */
-footer {
-    text-align: center;
-    color: rgb(00, 51, 91);
-    margin: 20px;
-}
-/*-------------------*/
