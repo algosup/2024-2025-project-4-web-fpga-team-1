@@ -93,27 +93,38 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Process the uploaded files
     function processFiles() {
+        // Clear any previous results
+        jsonOutput.textContent = '';
+        boardContainer.classList.add('hidden');
+        animationControls.classList.add('hidden');
+        
+        // Check if both required files are present
         if (!verilogFile) {
-            jsonOutput.textContent = 'Please upload a Verilog (.v) file';
+            jsonOutput.textContent = 'Error: Verilog file is missing or empty. Please upload a Verilog (.v) file.';
             return;
         }
         
+        if (!sdfFile) {
+            jsonOutput.textContent = 'Error: SDF file is missing or empty. Please upload an SDF (.sdf) file.';
+            return;
+        }
+        
+        // Both files are present, proceed with parsing
         const verilogReader = new FileReader();
         verilogReader.onload = function(e) {
             const verilogContent = e.target.result;
             
-            if (sdfFile) {
-                const sdfReader = new FileReader();
-                sdfReader.onload = function(e) {
-                    const sdfContent = e.target.result;
+            const sdfReader = new FileReader();
+            sdfReader.onload = function(e) {
+                const sdfContent = e.target.result;
+                try {
                     parsedData = parseFiles(verilogContent, sdfContent);
                     displayResults(parsedData);
-                };
-                sdfReader.readAsText(sdfFile);
-            } else {
-                parsedData = parseFiles(verilogContent);
-                displayResults(parsedData);
-            }
+                } catch (error) {
+                    jsonOutput.textContent = `Error: ${error.message}`;
+                }
+            };
+            sdfReader.readAsText(sdfFile);
         };
         verilogReader.readAsText(verilogFile);
     }

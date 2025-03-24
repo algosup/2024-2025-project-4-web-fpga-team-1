@@ -211,12 +211,21 @@ function parseSDF(sdfContent) {
   return sdfData;
 }
 
-function parseFiles(verilogContent, sdfContent = null) {
+function parseFiles(verilogContent, sdfContent) {
+  // Validate that both files are provided
+  if (!verilogContent) {
+    throw new Error("Verilog file is missing or empty.");
+  }
+  
+  if (!sdfContent) {
+    throw new Error("SDF file is missing or empty.");
+  }
+  
   // Parse Verilog file
   const verilogData = parseVerilog(verilogContent);
   
-  // Parse SDF file if provided
-  const sdfData = sdfContent ? parseSDF(sdfContent) : null;
+  // Parse SDF file
+  const sdfData = parseSDF(sdfContent);
   
   // Create combined data structure
   const combinedData = {
@@ -226,7 +235,7 @@ function parseFiles(verilogContent, sdfContent = null) {
     metadata: {
       generatedAt: new Date().toISOString(),
       verilogPresent: true,
-      sdfPresent: !!sdfData
+      sdfPresent: true
     }
   };
   
