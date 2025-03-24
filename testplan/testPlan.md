@@ -25,7 +25,6 @@
       - [3. Time Control](#3-time-control)
       - [4. Compatibility](#4-compatibility)
       - [5. Security](#5-security)
-  - [V. Glossary](#v-glossary)
 
 ## I. Introduction
 
@@ -143,7 +142,3 @@ Each test case will include:
 |----------|-----------------|----------|
 | Data Protection | Ensure user data is protected if the application is hosted online. | High |
 | File Validation | Verify that only valid Verilog and SDF files can be uploaded. | Medium |
-
-## V. Glossary
-
-This Test Plan ensures that the Web FPGA application is thoroughly tested and meets all functional and non-functional requirements. If you have any questions or require further modifications, please let me know!
