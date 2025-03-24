@@ -131,3 +131,119 @@ function parseVerilog(verilog) {
       }
     };
   }
+
+function parseSDF(sdfContent) {
+  if (!sdfContent) {
+    return null;
+  }
+
+  const sdfData = {
+    version: "",
+    design: "",
+    date: "",
+    vendor: "",
+    cells: {},
+    nets: {}
+  };
+
+  // Extract header information
+  const headerRegex = /\(DELAYFILE\s*\(SDFVERSION\s*"([^"]*)"\)\s*\(DESIGN\s*"([^"]*)"\)\s*\(DATE\s*"([^"]*)"\)\s*\(VENDOR\s*"([^"]*)"\)/;
+  const headerMatch = sdfContent.match(headerRegex);
+  if (headerMatch) {
+    sdfData.version = headerMatch[1];
+    sdfData.design = headerMatch[2];
+    sdfData.date = headerMatch[3];
+    sdfData.vendor = headerMatch[4];
+  }
+
+  // Extract cell timing information
+  const cellRegex = /\(CELL\s*\(CELLTYPE\s*"([^"]*)"\)\s*\(INSTANCE\s*([^)]*)\)([\s\S]*?)(?=\(CELL|\)$)/g;
+  let cellMatch;
+  
+  while ((cellMatch = cellRegex.exec(sdfContent)) !== null) {
+    const cellType = cellMatch[1];
+    const instance = cellMatch[2].replace(/"/g, "").trim();
+    const cellContent = cellMatch[3];
+
+    // Initialize cell data
+    sdfData.cells[instance] = {
+      type: cellType,
+      delays: {}
+    };
+
+    // Extract IOPATH delays (pin-to-pin delays)
+    const iopathRegex = /\(IOPATH\s+([^\s]+)\s+([^\s]+)\s+\(([^)]+)\)\s+\(([^)]+)\)/g;
+    let iopathMatch;
+    
+    while ((iopathMatch = iopathRegex.exec(cellContent)) !== null) {
+      const inputPin = iopathMatch[1].replace(/"/g, "");
+      const outputPin = iopathMatch[2].replace(/"/g, "");
+      const riseDelay = parseFloat(iopathMatch[3]);
+      const fallDelay = parseFloat(iopathMatch[4]);
+      
+      const delayKey = `${inputPin}->${outputPin}`;
+      sdfData.cells[instance].delays[delayKey] = {
+        rise: riseDelay,
+        fall: fallDelay,
+        avg: (riseDelay + fallDelay) / 2
+      };
+    }
+
+    // Extract INTERCONNECT delays
+    const interconnectRegex = /\(INTERCONNECT\s+([^\s]+)\s+([^\s]+)\s+\(([^)]+)\)\s+\(([^)]+)\)/g;
+    let interconnectMatch;
+    
+    while ((interconnectMatch = interconnectRegex.exec(cellContent)) !== null) {
+      const startPin = interconnectMatch[1].replace(/"/g, "");
+      const endPin = interconnectMatch[2].replace(/"/g, "");
+      const riseDelay = parseFloat(interconnectMatch[3]);
+      const fallDelay = parseFloat(interconnectMatch[4]);
+      
+      const netKey = `${startPin}->${endPin}`;
+      sdfData.nets[netKey] = {
+        rise: riseDelay,
+        fall: fallDelay,
+        avg: (riseDelay + fallDelay) / 2
+      };
+    }
+  }
+
+  return sdfData;
+}
+
+function parseFiles(verilogContent, sdfContent = null) {
+  // Parse Verilog file
+  const verilogData = parseVerilog(verilogContent);
+  
+  // Parse SDF file if provided
+  const sdfData = sdfContent ? parseSDF(sdfContent) : null;
+  
+  // Create combined data structure
+  const combinedData = {
+    design: verilogData,
+    timing: sdfData,
+    // Add metadata
+    metadata: {
+      generatedAt: new Date().toISOString(),
+      verilogPresent: true,
+      sdfPresent: !!sdfData
+    }
+  };
+  
+  return combinedData;
+}
+
+// Export the functions for use in the browser or Node.js
+if (typeof module !== 'undefined' && module.exports) {
+  // Node.js environment
+  module.exports = {
+      parseVerilog,
+      parseSDF,
+      parseFiles
+  };
+} else if (typeof window !== 'undefined') {
+  // Browser environment
+  window.parseVerilog = parseVerilog;
+  window.parseSDF = parseSDF;
+  window.parseFiles = parseFiles;
+}

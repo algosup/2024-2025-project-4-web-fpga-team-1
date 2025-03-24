@@ -1,695 +1,487 @@
-class FPGABoardAnimation {
-    constructor(canvasId) {
-        this.canvas = document.getElementById(canvasId);
-        this.ctx = this.canvas.getContext('2d');
-        this.fpgaData = null;
-        this.sdfData = null;
-        this.cellElements = [];
-        this.connections = [];
-        this.signalParticles = [];
-        this.animationFrame = null;
-        this.isPlaying = false;
-        this.timeScale = 1.0; // Time scaling factor to control animation speed
-        this.animationTime = 0;
-        
-        // Configure canvas
-        this.resizeCanvas();
-        window.addEventListener('resize', () => this.resizeCanvas());
-    }
+// Board animation state
+let animationData = null;
+let canvas = null;
+let ctx = null;
+let animationRunning = false;
+let animationFrame = null;
+let animationSpeed = 0.1; // milliseconds in animation = real milliseconds * animationSpeed
+let signalFlows = [];
 
-    resizeCanvas() {
-        this.canvas.width = this.canvas.parentElement.clientWidth;
-        this.canvas.height = 600;
-        if (this.fpgaData) {
-            this.layoutBoard();
-            this.draw(); // Explicitly call draw after resizing
-        }
-    }
+// Element dimensions and positioning
+const elementSize = 50;
+const padding = 40;
+const wireThickness = 3;
 
-    loadData(fpgaJson, sdfContent = null) {
-        this.fpgaData = fpgaJson;
-        
-        if (sdfContent) {
-            this.parseSDF(sdfContent);
-        }
-        
-        this.layoutBoard();
-        this.debugConnections();
-        
-        // Schedule multiple redraws to ensure rendering
-        this.draw();
-        
-        // Force a resize which will trigger redrawing
-        setTimeout(() => this.resizeCanvas(), 100);
-        setTimeout(() => this.forceRedraw(), 300);
-    }
+// Colors
+const colors = {
+    background: '#f8f9fa',
+    wire: '#6c757d',
+    activeWire: '#fd7e14',
+    input: '#dc3545',
+    activeInput: '#28a745',
+    output: '#dc3545',
+    activeOutput: '#28a745',
+    lut: '#007bff',
+    activeLut: '#0056b3',
+    dff: '#6610f2',
+    activeDff: '#520dc2',
+    signal: 'rgba(255, 215, 0, 0.8)'
+};
+
+// Initialize the board visualization
+function initFPGABoardAnimation(data) {
+    animationData = data;
+    canvas = document.getElementById('fpga-canvas');
+    ctx = canvas.getContext('2d');
     
-    parseSDF(sdfContent) {
-        // More comprehensive SDF parsing
-        this.sdfData = {
-            delays: {},
-            cellDelays: {}
+    // Set up animation controls
+    const animateButton = document.getElementById('animate-button');
+    animateButton.addEventListener('click', toggleAnimation);
+    
+    // Resize canvas
+    resizeCanvas();
+    
+    // Calculate board layout
+    calculateBoardLayout();
+    
+    // Initial draw
+    drawBoard();
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        resizeCanvas();
+        calculateBoardLayout();
+        drawBoard();
+    });
+}
+
+// Calculate layout of FPGA elements
+function calculateBoardLayout() {
+    if (!animationData || !animationData.design) return;
+    
+    const design = animationData.design.module;
+    
+    // Create a map of all elements
+    const elements = {};
+    
+    // Add ports as elements
+    design.ports.forEach((port, index) => {
+        const isInput = port.direction === 'input';
+        elements[port.name] = {
+            id: port.name,
+            type: isInput ? 'input' : 'output',
+            name: port.name,
+            connections: [],
+            x: 0, y: 0,
+            active: false
         };
-        
-        // Extract IOPATH delay information (pin-to-pin delays)
-        const iopathRegex = /\(IOPATH\s+([^\s]+)\s+([^\s]+)\s+\(([^)]+)\)\s+\(([^)]+)\)/g;
-        let match;
-        
-        while ((match = iopathRegex.exec(sdfContent)) !== null) {
-            const inputPin = match[1].replace(/"/g, '');
-            const outputPin = match[2].replace(/"/g, '');
-            const riseDelay = parseFloat(match[3]);
-            const fallDelay = parseFloat(match[4]);
-            
-            const key = `${inputPin}->${outputPin}`;
-            this.sdfData.delays[key] = {
-                rise: riseDelay,
-                fall: fallDelay,
-                avg: (riseDelay + fallDelay) / 2
-            };
-        }
-        
-        // Extract cell delays (CELL blocks)
-        const cellBlockRegex = /\(CELL\s+\(CELLTYPE\s+"([^"]+)"\)\s+\(INSTANCE\s+([^)]+)\)([\s\S]*?)\)/g;
-        let cellMatch;
-        
-        while ((cellMatch = cellBlockRegex.exec(sdfContent)) !== null) {
-            const cellType = cellMatch[1];
-            const instance = cellMatch[2].replace(/"/g, '');
-            const cellContent = cellMatch[3];
-            
-            // Extract delays for this cell
-            const cellDelays = {};
-            let pathMatch;
-            while ((pathMatch = iopathRegex.exec(cellContent)) !== null) {
-                const inPin = pathMatch[1].replace(/"/g, '');
-                const outPin = pathMatch[2].replace(/"/g, '');
-                const riseDelay = parseFloat(pathMatch[3]);
-                const fallDelay = parseFloat(pathMatch[4]);
-                
-                const pinKey = `${inPin}->${outPin}`;
-                cellDelays[pinKey] = {
-                    rise: riseDelay,
-                    fall: fallDelay,
-                    avg: (riseDelay + fallDelay) / 2
-                };
-            }
-            
-            this.sdfData.cellDelays[instance] = {
-                type: cellType,
-                delays: cellDelays
-            };
-        }
-    }
+    });
     
-    getDelayForConnection(sourceCell, targetCell, pinName = null) {
-        // Try to get specific cell delay from SDF
-        if (this.sdfData && this.sdfData.cellDelays[sourceCell.name]) {
-            const cellDelays = this.sdfData.cellDelays[sourceCell.name].delays;
-            
-            // If we know the specific pin, use its delay
-            if (pinName && cellDelays[`${pinName}->out`]) {
-                return cellDelays[`${pinName}->out`].avg * 1000; // Convert to ms
-            }
-            
-            // If there are any delays for this cell, use the average
-            const delays = Object.values(cellDelays).map(d => d.avg);
-            if (delays.length) {
-                return (delays.reduce((a, b) => a + b, 0) / delays.length) * 1000;
-            }
-        }
-        
-        // Default delays based on cell type
-        if (sourceCell.type === 'LUT_K') {
-            return 25; // 25ms delay for LUTs
-        } else if (sourceCell.type === 'DFF') {
-            return 15; // 15ms delay for Flip-flops
-        } else {
-            return 10; // Default 10ms delay
-        }
-    }
-    
-    layoutBoard() {
-        if (!this.fpgaData) return;
-        
-        this.cellElements = [];
-        this.connections = [];
-        
-        const module = this.fpgaData.module;
-        const gridSize = Math.ceil(Math.sqrt(module.cells.length + 2));
-        const cellWidth = this.canvas.width / (gridSize + 2);
-        const cellHeight = 80;
-        
-        // Place input ports on the left
-        const inputPorts = module.ports.filter(p => p.direction === 'input');
-        inputPorts.forEach((port, i) => {
-            const x = cellWidth;
-            const y = cellHeight * (i + 1);
-            
-            this.cellElements.push({
-                type: 'input',
-                name: port.name,
-                x, y,
-                width: cellWidth * 0.8,
-                height: cellHeight * 0.6,
-                state: 0
-            });
-        });
-        
-        // Place output ports on the right
-        const outputPorts = module.ports.filter(p => p.direction === 'output');
-        outputPorts.forEach((port, i) => {
-            const x = this.canvas.width - cellWidth * 1.5;
-            const y = cellHeight * (i + 1);
-            
-            this.cellElements.push({
-                type: 'output',
-                name: port.name,
-                x, y,
-                width: cellWidth * 0.8,
-                height: cellHeight * 0.6,
-                state: 0
-            });
-        });
-        
-        // Place cells in a grid
-        module.cells.forEach((cell, i) => {
-            const col = (i % (gridSize - 1)) + 1;
-            const row = Math.floor(i / (gridSize - 1)) + 1;
-            
-            const x = col * cellWidth + cellWidth * 1.5;
-            const y = row * cellHeight;
-            
-            this.cellElements.push({
-                type: cell.type,
+    // Add cells as elements (if any)
+    if (design.cells) {
+        design.cells.forEach(cell => {
+            elements[cell.instance] = {
+                id: cell.instance,
+                type: cell.type.startsWith('LUT') ? 'lut' : 
+                      cell.type === 'DFF' ? 'dff' : 'cell',
                 name: cell.instance,
-                x, y,
-                width: cellWidth * 0.8,
-                height: cellHeight * 0.6,
-                state: 0,
-                connections: cell.connections
-            });
+                connections: [],
+                x: 0, y: 0,
+                active: false
+            };
         });
-        
-        // Create connections between elements with wire points
-        module.interconnects.forEach(interconnect => {
-            const source = this.findElementByOutput(interconnect.datain);
-            const target = this.findElementByInput(interconnect.dataout);
-            
-            if (source && target) {
-                // Create the connection with waypoints for the wire
-                this.connections.push(this.createWireConnection(source, target));
-            }
-        });
-        
-        // Add direct connections from inputs to cells
-        module.cells.forEach(cell => {
-            for (const [pinName, pinConnections] of Object.entries(cell.connections)) {
-                if (typeof pinConnections === 'string') {
-                    // Check if this connects to an input port
-                    const port = module.ports.find(p => p.direction === 'input' && p.name === pinConnections);
-                    if (port) {
-                        const source = this.findElementByName(port.name);
-                        const target = this.findElementByName(cell.instance);
-                        
-                        if (source && target) {
-                            const conn = this.createWireConnection(source, target);
-                            conn.pinName = pinName;
-                            this.connections.push(conn);
-                        }
-                    }
-                }
-            }
-        });
-        
-        this.draw();
     }
     
-    createWireConnection(source, target) {
-        const startX = source.x + source.width;
-        const startY = source.y + source.height / 2;
-        const endX = target.x;
-        const endY = target.y + target.height / 2;
-        
-        // Create waypoints for wire routing
-        const waypoints = [];
-        
-        // Start point
-        waypoints.push({ x: startX, y: startY });
-        
-        // Add intermediate points for more complex routing
-        // Simple routing: horizontal then vertical
-        const midX = startX + (endX - startX) / 2;
-        
-        // Add turning points
-        waypoints.push({ x: midX, y: startY });
-        waypoints.push({ x: midX, y: endY });
-        
-        // End point
-        waypoints.push({ x: endX, y: endY });
-        
-        // Calculate the total path length for animations
-        let totalLength = 0;
-        for (let i = 1; i < waypoints.length; i++) {
-            const dx = waypoints[i].x - waypoints[i-1].x;
-            const dy = waypoints[i].y - waypoints[i-1].y;
-            totalLength += Math.sqrt(dx*dx + dy*dy);
+    // Add wires and connections from interconnects
+    design.interconnects.forEach(interconnect => {
+        // Add source wire if not exists
+        if (!elements[interconnect.datain]) {
+            elements[interconnect.datain] = {
+                id: interconnect.datain,
+                type: 'wire',
+                name: interconnect.datain,
+                connections: [],
+                x: 0, y: 0,
+                active: false
+            };
         }
         
-        return {
-            source,
-            target,
-            waypoints,
-            totalLength,
-            active: false,
-            animationProgress: 0,
-            delay: this.getDelayForConnection(source, target)
-        };
+        // Add target wire if not exists
+        if (!elements[interconnect.dataout]) {
+            elements[interconnect.dataout] = {
+                id: interconnect.dataout,
+                type: 'wire',
+                name: interconnect.dataout,
+                connections: [],
+                x: 0, y: 0,
+                active: false
+            };
+        }
+        
+        // Add connection
+        const delay = animationData.timing?.cells?.[interconnect.instance]?.delays?.['datain->dataout']?.avg || 100;
+        
+        elements[interconnect.datain].connections.push({
+            to: interconnect.dataout,
+            delay: delay
+        });
+    });
+    
+    // Add connections from assignments
+    design.assignments.forEach(assignment => {
+        if (!elements[assignment.source]) {
+            elements[assignment.source] = {
+                id: assignment.source,
+                type: 'wire',
+                name: assignment.source,
+                connections: [],
+                x: 0, y: 0,
+                active: false
+            };
+        }
+        
+        if (!elements[assignment.target]) {
+            elements[assignment.target] = {
+                id: assignment.target,
+                type: 'wire',
+                name: assignment.target,
+                connections: [],
+                x: 0, y: 0,
+                active: false
+            };
+        }
+        
+        elements[assignment.source].connections.push({
+            to: assignment.target,
+            delay: 50 // Small delay for visualization
+        });
+    });
+    
+    // Position elements
+    const inputs = Object.values(elements).filter(e => e.type === 'input');
+    const outputs = Object.values(elements).filter(e => e.type === 'output');
+    const others = Object.values(elements).filter(e => 
+        e.type !== 'input' && e.type !== 'output' && e.type !== 'wire');
+    
+    // Canvas dimensions
+    const canvasWidth = canvas.width;
+    const canvasHeight = Math.max(
+        (Math.max(inputs.length, outputs.length) * (elementSize + padding)) + padding * 2,
+        500
+    );
+    
+    // Update canvas height if needed
+    if (canvas.height < canvasHeight) {
+        canvas.height = canvasHeight;
     }
     
-    findElementByName(name) {
-        return this.cellElements.find(el => el.name === name);
-    }
+    // Position inputs on the left
+    inputs.forEach((input, index) => {
+        input.x = padding;
+        input.y = padding + index * (elementSize + padding);
+    });
     
-    findElementByOutput(name) {
-        return this.cellElements.find(el => 
-            (el.type === 'input' && el.name === name) || 
-            (el.connections && el.connections.out === name)
-        );
-    }
+    // Position outputs on the right
+    outputs.forEach((output, index) => {
+        output.x = canvasWidth - padding - elementSize;
+        output.y = padding + index * (elementSize + padding);
+    });
     
-    findElementByInput(name) {
-        return this.cellElements.find(el => 
-            (el.type === 'output' && el.name === name) || 
-            (el.connections && Object.values(el.connections).includes(name))
-        );
-    }
+    // Position other elements in the middle
+    const middleX = canvasWidth / 2 - elementSize / 2;
     
-    // Update the draw method to ensure proper rendering order
+    others.forEach((element, index) => {
+        element.x = middleX;
+        element.y = padding + index * (elementSize + padding);
+    });
+    
+    // Position wires based on connections (simplified)
+    const wires = Object.values(elements).filter(e => e.type === 'wire');
+    wires.forEach(wire => {
+        // Find elements that connect to this wire
+        const sources = Object.values(elements).filter(e => 
+            e.connections.some(conn => conn.to === wire.id));
+        
+        // Find elements this wire connects to
+        const targets = wire.connections.map(conn => elements[conn.to]).filter(Boolean);
+        
+        if (sources.length > 0 && targets.length > 0) {
+            // Position wire between sources and targets (average position)
+            let avgSourceX = sources.reduce((sum, e) => sum + e.x, 0) / sources.length;
+            let avgSourceY = sources.reduce((sum, e) => sum + e.y, 0) / sources.length;
+            
+            let avgTargetX = targets.reduce((sum, e) => sum + e.x, 0) / targets.length;
+            let avgTargetY = targets.reduce((sum, e) => sum + e.y, 0) / targets.length;
+            
+            wire.x = (avgSourceX + avgTargetX) / 2;
+            wire.y = (avgSourceY + avgTargetY) / 2;
+        }
+    });
+    
+    // Store layout
+    animationData.layout = {
+        elements,
+        canvasWidth,
+        canvasHeight
+    };
+}
 
-    draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Draw grid
-        this.ctx.strokeStyle = '#444';
-        this.ctx.lineWidth = 0.5;
-        this.ctx.beginPath();
-        for (let x = 0; x <= this.canvas.width; x += 50) {
-            this.ctx.moveTo(x, 0);
-            this.ctx.lineTo(x, this.canvas.height);
-        }
-        for (let y = 0; y <= this.canvas.height; y += 50) {
-            this.ctx.moveTo(0, y);
-            this.ctx.lineTo(this.canvas.width, y);
-        }
-        this.ctx.stroke();
-        
-        // IMPORTANT: Draw connections FIRST (before cells)
-        if (this.connections && this.connections.length > 0) {
-            console.log(`Drawing ${this.connections.length} connections`);
-            this.connections.forEach(conn => {
-                this.drawConnection(conn);
-            });
-        } else {
-            console.warn("No connections to draw");
-        }
-        
-        // Draw cells ON TOP OF connections
-        if (this.cellElements && this.cellElements.length > 0) {
-            this.cellElements.forEach(cell => {
-                this.drawCell(cell);
-            });
-        }
-    }
-    
-    drawCell(cell) {
-        // Define colors based on cell type
-        let fillColor = '#555';
-        let strokeColor = '#999';
-        
-        if (cell.type === 'input') {
-            fillColor = cell.state ? '#28a745' : '#dc3545';
-            strokeColor = '#fff';
-        } else if (cell.type === 'output') {
-            fillColor = cell.state ? '#28a745' : '#dc3545';
-            strokeColor = '#fff';
-        } else if (cell.type === 'LUT_K') {
-            fillColor = '#007bff';
-            strokeColor = '#fff';
-        } else if (cell.type === 'DFF') {
-            fillColor = '#6610f2';
-            strokeColor = '#fff';
-        }
-        
-        // Draw cell
-        this.ctx.fillStyle = fillColor;
-        this.ctx.strokeStyle = strokeColor;
-        this.ctx.lineWidth = 2;
-        
-        this.ctx.beginPath();
-        this.ctx.roundRect(cell.x, cell.y, cell.width, cell.height, 8);
-        this.ctx.fill();
-        this.ctx.stroke();
-        
-        // Draw cell label
-        this.ctx.fillStyle = '#fff';
-        this.ctx.font = '12px Arial';
-        this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'middle';
-        
-        const displayName = cell.name.length > 12 ? cell.name.substring(0, 10) + '...' : cell.name;
-        this.ctx.fillText(displayName, cell.x + cell.width/2, cell.y + cell.height/2 - 8);
-        
-        // Draw cell type
-        this.ctx.font = '10px Arial';
-        this.ctx.fillText(cell.type, cell.x + cell.width/2, cell.y + cell.height/2 + 10);
-    }
-    
-    drawConnection(conn) {
-        // Increase wire visibility with more contrast
-        this.ctx.strokeStyle = conn.active ? '#5bff8f' : '#a0a0a0'; // Brighter colors
-        this.ctx.lineWidth = conn.active ? 4 : 2.5; // Thicker lines for better visibility
-        
-        // Draw the main wire with higher opacity
-        this.ctx.beginPath();
-        this.ctx.moveTo(conn.waypoints[0].x, conn.waypoints[0].y);
-        
-        for (let i = 1; i < conn.waypoints.length; i++) {
-            this.ctx.lineTo(conn.waypoints[i].x, conn.waypoints[i].y);
-        }
-        
-        this.ctx.stroke();
-        
-        // Add reflective highlight on wires for better visibility
-        this.ctx.strokeStyle = conn.active ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.2)';
-        this.ctx.lineWidth = conn.active ? 1.5 : 1;
-        this.ctx.beginPath();
-        this.ctx.moveTo(conn.waypoints[0].x, conn.waypoints[0].y);
-        
-        for (let i = 1; i < conn.waypoints.length; i++) {
-            this.ctx.lineTo(conn.waypoints[i].x, conn.waypoints[i].y);
-        }
-        
-        this.ctx.stroke();
-        
-        // Draw connection endpoint markers (larger circles)
-        this.ctx.fillStyle = conn.active ? '#5bff8f' : '#a0a0a0';
-        
-        // Start point marker
-        this.ctx.beginPath();
-        this.ctx.arc(conn.waypoints[0].x, conn.waypoints[0].y, 5, 0, Math.PI * 2);
-        this.ctx.fill();
-        
-        // End point marker
-        this.ctx.beginPath();
-        this.ctx.arc(conn.waypoints[conn.waypoints.length - 1].x, conn.waypoints[conn.waypoints.length - 1].y, 5, 0, Math.PI * 2);
-        this.ctx.fill();
-        
-        // Enhance corners with junction points
-        if (conn.waypoints.length > 2) {
-            for (let i = 1; i < conn.waypoints.length - 1; i++) {
-                this.ctx.fillStyle = conn.active ? '#5bff8f' : '#808080';
-                this.ctx.beginPath();
-                this.ctx.arc(conn.waypoints[i].x, conn.waypoints[i].y, 3.5, 0, Math.PI * 2);
-                this.ctx.fill();
-            }
-        }
-        
-        // Draw wire labels if connection has a name
-        if (conn.pinName) {
-            const midIndex = Math.floor(conn.waypoints.length / 2);
-            const midPoint = conn.waypoints[midIndex];
-            
-            // Add background for better readability
-            const textWidth = this.ctx.measureText(conn.pinName).width;
-            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-            this.ctx.fillRect(midPoint.x - textWidth/2 - 4, midPoint.y - 19, textWidth + 8, 18);
-            
-            this.ctx.fillStyle = '#fff';
-            this.ctx.font = '11px Arial';
-            this.ctx.textAlign = 'center';
-            this.ctx.textBaseline = 'middle';
-            this.ctx.fillText(conn.pinName, midPoint.x, midPoint.y - 10);
-        }
-        
-        // Draw signal particles if active
-        if (conn.active && conn.animationProgress > 0) {
-            this.drawSignalParticles(conn);
-        }
-    }
-    
-    drawSignalParticles(conn) {
-        const particlePos = this.getPositionAlongPath(conn, conn.animationProgress);
-        
-        // Create trail effect with multiple particles
-        const trailLength = 3;
-        for (let i = 0; i < trailLength; i++) {
-            const trailProgress = Math.max(0, conn.animationProgress - (i * 0.05));
-            if (trailProgress <= 0) continue;
-            
-            const trailPos = this.getPositionAlongPath(conn, trailProgress);
-            const alpha = 1 - (i / trailLength);
-            const size = 5 - (i * 1.5);
-            
-            // Draw trail particle with fading effect
-            this.ctx.fillStyle = `rgba(255, 255, 0, ${alpha})`;
-            this.ctx.beginPath();
-            this.ctx.arc(trailPos.x, trailPos.y, size, 0, Math.PI * 2);
-            this.ctx.fill();
-        }
-        
-        // Main signal particle
-        this.ctx.fillStyle = '#ffff00';
-        this.ctx.beginPath();
-        this.ctx.arc(particlePos.x, particlePos.y, 5, 0, Math.PI * 2);
-        this.ctx.fill();
-        
-        // Glow effect
-        this.ctx.shadowColor = '#ffff00';
-        this.ctx.shadowBlur = 10;
-        this.ctx.beginPath();
-        this.ctx.arc(particlePos.x, particlePos.y, 3, 0, Math.PI * 2);
-        this.ctx.fill();
-        this.ctx.shadowBlur = 0;
-    }
-    
-    getPositionAlongPath(conn, progress) {
-        // Find the position along the multi-segment path at the given progress (0-1)
-        let distanceCovered = progress * conn.totalLength;
-        let currentDistance = 0;
-        
-        for (let i = 1; i < conn.waypoints.length; i++) {
-            const p1 = conn.waypoints[i-1];
-            const p2 = conn.waypoints[i];
-            const dx = p2.x - p1.x;
-            const dy = p2.y - p1.y;
-            const segmentLength = Math.sqrt(dx*dx + dy*dy);
-            
-            if (currentDistance + segmentLength >= distanceCovered) {
-                // This is the segment where our point lies
-                const t = (distanceCovered - currentDistance) / segmentLength;
-                return {
-                    x: p1.x + dx * t,
-                    y: p1.y + dy * t
-                };
-            }
-            
-            currentDistance += segmentLength;
-        }
-        
-        // If we're beyond the path, return the last point
-        return conn.waypoints[conn.waypoints.length - 1];
-    }
-    
-    toggleInputState(inputName) {
-        const input = this.cellElements.find(el => el.type === 'input' && el.name === inputName);
-        if (input) {
-            input.state = input.state ? 0 : 1;
-            this.propagateSignals();
-            this.draw();
-        }
-    }
-    
-    propagateSignals() {
-        // Reset all connections and prepare for animation
-        this.connections.forEach(conn => {
-            conn.active = false;
-            conn.animationProgress = 0;
-        });
-        
-        // Reset all non-input cell states
-        this.cellElements.forEach(cell => {
-            if (cell.type !== 'input') {
-                cell.state = 0;
-            }
-        });
-        
-        // Propagate from inputs
-        const inputCells = this.cellElements.filter(el => el.type === 'input' && el.state);
-        
-        // Schedule signal propagation with delays
-        inputCells.forEach(input => {
-            // Start propagation immediately from inputs
-            this.scheduleSignalPropagation(input, 0);
-        });
-    }
-    
-    scheduleSignalPropagation(cell, delay) {
-        // Find outgoing connections
-        const outgoingConnections = this.connections.filter(conn => conn.source === cell);
-        
-        outgoingConnections.forEach(conn => {
-            conn.active = true;
-            conn.startTime = this.animationTime + delay;
-            conn.animationProgress = 0; // Start animation at beginning
-            
-            // Extract timing information from SDF data if available
-            let propDelay = 0;
-            if (this.sdfData && this.sdfData.cellDelays[cell.name]) {
-                const pinName = conn.pinName || 'out';
-                const outPin = pinName === 'out' ? pinName : `${pinName}->out`;
-                
-                if (this.sdfData.cellDelays[cell.name].delays[outPin]) {
-                    propDelay = this.sdfData.cellDelays[cell.name].delays[outPin].avg * 1000;
-                    console.log(`Using SDF delay for ${cell.name}.${outPin}: ${propDelay}ms`);
-                } else {
-                    propDelay = conn.delay || this.getDelayForConnection(conn.source, conn.target, conn.pinName);
-                    console.log(`No SDF delay found for ${cell.name}.${outPin}, using default: ${propDelay}ms`);
-                }
-            } else {
-                propDelay = conn.delay || this.getDelayForConnection(conn.source, conn.target, conn.pinName);
-            }
-            
-            // Schedule the target cell to be activated after the signal reaches it
-            setTimeout(() => {
-                conn.target.state = 1;
-                this.draw();
-                
-                // Continue propagation from this cell
-                this.scheduleSignalPropagation(conn.target, propDelay);
-            }, propDelay);
-        });
-    }
-    
-    startAnimation() {
-        if (this.isPlaying) return;
-        
-        this.isPlaying = true;
-        this.animationTime = 0;
-        
-        // Toggle a random input to start
-        const inputs = this.cellElements.filter(el => el.type === 'input');
-        if (inputs.length > 0) {
-            const randomInput = inputs[Math.floor(Math.random() * inputs.length)];
-            this.toggleInputState(randomInput.name);
-        }
-        
-        const animate = (timestamp) => {
-            if (!this.lastTimestamp) {
-                this.lastTimestamp = timestamp;
-            }
-            
-            const deltaTime = timestamp - this.lastTimestamp;
-            this.lastTimestamp = timestamp;
-            
-            this.animationTime += deltaTime;
-            
-            // Update connection animations
-            this.connections.forEach(conn => {
-                if (conn.active && conn.startTime !== undefined) {
-                    // Calculate animation progress based on time elapsed and connection length
-                    const elapsedTime = this.animationTime - conn.startTime;
-                    const duration = conn.delay || 300; // Default 300ms if no delay specified
-                    
-                    conn.animationProgress = Math.min(elapsedTime / duration, 1);
-                    
-                    // When animation completes
-                    if (conn.animationProgress === 1 && !conn.completed) {
-                        conn.completed = true;
-                    }
-                }
-            });
-            
-            // Every 3 seconds, toggle a random input to keep animation going
-            if (this.animationTime % 3000 < 50 && this.animationTime > 1000) {
-                const inputs = this.cellElements.filter(el => el.type === 'input');
-                if (inputs.length > 0) {
-                    const randomInput = inputs[Math.floor(Math.random() * inputs.length)];
-                    this.toggleInputState(randomInput.name);
-                }
-            }
-            
-            this.draw();
-            
-            if (this.isPlaying) {
-                this.animationFrame = requestAnimationFrame(animate);
-            }
-        };
-        
-        this.animationFrame = requestAnimationFrame(animate);
-    }
-    
-    toggleAnimation() {
-        if (this.isPlaying) {
-            this.stopAnimation();
-        } else {
-            this.startAnimation();
-        }
-        return this.isPlaying;
-    }
-    
-    stopAnimation() {
-        this.isPlaying = false;
-        this.lastTimestamp = null;
-        if (this.animationFrame) {
-            cancelAnimationFrame(this.animationFrame);
-        }
-    }
-    
-    // Add this method to the FPGABoardAnimation class
-    debugConnections() {
-        console.log(`Total connections: ${this.connections.length}`);
-        
-        if (this.connections.length === 0) {
-            console.warn("No connections found. Check if interconnects are properly defined in the Verilog file.");
-        } else {
-            this.connections.forEach((conn, i) => {
-                console.log(`Connection ${i}:`);
-                console.log(` - Source: ${conn.source?.name || 'undefined'} (${conn.source?.type || 'unknown type'})`);
-                console.log(` - Target: ${conn.target?.name || 'undefined'} (${conn.target?.type || 'unknown type'})`);
-                console.log(` - Waypoints: ${conn.waypoints?.length || 0}`);
-                console.log(` - Pin name: ${conn.pinName || 'none'}`);
-            });
-        }
-        
-        // Log cells to check if they have connection data
-        console.log(`Total cells: ${this.cellElements.length}`);
-        this.cellElements.forEach((cell, i) => {
-            console.log(`Cell ${i}: ${cell.name} (${cell.type})`);
-            if (cell.connections) {
-                console.log(` - Connections: ${JSON.stringify(cell.connections)}`);
-            } else {
-                console.log(` - No connection data`);
-            }
-        });
-    }
+// Resize canvas to fit container
+function resizeCanvas() {
+    const container = canvas.parentElement;
+    canvas.width = container.clientWidth;
+    canvas.height = Math.max(500, container.clientHeight);
+}
 
-    forceRedraw() {
-        // Force canvas repaint by modifying a dimension
-        const currentWidth = this.canvas.width;
-        this.canvas.width = currentWidth + 1;
-        this.canvas.width = currentWidth;
+// Draw the FPGA board
+function drawBoard() {
+    if (!animationData || !animationData.layout) return;
+    
+    // Clear canvas
+    ctx.fillStyle = colors.background;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    const { elements } = animationData.layout;
+    
+    // Draw connections first (so they're behind elements)
+    Object.values(elements).forEach(element => {
+        if (!element.connections) return;
         
-        // Rebuild connections if they're missing
-        if (this.connections.length === 0 && this.fpgaData) {
-            console.log("Rebuilding missing connections");
-            this.layoutBoard();
+        element.connections.forEach(conn => {
+            const target = elements[conn.to];
+            if (target) {
+                drawConnection(element, target, element.active && target.active);
+            }
+        });
+    });
+    
+    // Draw elements
+    Object.values(elements).forEach(element => {
+        if (element.type !== 'wire') {
+            drawElement(element);
         }
-        
-        // Log connection data for debugging
-        console.log(`Force redrawing ${this.connections.length} connections`);
-        
-        // Redraw everything
-        this.draw();
+    });
+    
+    // Draw signal flows
+    drawSignalFlows();
+}
+
+// Draw a connection between two elements
+function drawConnection(source, target, active) {
+    ctx.beginPath();
+    ctx.moveTo(source.x + elementSize / 2, source.y + elementSize / 2);
+    ctx.lineTo(target.x + elementSize / 2, target.y + elementSize / 2);
+    ctx.strokeStyle = active ? colors.activeWire : colors.wire;
+    ctx.lineWidth = wireThickness;
+    ctx.stroke();
+}
+
+// Draw an element (input, output, lut, dff)
+function drawElement(element) {
+    const x = element.x;
+    const y = element.y;
+    
+    // Select color based on element type and state
+    let fillColor;
+    switch (element.type) {
+        case 'input':
+            fillColor = element.active ? colors.activeInput : colors.input;
+            break;
+        case 'output':
+            fillColor = element.active ? colors.activeOutput : colors.output;
+            break;
+        case 'lut':
+            fillColor = element.active ? colors.activeLut : colors.lut;
+            break;
+        case 'dff':
+            fillColor = element.active ? colors.activeDff : colors.dff;
+            break;
+        default:
+            fillColor = element.active ? colors.activeWire : colors.wire;
+    }
+    
+    // Draw element shape
+    ctx.fillStyle = fillColor;
+    
+    if (element.type === 'input' || element.type === 'output') {
+        // Draw circle for inputs/outputs
+        ctx.beginPath();
+        ctx.arc(x + elementSize / 2, y + elementSize / 2, elementSize / 2, 0, Math.PI * 2);
+        ctx.fill();
+    } else {
+        // Draw rectangle for other elements
+        ctx.fillRect(x, y, elementSize, elementSize);
+    }
+    
+    // Draw element label
+    ctx.fillStyle = '#fff';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    // Shorten the label if too long
+    let label = element.name;
+    if (label.length > 10) {
+        label = label.substring(0, 7) + '...';
+    }
+    
+    ctx.fillText(label, x + elementSize / 2, y + elementSize / 2);
+}
+
+// Draw signal flow animations
+function drawSignalFlows() {
+    ctx.fillStyle = colors.signal;
+    
+    signalFlows.forEach(flow => {
+        // Draw signal as a moving circle
+        ctx.beginPath();
+        ctx.arc(flow.x, flow.y, 6, 0, Math.PI * 2);
+        ctx.fill();
+    });
+}
+
+// Toggle animation state
+function toggleAnimation() {
+    const animateButton = document.getElementById('animate-button');
+    
+    if (animationRunning) {
+        stopAnimation();
+        animateButton.textContent = 'Start Animation';
+    } else {
+        startAnimation();
+        animateButton.textContent = 'Stop Animation';
     }
 }
+
+// Start the animation
+function startAnimation() {
+    if (!animationData || animationRunning) return;
+    
+    animationRunning = true;
+    signalFlows = [];
+    
+    // Reset all elements to inactive
+    const elements = animationData.layout.elements;
+    Object.values(elements).forEach(element => {
+        element.active = false;
+    });
+    
+    // Activate inputs
+    Object.values(elements)
+        .filter(e => e.type === 'input')
+        .forEach(input => {
+            input.active = true;
+            
+            // Start signal propagation from inputs
+            input.connections.forEach(conn => {
+                const target = elements[conn.to];
+                if (target) {
+                    createSignalFlow(input, target, conn.delay);
+                }
+            });
+        });
+    
+    // Start animation loop
+    animationFrame = requestAnimationFrame(updateAnimation);
+}
+
+// Stop the animation
+function stopAnimation() {
+    if (!animationRunning) return;
+    
+    animationRunning = false;
+    if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+    }
+    
+    // Reset all elements to inactive
+    const elements = animationData.layout.elements;
+    Object.values(elements).forEach(element => {
+        element.active = false;
+    });
+    
+    signalFlows = [];
+    drawBoard();
+}
+
+// Create a signal flow animation between source and target
+function createSignalFlow(source, target, delay) {
+    const startX = source.x + elementSize / 2;
+    const startY = source.y + elementSize / 2;
+    const endX = target.x + elementSize / 2;
+    const endY = target.y + elementSize / 2;
+    
+    const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    const speed = distance / (delay * animationSpeed);  // pixels per ms
+    
+    const flow = {
+        startX,
+        startY,
+        endX,
+        endY,
+        x: startX,
+        y: startY,
+        progress: 0,
+        speed,
+        source: source.id,
+        target: target.id,
+        complete: false
+    };
+    
+    signalFlows.push(flow);
+}
+
+// Update animation frame
+function updateAnimation(timestamp) {
+    if (!animationRunning) return;
+    
+    // Update signal flows
+    const elements = animationData.layout.elements;
+    const dt = 16; // approximate time between frames in ms
+    
+    signalFlows.forEach(flow => {
+        if (flow.complete) return;
+        
+        // Update position
+        flow.progress += flow.speed * dt;
+        
+        if (flow.progress >= 1) {
+            // Signal reached destination
+            flow.progress = 1;
+            flow.complete = true;
+            flow.x = flow.endX;
+            flow.y = flow.endY;
+            
+            // Activate target
+            const target = elements[flow.target];
+            if (target) {
+                target.active = true;
+                
+                // Continue signal propagation
+                target.connections.forEach(conn => {
+                    const nextTarget = elements[conn.to];
+                    if (nextTarget) {
+                        createSignalFlow(target, nextTarget, conn.delay);
+                    }
+                });
+            }
+        } else {
+            // Update position along path
+            flow.x = flow.startX + (flow.endX - flow.startX) * flow.progress;
+            flow.y = flow.startY + (flow.endY - flow.startY) * flow.progress;
+        }
+    });
+    
+    // Remove completed flows
+    signalFlows = signalFlows.filter(flow => !flow.complete || Date.now() - flow.completeTime < 300);
+    
+    // Draw updated board
+    drawBoard();
+    
+    // Continue animation
+    animationFrame = requestAnimationFrame(updateAnimation);
+}
+
+// Make functions available globally
+window.initFPGABoardAnimation = initFPGABoardAnimation;

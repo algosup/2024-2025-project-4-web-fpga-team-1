@@ -1,217 +1,142 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Elements
+document.addEventListener('DOMContentLoaded', function() {
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
     const browseButton = document.getElementById('browse-button');
-    const jsonOutput = document.getElementById('jsonOutput');
     const fileInfo = document.getElementById('file-info');
+    const jsonOutput = document.getElementById('jsonOutput');
+    const boardContainer = document.getElementById('board-container');
+    const animationControls = document.getElementById('animation-controls');
     
-    // Initialize FPGA board animation
-    let boardAnimation;
-    let animateButton;
-    let canvasInitialized = false;
+    let verilogFile = null;
+    let sdfFile = null;
+    let parsedData = null;
     
-    // File storage
-    const supportedFiles = {
-        verilog: null,
-        sdf: null
-    };
-
-    // Set up event listeners
-    dropZone.addEventListener('dragover', handleDragOver);
-    dropZone.addEventListener('dragleave', handleDragLeave);
-    dropZone.addEventListener('drop', handleDrop);
-    fileInput.addEventListener('change', handleFileSelect);
-    browseButton.addEventListener('click', () => fileInput.click());
+    // Browse button functionality
+    browseButton.addEventListener('click', function() {
+        fileInput.click();
+    });
     
-    function handleDragOver(event) {
-        event.preventDefault();
-        event.stopPropagation();
+    // File input change handler
+    fileInput.addEventListener('change', function(e) {
+        handleFiles(e.target.files);
+    });
+    
+    // Drag and drop handlers
+    dropZone.addEventListener('dragover', function(e) {
+        e.preventDefault();
         dropZone.classList.add('dragover');
-    }
-
-    function handleDragLeave(event) {
-        event.preventDefault();
-        event.stopPropagation();
+    });
+    
+    dropZone.addEventListener('dragleave', function() {
         dropZone.classList.remove('dragover');
-    }
-
-    function handleDrop(event) {
-        event.preventDefault();
-        event.stopPropagation();
+    });
+    
+    dropZone.addEventListener('drop', function(e) {
+        e.preventDefault();
         dropZone.classList.remove('dragover');
         
-        const files = event.dataTransfer.files;
-        if (files.length > 0) {
-            Array.from(files).forEach(file => processFile(file));
+        if (e.dataTransfer.files.length > 0) {
+            handleFiles(e.dataTransfer.files);
         }
-    }
-
-    function handleFileSelect(event) {
-        const files = event.target.files;
-        if (files.length > 0) {
-            Array.from(files).forEach(file => processFile(file));
-        }
-    }
-
-    function processFile(file) {
-        const extension = file.name.split('.').pop().toLowerCase();
+    });
+    
+    // Function to handle the uploaded files
+    function handleFiles(files) {
+        verilogFile = null;
+        sdfFile = null;
         
-        if (extension === 'v' || extension === 'sv') {
-            processVerilogFile(file);
-        } else if (extension === 'sdf') {
-            processSdfFile(file);
-        } else {
-            alert('Please select Verilog (.v, .sv) or SDF (.sdf) files only');
-        }
-    }
-
-    function processVerilogFile(file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const verilogContent = e.target.result;
-            supportedFiles.verilog = {
-                name: file.name,
-                content: verilogContent
-            };
+        Array.from(files).forEach(file => {
+            const extension = file.name.split('.').pop().toLowerCase();
             
-            updateFileDisplay();
-            
-            // Automatically convert to JSON and visualize
-            convertVerilogToJson();
-        };
-        reader.readAsText(file);
-    }
-
-    function processSdfFile(file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const sdfContent = e.target.result;
-            supportedFiles.sdf = {
-                name: file.name,
-                content: sdfContent
-            };
-            
-            updateFileDisplay();
-            
-            // If we already have a verilog file converted, update the visualization with timing info
-            if (supportedFiles.verilog && jsonOutput.textContent && jsonOutput.textContent.trim() !== "JSON will appear here after loading a Verilog file") {
-                try {
-                    const designJson = JSON.parse(jsonOutput.textContent);
-                    boardAnimation.loadData(designJson, sdfContent);
-                } catch (err) {
-                    console.error("Error updating board with SDF data:", err);
-                }
+            if (extension === 'v' || extension === 'sv') {
+                verilogFile = file;
+            } else if (extension === 'sdf') {
+                sdfFile = file;
             }
-        };
-        reader.readAsText(file);
+        });
+        
+        updateFileInfo();
+        processFiles();
     }
-
-    function updateFileDisplay() {
-        let infoHtml = '<h3>Loaded Files:</h3><ul>';
+    
+    // Update file information display
+    function updateFileInfo() {
+        let infoText = '<p>No files loaded yet</p>';
         
-        if (supportedFiles.verilog) {
-            infoHtml += `<li>Verilog: ${supportedFiles.verilog.name}</li>`;
+        if (verilogFile || sdfFile) {
+            const fileList = [];
+            
+            if (verilogFile) {
+                fileList.push(`<p><strong>Verilog File:</strong> ${verilogFile.name} (${formatFileSize(verilogFile.size)})</p>`);
+            }
+            
+            if (sdfFile) {
+                fileList.push(`<p><strong>SDF File:</strong> ${sdfFile.name} (${formatFileSize(sdfFile.size)})</p>`);
+            }
+            
+            infoText = fileList.join('');
         }
         
-        if (supportedFiles.sdf) {
-            infoHtml += `<li>SDF: ${supportedFiles.sdf.name}</li>`;
-        }
-        
-        infoHtml += '</ul>';
-        
-        fileInfo.innerHTML = infoHtml;
-        
-        // Show animation controls if we have at least one file
-        if (supportedFiles.verilog || supportedFiles.sdf) {
-            document.getElementById('animation-controls').classList.remove('hidden');
+        fileInfo.innerHTML = `<h3>Loaded Files:</h3>${infoText}`;
+    }
+    
+    // Format file size in KB/MB
+    function formatFileSize(bytes) {
+        if (bytes < 1024) {
+            return bytes + ' bytes';
+        } else if (bytes < 1048576) {
+            return (bytes / 1024).toFixed(2) + ' KB';
+        } else {
+            return (bytes / 1048576).toFixed(2) + ' MB';
         }
     }
-
-    function convertVerilogToJson() {
-        // Check if we have a verilog file loaded
-        if (!supportedFiles.verilog) {
-            jsonOutput.textContent = "Error: Please upload a Verilog (.v) file first";
+    
+    // Process the uploaded files
+    function processFiles() {
+        if (!verilogFile) {
+            jsonOutput.textContent = 'Please upload a Verilog (.v) file';
             return;
         }
         
-        try {
-            // Call the parseVerilog function from converter.js
-            const designJson = parseVerilog(supportedFiles.verilog.content);
-            jsonOutput.textContent = JSON.stringify(designJson, null, 2);
+        const verilogReader = new FileReader();
+        verilogReader.onload = function(e) {
+            const verilogContent = e.target.result;
             
-            // Update the board visualization
-            initializeAnimation(designJson, supportedFiles.sdf ? supportedFiles.sdf.content : null);
-        } catch (err) {
-            jsonOutput.textContent = "Error: " + err.message;
-        }
-    }
-    
-    function initializeAnimation(fpgaJson, sdfContent) {
-        try {
-            if (!canvasInitialized) {
-                boardAnimation = new FPGABoardAnimation('fpga-canvas');
-                canvasInitialized = true;
+            if (sdfFile) {
+                const sdfReader = new FileReader();
+                sdfReader.onload = function(e) {
+                    const sdfContent = e.target.result;
+                    parsedData = parseFiles(verilogContent, sdfContent);
+                    displayResults(parsedData);
+                };
+                sdfReader.readAsText(sdfFile);
+            } else {
+                parsedData = parseFiles(verilogContent);
+                displayResults(parsedData);
             }
-            
-            animateButton = document.getElementById('animate-button');
-            animateButton.addEventListener('click', toggleAnimation);
-            
-            // Load data and force multiple redraws to ensure wires appear
-            boardAnimation.loadData(fpgaJson, sdfContent);
-            
-            // Force immediate redraw
-            boardAnimation.draw();
-            
-            // Schedule additional redraws to ensure visibility
-            setTimeout(() => {
-                boardAnimation.draw();
-                console.log("Redrawing canvas after timeout");
-            }, 200);
-            
-            document.getElementById('board-container').classList.remove('hidden');
-            document.getElementById('animation-controls').classList.remove('hidden');
-        } catch (err) {
-            console.error("Error initializing animation:", err);
-        }
+        };
+        verilogReader.readAsText(verilogFile);
     }
-
-    function toggleAnimation() {
-        try {
-            const isPlaying = boardAnimation.toggleAnimation();
-            animateButton.textContent = isPlaying ? 'Stop Animation' : 'Start Animation';
-        } catch (err) {
-            console.error("Animation error:", err);
-        }
-    }
-});
-
-// Add visibility observer to redraw when element comes into viewport
-document.addEventListener('DOMContentLoaded', () => {
-    const boardContainer = document.getElementById('board-container');
     
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && boardAnimation) {
-                        console.log("Board container is now visible, forcing redraw");
-                        boardAnimation.forceRedraw();
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
+    // Display the parsed results
+    function displayResults(data) {
+        // Display JSON
+        jsonOutput.textContent = JSON.stringify(data, null, 2);
         
-        if (boardContainer) {
-            observer.observe(boardContainer);
-        }
+        // Show the board container
+        boardContainer.classList.remove('hidden');
+        animationControls.classList.remove('hidden');
+        
+        // Initialize the board visualization
+        initBoardVisualization(data);
     }
     
-    // Also redraw on window resize
-    window.addEventListener('resize', () => {
-        if (boardAnimation) {
-            boardAnimation.forceRedraw();
+    // Initialize board visualization
+    function initBoardVisualization(data) {
+        if (typeof initFPGABoardAnimation === 'function') {
+            initFPGABoardAnimation(data);
+        } else {
+            console.error('Board animation functions not available');
         }
-    });
+    }
 });
