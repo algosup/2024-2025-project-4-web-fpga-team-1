@@ -38,12 +38,12 @@
 .CNES #text {
     padding-block: 5%;
     padding-left: 5%;
-    padding-right: 5%;
+    padding-right: 2%;
     width: 55%;
 }
 
 .CNES img {
-    width: 35%;
+    width: 38%;
 }
 /*-------------------*/
 
@@ -55,13 +55,13 @@
 
 .FPGA #text {
     padding-block: 5%;
-    padding-left: 5%;
+    padding-left: 2%;
     padding-right: 5%;
     width: 55%;
 }
 
 .FPGA img {
-    width: 35%;
+    width: 38%;
 }
 /*-------------------*/
 
@@ -80,6 +80,7 @@
 
 .Board img {
     width: 30%;
+    filter: drop-shadow(.5vh .5vh .5vh black);
 }
 /*-------------------*/
 
@@ -92,12 +93,12 @@
 .Verilog #text {
     padding-block: 5%;
     padding-left: 5%;
-    padding-right: 5%;
+    padding-right: 2%;
     width: 55%;
 }
 
 .Verilog img {
-    width: 35%;
+    width: 38%;
 }
 /*-------------------*/
 
