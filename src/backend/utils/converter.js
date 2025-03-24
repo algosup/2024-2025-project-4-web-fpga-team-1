@@ -227,10 +227,14 @@ function parseFiles(verilogContent, sdfContent) {
   // Parse SDF file
   const sdfData = parseSDF(sdfContent);
   
+  // Generate actions based on the parsed data
+  const actions = generateActions(verilogData, sdfData);
+  
   // Create combined data structure
   const combinedData = {
     design: verilogData,
     timing: sdfData,
+    actions: actions,
     // Add metadata
     metadata: {
       generatedAt: new Date().toISOString(),
@@ -242,17 +246,124 @@ function parseFiles(verilogContent, sdfContent) {
   return combinedData;
 }
 
+function generateActions(verilogData, sdfData) {
+  const actions = {
+    signals: [],       // Signal propagation actions
+    routing: [],       // Routing actions
+    components: [],    // Component behavior actions
+    timing: []         // Timing-related actions
+  };
+  
+  const module = verilogData.module;
+  
+  // Process ports to create input signal actions
+  module.ports.forEach(port => {
+    if (port.direction === "input") {
+      actions.signals.push({
+        type: "input_signal",
+        name: port.name,
+        target: `${port.name}_output_0_0`,
+        description: `Signal from input port ${port.name}`
+      });
+    }
+  });
+  
+  // Process assignments to create signal propagation actions
+  module.assignments.forEach(assignment => {
+    actions.signals.push({
+      type: "signal_assignment",
+      source: assignment.source,
+      target: assignment.target,
+      description: `Signal propagation from ${assignment.source} to ${assignment.target}`
+    });
+  });
+  
+  // Process interconnects to create routing actions with timing information
+  module.interconnects.forEach(interconnect => {
+    const routingAction = {
+      type: "signal_routing",
+      instance: interconnect.instance,
+      source: interconnect.datain,
+      target: interconnect.dataout,
+      description: `Route signal from ${interconnect.datain} to ${interconnect.dataout}`
+    };
+    
+    // Add timing information if available
+    if (sdfData && sdfData.cells && sdfData.cells[interconnect.instance]) {
+      const timingInfo = sdfData.cells[interconnect.instance].delays["datain->dataout"];
+      if (timingInfo) {
+        routingAction.timing = {
+          rise: timingInfo.rise,
+          fall: timingInfo.fall,
+          delay: timingInfo.avg
+        };
+      }
+    }
+    
+    actions.routing.push(routingAction);
+  });
+  
+  // Process cells to create component behavior actions
+  module.cells.forEach(cell => {
+    const componentAction = {
+      type: "component_behavior",
+      instance: cell.instance,
+      cellType: cell.type,
+      inputs: {},
+      outputs: {},
+      description: `Behavior of ${cell.type} instance ${cell.instance}`
+    };
+    
+    // Process connections to identify inputs and outputs
+    Object.entries(cell.connections).forEach(([port, signal]) => {
+      // Determine if port is input or output based on naming convention
+      // This is a simplification - you might need more sophisticated logic
+      if (port.startsWith("in") || port.match(/^i\d+$/i)) {
+        componentAction.inputs[port] = signal;
+      } else if (port.startsWith("out") || port.match(/^o\d+$/i)) {
+        componentAction.outputs[port] = signal;
+      }
+    });
+    
+    // Add timing information if available
+    if (sdfData && sdfData.cells && sdfData.cells[cell.instance]) {
+      componentAction.timingPaths = [];
+      
+      Object.entries(sdfData.cells[cell.instance].delays).forEach(([path, timing]) => {
+        const [inPort, outPort] = path.split("->");
+        componentAction.timingPaths.push({
+          from: inPort,
+          to: outPort,
+          delay: timing.avg
+        });
+      });
+    }
+    
+    actions.components.push(componentAction);
+  });
+  
+  // Create a critical path analysis action
+  actions.timing.push({
+    type: "critical_path_analysis",
+    description: "Find the critical path through the design"
+  });
+  
+  return actions;
+}
+
 // Export the functions for use in the browser or Node.js
 if (typeof module !== 'undefined' && module.exports) {
   // Node.js environment
   module.exports = {
       parseVerilog,
       parseSDF,
-      parseFiles
+      parseFiles,
+      generateActions
   };
 } else if (typeof window !== 'undefined') {
   // Browser environment
   window.parseVerilog = parseVerilog;
   window.parseSDF = parseSDF;
   window.parseFiles = parseFiles;
+  window.generateActions = generateActions;
 }
