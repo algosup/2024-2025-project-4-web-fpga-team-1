@@ -14,7 +14,7 @@ Overall the week is very good. Everyone worked well and if we continue like that
 | ------------------------- | :--------: |
 | Technical specification   |    70%     |
 | Code                      |    50%     |
-| Test Plan/Test Automation |    50%     |
+| Test Plan/Test Automation |    30%     |
 | User-Manual               |    10%     |
 
 
