@@ -40,12 +40,12 @@
   - [7.4 API Endpoints and Process Flow](#74-api-endpoints-and-process-flow)
   - [7.5 Creating a Custom Parser](#75-creating-a-custom-parser)
 - [8. User Interface Specifications](#8-user-interface-specifications)
-- [12. Deliverables](#12-deliverables)
-- [13. Appendices](#13-appendices)
-  - [13.1 Typography & CSS Guidelines](#131-typography--css-guidelines)
-  - [13.2 Documentation Guidelines](#132-documentation-guidelines)
-  - [13.3 Code Style Guidelines](#133-code-style-guidelines)
-  - [13.4 Project Folder Flow](#134-project-folder-flow)
+- [9. Deliverables](#9-deliverables)
+- [10. Appendices](#10-appendices)
+  - [10.1 Typography & CSS Guidelines](#101-typography--css-guidelines)
+  - [10.2 Documentation Guidelines](#102-documentation-guidelines)
+  - [10.3 Code Style Guidelines](#103-code-style-guidelines)
+  - [10.4 Project Folder Flow](#104-project-folder-flow)
 
 
 ---
@@ -54,15 +54,15 @@
 
 ### 3.1 Purpose
 
-This document give the technical specs. for an FPGA Simulator. Its purpose is to be use as a guideline for developers, project managers, and stakeholders to understand the scope, architecture, and requirements of the system.
+This document gives the technical specs. For an FPGA Simulator. Its purpose is to be used as a guideline for developers, project managers, and stakeholders to understand the scope, architecture, and requirements of the system.
 
 ### 3.2 Scope
 
 #### 3.2.1 In-Scope
 
-- Convert .v & .sdf files dynamicly in a readable format for the graphic processor.
+- Convert .v & .sdf files dynamically in a readable format for the graphic processor.
 - Development of the graphical representation of the FPGA workflow.
-- Display basic FPGA elements (like BEL's) with their intereconnections.
+- Display basic FPGA elements (like BEL's) with their interconnections.
 - Use a timing simulator to visualize the propagation of clock signal between all wires and elements. 
 - Include some controls to rollback, pause, advance the simulation.
 
@@ -70,7 +70,7 @@ This document give the technical specs. for an FPGA Simulator. Its purpose is to
 
 - Development of FPGA synthesis or P&R tools. 
 - Custom FPGA hardware development.
-- Building a full integrated development environment (IDE) for FPGA design.
+- Building a fully integrated development environment (IDE) for FPGA design.
 
 ### 3.3 Call for Tender Overview
 
@@ -95,12 +95,12 @@ Develop a web interface for an FPGA Simulator. This interface will be used to te
 
 _This section defines key terms used in this document._
 
-- **FPGA**: it is an integrated circuit with basic elements and preconfigured electrical signal routes between them. The selected FPGA is a NanoXplore NGultra (with VTR flow a basic Xilinx serie 7 model will be used )
-- **Basic Element (BEL)**: these are the hardware electrical ressources available inside the FPGA like fliflop, Look-Up-Table (LUT), Block RAM....
-- **Application**: in this context it will be the function to be executed in the FPGA (developped in verilog).
-- Synthesis: translation of the application into an electrical equivalent. It creates a netlist (which can be exported as a netlist). The tool used will be Impulse (or yosys in vtr flow )
+- **FPGA**: It is an integrated circuit with basic elements and preconfigured electrical signal routes between them. The selected FPGA is a NanoXplore NGultra (with VTR flow a basic Xilinx series 7 model will be used )
+- **Basic Element (BEL)**: These are the hardware electrical ressources available inside the FPGA like fliflop, Look-Up-Table (LUT), Block RAM....
+- **Application**: In this context it will be the function to be executed in the FPGA (developed in verilog).
+- Synthesis: translation of the application into an electrical equivalent. It creates a netlist (which can be exported as a netlist). The tool used will be Impulse (or Yosys in VTR flow )
 - **P&R**: Place and Route is the packing of the netlist component in the FPGA available BEL (Place). Then a route for signals between each BEL is selected (Route). The tool used will be Impulse . A timing netlist is created and can be exported in verilog. The tool used will be Impulse (or VPR for place and route in vtr flow )
-- **Simulator**: It compiles verilog testbenches and application and execute the simulation of every signal with regard to time evolution. The tool used will be Modelsim (using icarus verilog was not achieved yet for VTR flow)
+- **Simulator**: It compiles Verilog testbenches and applications and executes the simulation of every signal with regard to time evolution. The tool used will be Modelsim (using Icarus verilog was not achieved yet for VTR flow)
 - **Sofware**: It is the developped web application int he frame of this call for tender.
 
 ---
@@ -109,7 +109,7 @@ _This section defines key terms used in this document._
 
 ### 5.1 Background
 
-Designers need an intuitive look at both an FPGA’s physical structure and how signals propagate over time. This project blends the netlist layout with real-time simulation data to offer a hands-on tool that brings the inner workings of FPGAs to life.
+Designers need an intuitive look for both FPGA’s physical structure and how signals propagate over time. This project blends the netlist layout with real-time simulation data to offer a hands-on tool that brings the inner workings of FPGAs to life.
 
 ### 5.2 Goals and Deliverables
 
@@ -120,7 +120,7 @@ Designers need an intuitive look at both an FPGA’s physical structure and how 
 
 ### 5.3 Project Scenario
 
-- **Teacher Use Case:** Teachers can effortlessly upload and organize Verilog files along with associated testbenches, subsequently generating relevant simulation results and data sets.
+- **Teacher Use Case:** Teachers can effortlessly upload and organize Verilog files along with associated test benches, subsequently generating relevant simulation results and data sets.
 - **Student Use Case:** Students gain access to a curated selection of application examples, visualize FPGA layouts in a clear 2D format, and interact with the simulation through intuitive controls, enhancing their learning experience.
 
 ---
@@ -160,7 +160,7 @@ A simplified schema of the system architecture is illustrated below:
 
 The application's primary job is to precisely convert source files into a format that allows for simulation animations to be played in real time.  The conversion process begins with two files: a synthesized Verilog file and its associated SDF file.  The Verilog parser extracts the netlist, which contains components (such as fundamental logic parts) and their interconnections.  The SDF parser reads time data, which includes delays and signal transitions.  Both parsers are written in JavaScript to ensure compatibility with all type of OS.
 
-&#x20;Once processed, the data is combined into a single pivot JSON structure that includes both the static FPGA architecture and the timing connections.  The JSON contains:
+Once processed, the data is combined into a single pivot JSON structure that includes both the static FPGA architecture and the timing connections.  The JSON contains:
 
 - **Components:** Each BEL (e.g., LUT, flip-flop) has an ID, position, and connection endpoints.
 - **Timing:** A list of source-destination pairings with corresponding delay values and signal metadata.
@@ -231,7 +231,7 @@ When developing a custom parser for Verilog and SDF files, our major goal is to 
    - **State Machine Approach:** Iterate through the file, character by character, creating tokens based on identified character sequences and transitions.
 
    **Syntactic Parser**
-   After tokens are formed, the parser traverses the token stream to interpret higher-level structures. For Verilog, we can check for module definitions, port lists, wire declarations, and instantiation statements. For SDF, we would parse temporal constructs like delays for certain pathways. You can use a recursive descent parser, a parser generator, or any approach who work. the goal is to create an Abstract Syntax Tree (AST), a structured representation of the relationships.
+   After tokens are formed, the parser traverses the token stream to interpret higher-level structures. For Verilog, we can check for module definitions, port lists, wire declarations, and instantiation statements. For SDF, we would parse temporal constructs like delays for certain pathways. You can use a recursive descent parser, a parser generator, or any approach who work. The goal is to create an Abstract Syntax Tree (AST), a structured representation of the relationships.
 
 3. **Error Handling**
    During parsing, add checks for:
@@ -305,15 +305,15 @@ Students have access to a simulation environment that shows a clear 2D represent
 
 ---
 
-## 12. Deliverables
+## 9. Deliverables
 
 The final deliverable is a fully working online application that translates synthesized Verilog and SDF files into pivot JSON format, which is then utilized to power an interactive FPGA simulation animation.  The delivery comprises the whole Node.js application, source code for the conversion modules, a responsive front-end interface created using Handlebars templates, and a MongoDB database schema for permanent storage.  The accompanying documentation includes installation, configuration, testing processes, and usage directions for both the teacher and student interfaces.
 
 ---
 
-## 13. Appendices
+## 10. Appendices
 
-### 13.1 Typography & CSS Guidelines
+### 10.1 Typography & CSS Guidelines
 
 - **Font Families:**  
   - Use sans-serif fonts for digital readability (e.g., Arial, Helvetica, or Open Sans).
@@ -328,7 +328,7 @@ The final deliverable is a fully working online application that translates syn
 
 ---
 
-### 13.2 Documentation Guidelines
+### 10.2 Documentation Guidelines
 
 - **Document Naming Convention:**  
   - Use a standard format such as `DocumentName_Version_Date.ext` (e.g., `Technical_Specifications_0.4_2025-03-11.docx`).
@@ -340,7 +340,7 @@ The final deliverable is a fully working online application that translates syn
 
 ---
 
-### 13.3 Code Style Guidelines
+### 10.3 Code Style Guidelines
 
 - **File Naming:**  
   - Use `camelCase` for JavaScript files and module names (e.g., `fileUploader.js`, `animationController.js`).
@@ -359,7 +359,7 @@ The final deliverable is a fully working online application that translates syn
 
 ---
 
-### 13.4 Project Folder Flow
+### 10.4 Project Folder Flow
 
 ```
 project-root/
