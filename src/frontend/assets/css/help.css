@@ -77,8 +77,43 @@ th{
 }
 /*-------------------*/
 
-.endOfPage {
+/* Credits */
+.Credit {
+    text-align: center;
     margin-bottom: 35px;
 }
 
+.Credit h2 {
+    margin: 50px;
+    font-size: 35px;
+}
+
+.Credit h3 {
+    margin-bottom: 5px;
+}
+
+.Credit small {
+    padding-top: 10px;
+}
+
+.team {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.roles {
+    text-align: right;
+    width: 47%;
+}
+
+.names {
+    text-align: left;
+    width: 47%;
+}
+
+.names p
+{
+    margin: 18px;
+}
 /*-------------------*/
