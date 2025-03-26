@@ -43,9 +43,9 @@
 | Questions                                                                                  | Names   |
 | ------------------------------------------------------------------------------------------ | ------- |
 |                                                                                            | Gregory |
-| How was your week                                                                          |         |
+| How was your week                                                                          |       |
 | What was your task and did you manage to do it (if not, put the percentage of progression) |         |
-| Your feeling about the project ?                                                           |         |
-| Its the end of the week are you happy for what you have done during this week ?              |         |  |
+| Your feeling about the project ?                                                           |        |
+| Its the end of the week are you happy for what you have done during this week ?              |       |  
 
 # Summary
