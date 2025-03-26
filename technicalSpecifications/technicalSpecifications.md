@@ -10,6 +10,7 @@
 | 0.2     | 2025-03-04 | Yann-Maël Bouton    | Continued progress and additional details               |
 | 0.3     | 2025-03-11 | Yann-Maël Bouton    | Complete technical documentation                        |
 | 0.4     | 2025-03-11 | Yann-Maël Bouton    | Added documentation/code guidelines and folder flow       |
+| 0.5     | 2025-03-24 | Yann-Maël Bouton    | Reworked & Polished document from part 7       |
 
 ---
 
@@ -20,28 +21,32 @@
 - [3. Introduction](#3-introduction)
   - [3.1 Purpose](#31-purpose)
   - [3.2 Scope](#32-scope)
+    - [3.2.1 In-Scope](#321-in-scope)
+    - [3.2.2 Out-of-Scope](#322-out-of-scope)
   - [3.3 Call for Tender Overview](#33-call-for-tender-overview)
+    - [3.3.1 Background](#331-background)
+    - [3.3.2 Current Challenges](#332-current-challenges)
+    - [3.3.3 Use Cases](#333-use-cases)
 - [4. Glossary](#4-glossary)
 - [5. Project Overview](#5-project-overview)
+  - [5.1 Background](#51-background)
+  - [5.2 Goals and Deliverables](#52-goals-and-deliverables)
+  - [5.3 Project Scenario](#53-project-scenario)
 - [6. System Requirements](#6-system-requirements)
 - [7. Technical Architecture](#7-technical-architecture)
   - [7.1 Technology Stack](#71-technology-stack)
   - [7.2 System Components and Interactions](#72-system-components-and-interactions)
   - [7.3 Code Conversion & Animation Flow](#73-code-conversion--animation-flow)
+  - [7.4 API Endpoints and Process Flow](#74-api-endpoints-and-process-flow)
+  - [7.5 Creating a Custom Parser](#75-creating-a-custom-parser)
 - [8. User Interface Specifications](#8-user-interface-specifications)
-  - [8.1 Student Interface](#81-student-interface)
-  - [8.2 Teacher Interface](#82-teacher-interface)
-- [9. Data and File Formats](#9-data-and-file-formats)
-  - [9.1 Verilog and SDF Conversion to Pivot JSON](#91-verilog-and-sdf-conversion-to-pivot-json)
-  - [9.2 Pivot to Animation Translation](#92-pivot-to-animation-translation)
-- [10. Integration and Testing](#10-integration-and-testing)
-- [11. Deployment and Maintenance](#11-deployment-and-maintenance)
 - [12. Deliverables](#12-deliverables)
-- [13. References and Related Work](#13-references-and-related-work)
-- [14. Appendices](#14-appendices)
-  - [14.1 Document Charts and Typography Guidelines](#141-document-charts-and-typography-guidelines)
-  - [14.2 Documentation and Code Style Guidelines](#142-documentation-and-code-style-guidelines)
-  - [14.3 Project Folder Flow](#143-project-folder-flow)
+- [13. Appendices](#13-appendices)
+  - [13.1 Typography & CSS Guidelines](#131-typography--css-guidelines)
+  - [13.2 Documentation Guidelines](#132-documentation-guidelines)
+  - [13.3 Code Style Guidelines](#133-code-style-guidelines)
+  - [13.4 Project Folder Flow](#134-project-folder-flow)
+
 
 ---
 
@@ -132,205 +137,183 @@ Designers need an intuitive look at both an FPGA’s physical structure and how 
 
 ## 7. Technical Architecture
 
+The technical solution is based on a modular client-server architecture that uses Handlebars as the templating engine for dynamic content rendering and Node.js (Express) as the application server. Without depending on Linux-only utilities, the system is made to work on Windows laptops, ensuring that all conversion technologies and auxiliary tools are fully compatible with the available operating system.
+
 ### 7.1 Technology Stack
 
-- **Frontend:** HTML5, CSS3, JavaScript, and Handlebars for templating.
-- **Backend:** Node.js/Express to handle API endpoints, file uploads, and conversion processing.
-- **Database:** MongoDB for storing simulation states, pivot JSON data, and preloaded application examples.
-- **Simulation Engine Integration:**  
-  - Use Modelsim for running the simulation.
-  - A custom conversion module parses the simulation outputs.
+The backend is designed to handle HTTP requests, file uploads, and conversion operations with Node.js and Express.  Handlebars is used for dynamic web page templating, which ensures that instructor and student interfaces are displayed quickly.  The JavaScript-based conversion modules for.v and.sdf files use proprietary or open-source parsers.  MongoDB manages data durability and operates on Windows without any additional overhead.  The client side uses HTML, CSS, and vanilla JavaScript to provide interactive simulation controls such as play, pause, and step-through.
 
 ### 7.2 System Components and Interactions
 
-The system is divided into the following major modules:
+The solution is divided into numerous interrelated components. A flexible online interface creates an interactive environment for professors and students to submit files, perform simulations, and view FPGA layouts. This interface interfaces with the backend using RESTful APIs provided by the Node.js (Express) server.
 
-- **File Conversion Module:**  
-  - **Input:** Verilog (`.v`) and SDF files.  
-  - **Process:** Parses the source files, performs syntactic and timing analysis, and produces a pivot JSON.
-  - **Output:** A standardized JSON pivot file for downstream use.
+- **Web Browser (Front End):** users may upload files, interact with FPGA visuals, and control simulation playback.
+- **Express Server (Back End):** accepts file uploads, calls the conversion modules, orchestrates read/write operations to MongoDB, and returns the pivot JSON to the front end.
+- **Conversion Modules:** specialized parsers for Verilog (.v) netlists and Standard Delay Format (.sdf) timing data that combine the results into a single pivot JSON structure.
+- **MongoDB Database:** Saves user data, pivot JSON files, and simulation metadata for subsequent retrieval.
 
-- **Web Interface Module:**  
-  - **Teacher Panel:** For file uploads, simulation data management, and administrative actions.
-  - **Student Panel:** For interacting with the simulation visualization, controlling playback, and viewing signal propagation.
+A simplified schema of the system architecture is illustrated below:
 
-- **Animation Controller:**  
-  - **Input:** JSON pivot file.
-  - **Process:** Interprets the pivot data and maps timing information to animated elements on the 2D layout.
-  - **Output:** Real-time graphical updates reflecting the simulated signal propagation.
-
-- **Database Module:**  
-  - **Storage:** Persist simulation files, pivot data, and user sessions.
-  - **Access:** Provide APIs for reading/writing simulation data during runtime.
+ <img src='img\System Architecture.png' alt='System Architecture' >
 
 ### 7.3 Code Conversion & Animation Flow
 
-This section describes the process of converting raw simulation code into an intermediate pivot format, and then using that data to animate the FPGA layout:
+The application's primary job is to precisely convert source files into a format that allows for simulation animations to be played in real time.  The conversion process begins with two files: a synthesized Verilog file and its associated SDF file.  The Verilog parser extracts the netlist, which contains components (such as fundamental logic parts) and their interconnections.  The SDF parser reads time data, which includes delays and signal transitions.  Both parsers are written in JavaScript to ensure compatibility with all type of OS.
 
-#### 7.3.1 Verilog/SDF to Pivot Conversion
+&#x20;Once processed, the data is combined into a single pivot JSON structure that includes both the static FPGA architecture and the timing connections.  The JSON contains:
 
-1. **File Input:**  
-   The system ingests Verilog and SDF files uploaded by the teacher.
-2. **Parsing Engine:**  
-   A parser analyzes the Verilog code for structural (netlist) data and the SDF file for timing delays.
-3. **Pivot File Generation:**  
-   The parsed data is merged into a JSON object with defined keys (e.g., BEL identifiers, connection mapping, timing events).
-4. **Storage:**  
-   The generated JSON pivot file is stored in MongoDB for persistence and future retrieval.
+- **Components:** Each BEL (e.g., LUT, flip-flop) has an ID, position, and connection endpoints.
+- **Timing:** A list of source-destination pairings with corresponding delay values and signal metadata.
 
-> **Flowchart: Conversion Module**
- <img src='img\High-Level Conversion Module Diagram.png' alt='Conversion Module' >
+On the front end, a specific simulation engine analyzes these temporal parameters to simulate signal propagation. Users can control the simulation flow (start, pause, step, etc.), and the system changes the user interface to highlight signal transitions in real time.
 
+### 7.4 API Endpoints and Process Flow
 
-#### 7.3.2 Pivot to Animation Translation
+This section describes the application's whole request processing path, with a focus on API endpoints, user-facing operations, and backend interactions.
 
-1. **Data Fetching:**  
-   When a student selects an example, the frontend fetches the corresponding pivot JSON from the database.
-2. **Animation Mapping:**  
-   JavaScript code (with Handlebars templating) maps pivot JSON data to visual elements on the FPGA floorplan.
-3. **Animation Engine:**  
-   A controller module reads timing data from the pivot file and triggers CSS/JS-driven animations to illustrate signal propagation across BELs.
-4. **User Interaction:**  
-   The system supports interactive controls (play, pause, step, and speed adjustment) that modify the animation timeline.
+1. **File Upload Endpoint**
+   `POST /upload`
+   Teachers upload two files: synthesized Verilog (.v) and SDF (.sdf). The request often contains multipart form data. The server:
 
-> **Flowchart: Animation Controller**
- <img src='img\Animation Flow Diagram.png' alt='Animation Controller' >
+   - Validates file types and sizes.
+   - Temporarily stores files in memory or on a disk.
+   - Transfers the file paths to the conversion module.
+
+2. **Conversion Module**
+   Internally, the Express server activates the JavaScript-based parsers:
+
+   - **verilogParser**: reads the .v file and extracts logic elements, netlists, and hierarchical structure.
+   - **sdfParser**: Reads timing data from the .sdf file and assigns delays to netlist connections.
+   - **mergeResults**: Combines the Verilog parser's netlist with the SDF parser's timing information to form a single pivot JSON object.
+
+3. **Database Insertion**
+   `POST /api/pivot` (internal or combined with upload)
+   Once the pivot JSON is generated, the server saves it to MongoDB. The database schema may include:
+
+   - A unique identification (such as an ObjectId or a custom name) for the pivot.
+   - The pivot JSON file.
+   - Metadata includes the upload date, teacher ID, and additional descriptions.
+
+4. **Retrieve Simulation Data**
+   `GET /api/pivot/:id`
+   This API obtains the pivot JSON from the database using the unique identifier. The data is sent to the front end, where the user can load previous simulations for playback.
+
+5. **Simulation Playback**
+   `GET /simulate/:pivotId`
+   Students or teachers request the pivot JSON by providing the pivot ID. The server retrieves the JSON, and the front end uses it to render the FPGA layout and timing animations. Additional parameters (e.g., speed factor, time range) may be passed as query parameters to tailor the simulation experience.
+
+6. **Front-End Interaction**
+   After receiving the pivot JSON, the front-end JavaScript code:
+
+   - Renders a 2D or schematic view of the FPGA layout.
+   - Interprets the timing data to animate signals.
+   - Provides controls for stepping forward or backward in the simulation timeline.
+   - Optionally stores user preferences (zoom level, playback speed) in local storage or by calling additional endpoints.
+
+7. **Error Handling and Logging**
+   All endpoints feature structured error handling, returning HTTP status codes (e.g., 400 for bad requests, 500 for internal server errors) alongside descriptive messages. Logging is implemented through a dedicated logging library or the built-in console, capturing both server-side activities and user actions.
+
+Below is a high-level sequence diagram showing how a teacher might upload files and a student might run the simulation:
+
+ <img src='img\Flow Diagram.png' alt='Flow Diagram' >
+
+## 7.5 Creating a Custom Parser
+
+When developing a custom parser for Verilog and SDF files, our major goal is to scan raw textual material and create an internal data structure that appropriately reflects the netlist components, connections, and timing information. The following strategy is a high-level technique for developing such a parser in JavaScript.
+
+1. **Reading the Input**
+   Begin by converting the contents of the.v or.sdf file to a string. If the file is lengthy, you might read it line by line or buffer portions of it.
+
+2. **Lexical Analysis (Tokenization)**
+   A parser usually begins by transforming a raw string into tokens, which are meaningful symbols like keywords, identifiers, numbers, or punctuation. We can use a basic regular expression-based scanner or a state machine technique.
+
+   - **Regex Approach:** Use numerous regex patterns consecutively to detect tokens such as module names, port definitions, timing parameters, and so on.
+   - **State Machine Approach:** Iterate through the file, character by character, creating tokens based on identified character sequences and transitions.
+
+   **Syntactic Parser**
+   After tokens are formed, the parser traverses the token stream to interpret higher-level structures. For Verilog, we can check for module definitions, port lists, wire declarations, and instantiation statements. For SDF, we would parse temporal constructs like delays for certain pathways. You can use a recursive descent parser, a parser generator, or any approach who work. the goal is to create an Abstract Syntax Tree (AST), a structured representation of the relationships.
+
+3. **Error Handling**
+   During parsing, add checks for:
+
+   - Unclosed parentheses, missing semicolons, or unmatched begin/end statements.
+   - Incorrect syntax for timing specs in the SDF.
+   - Reserved keywords used as identifiers.
+     Provide clear error messages and line numbers to assist in debugging.
+
+4. **Building an Intermediate Representation**
+   After validating the syntax, we can store the parsed data in an intermediate object, for example:
+
+   ```js
+   const verilogData = {
+     modules: [
+       {
+         name: 'top_module',
+         ports: [...],
+         wires: [...],
+         instances: [...]
+       },
+       // more modules
+     ]
+   };
+
+   const sdfData = {
+     cells: [
+       {
+         cellType: 'LUT',
+         cellName: 'inst1',
+         delay: 3.5,
+         // additional fields
+       },
+       // more cells
+     ]
+   };
+   ```
+
+   This intermediate representation can reflect all essential details, such as instance names, parameter values, and hierarchical definitions.
+
+5. **Merging Data**\
+   Once we have different representations for.v and.sdf, we'll write a function to combine them into the pivot JSON structure. This merge stage typically compares netlist components in the Verilog data to the equivalent timing entries in the SDF data, using instance names or hierarchical paths for search.
+
+   ```js
+   function mergeData(verilogData, sdfData) {
+     // 1. Create a map of cellName -> delay or timing info from sdfData
+     // 2. For each instance in verilogData, attach the relevant timing data
+     // 3. Construct the final pivot JSON, including components and timing arrays
+   }
+   ```
+
+6. **Pivot JSON Output**\
+   The final pivot JSON will have two core sections:
+
+   - **Components:** An array of objects, each of which represents an FPGA primitive or BEL and stores its name, type, hierarchical path, and port connectivity.
+   - **Timing:** A structure that captures delays and other performance factors by correlating each source-destination pair with the appropriate time information.
+
+7. **Testing and Validation**\
+   Thorough testing is necessary:
+
+   - **Unit tests** ensure that each parser function (tokenization, syntax tree building, and merging) works for valid files while gracefully failing for invalid ones.
+   - **Integration Tests:** Ensure that uploading real-world .v and .sdf data results in an accurate pivot JSON in the end step.
 
 ---
 
 ## 8. User Interface Specifications
 
-### 8.1 Student Interface
+The user interface is intended to provide separate experiences for teachers and students.  For instructors, the interface provides an easy-to-use file upload site that walks them through the process of submitting .v and .sdf files.  Following a successful upload, the conversion process is launched automatically, and teachers receive quick feedback on the conversion's status and database storage.
 
-- **2D FPGA Layout View:**  
-  - An interactive grid displaying FPGA BELs and signal routes.
-  - Supports zoom and pan with smooth transitions.
-- **Simulation Controls:**  
-  - Playback buttons (Play, Pause/Resume, Step Forward, Rollback).
-  - Speed adjustment options (x1, x2, x4, etc.).
-- **Status Indicators:**  
-  - Real-time signal propagation indicators.
-  - A timeline display showing the progression of simulation events.
-
-### 8.2 Teacher Interface
-
-- **Dashboard:**  
-  - File upload area for Verilog and SDF files.
-  - List view of uploaded examples with options to generate, preview, and manage pivot files.
-- **Configuration Panel:**  
-  - Tools to adjust simulation parameters and verify conversion outputs.
-  - Logs and error reporting for file parsing.
-
----
-
-## 9. Data and File Formats
-
-### 9.1 Verilog and SDF Conversion to Pivot JSON
-
-- **Verilog File (`.v`):**  
-  Contains the netlist and logic description of the FPGA design.
-
-- **SDF File (`.sdf`):**  
-  Provides delay information essential for timing simulation.
-
-- **Conversion Process:**  
-  The conversion module parses these files and produces a JSON object with:
-  - A list of BELs and their properties.
-  - Routing interconnections.
-  - Time-stamped signal events.
-
-- **Example JSON Structure:**
-  ```json
-  {
-    "BELs": [
-      { "id": "BEL001", "type": "LUT", "connections": ["BEL002", "BEL003"] },
-      { "id": "BEL002", "type": "FlipFlop", "connections": ["BEL004"] }
-    ],
-    "timing": [
-      { "time": 10, "signal": "CLK", "origin": "BEL001", "destination": "BEL002" },
-      { "time": 20, "signal": "DATA", "origin": "BEL002", "destination": "BEL004" }
-    ]
-  }
-  ```
-
-### 9.2 Pivot to Animation Translation
-
-- **Mapping:**  
-  The frontend JavaScript engine reads the pivot file and maps each element to a corresponding graphical component.
-
-- **Animation Flow:**  
-  - Based on the "timing" array, CSS and JS animations are triggered to simulate signal flow.
-  - User controls interact directly with the animation engine, allowing pausing, stepping, or adjusting playback speed.
-
-- **Implementation Tip:**  
-  Leverage `requestAnimationFrame` for smooth animations and manage state with JavaScript objects representing the simulation timeline.
-
----
-
-## 10. Integration and Testing
-
-- **Module-Level Checks:**
-  - Verify functionality of individual components, including file parsing accuracy, correct JSON output, and reliable activation of animations.
-
-- **Integrated Workflow Validation:**
-  - Assess complete process flow, from initial file upload to final animation output.
-  - Employ realistic test scenarios with Verilog testbenches and SDF files to ensure practical reliability.
-
-- **User Feedback Sessions:**
-  - Organize hands-on trials with representative groups of teachers and students to gather insights on usability and user satisfaction.
-
-- **Performance Evaluation:**
-  - Monitor system responsiveness and animation fluidity under different workload intensities to confirm real-time performance standards.
-
----
-
-## 11. Deployment and Maintenance
-
-- **Deployment Environment:**  
-  - Node.js server deployed on a cloud platform.
-  - MongoDB hosted either locally or via a managed cloud service (e.g., MongoDB Atlas).
-- **CI/CD Pipeline:**  
-  - Automated builds, tests, and deployments using industry-standard tools.
-- **Maintenance:**  
-  - Regular updates based on user feedback.
-  - Detailed documentation and versioning in source control.
+Students have access to a simulation environment that shows a clear 2D representation of the FPGA layout.  The interface includes controls for zooming, panning, and interacting with individual FPGA pieces.  Additionally, simulation controls are prominently presented to allow for play, pause, step-through, and speed modifications.  The layout is responsive, ensuring constant performance across a variety of devices and screen sizes.  A typical user flow for simulation interaction begins with picking a preloaded simulation from the database, and then the animation flow is generated using the pivot JSON data given from the backend.
 
 ---
 
 ## 12. Deliverables
 
-- **Source Code:**  
-  - Frontend application (HTML/CSS/JS/Handlebars).
-  - Backend API and conversion module (Node.js/Express).
-  - Integration with MongoDB.
-- **Documentation:**  
-  - This technical specifications document.
-  - User manuals for both teacher and student interfaces.
-- **Test Suites:**  
-  - Automated tests for each module.
-- **Deployment Scripts:**  
-  - Scripts and guidelines for production deployment.
+The final deliverable is a fully working online application that translates synthesized Verilog and SDF files into pivot JSON format, which is then utilized to power an interactive FPGA simulation animation.  The delivery comprises the whole Node.js application, source code for the conversion modules, a responsive front-end interface created using Handlebars templates, and a MongoDB database schema for permanent storage.  The accompanying documentation includes installation, configuration, testing processes, and usage directions for both the teacher and student interfaces.
 
 ---
 
-## 13. References and Related Work
+## 13. Appendices
 
-- **FPGA Documentation:**  
-  - NanoXplore NGultra and Xilinx Series 7 specifications.
-- **Simulation Tools:**  
-  - Modelsim and alternative simulation engines.
-- **Web Technologies:**  
-  - Documentation on HTML5, CSS3, JavaScript, and Handlebars.
-- **Database Integration:**  
-  - MongoDB best practices and Mongoose documentation for Node.js.
-
----
-
-## 14. Appendices
-
-### 14.1 Document Charts and Typography Guidelines
-
-#### 14.1.1 Typography & CSS Guidelines
+### 13.1 Typography & CSS Guidelines
 
 - **Font Families:**  
   - Use sans-serif fonts for digital readability (e.g., Arial, Helvetica, or Open Sans).
@@ -345,9 +328,7 @@ This section describes the process of converting raw simulation code into an int
 
 ---
 
-### 14.2 Documentation and Code Style Guidelines
-
-#### 14.2.1 Documentation Guidelines
+### 13.2 Documentation Guidelines
 
 - **Document Naming Convention:**  
   - Use a standard format such as `DocumentName_Version_Date.ext` (e.g., `Technical_Specifications_0.4_2025-03-11.docx`).
@@ -357,7 +338,9 @@ This section describes the process of converting raw simulation code into an int
   - Maintain consistent numbering for sections and subsections.
   - Incorporate diagrams and tables to clarify information.
 
-#### 14.2.2 Code Style Guidelines
+---
+
+### 13.3 Code Style Guidelines
 
 - **File Naming:**  
   - Use `camelCase` for JavaScript files and module names (e.g., `fileUploader.js`, `animationController.js`).
@@ -376,9 +359,7 @@ This section describes the process of converting raw simulation code into an int
 
 ---
 
-### 14.3 Project Folder Flow
-
-#### 14.3.1 General Directory Structure
+### 13.4 Project Folder Flow
 
 ```
 project-root/
@@ -403,16 +384,5 @@ project-root/
 └── docs/
     └── Technical_Specifications_0.4_2025-03-11.docx  // Complete technical documentations
 ```
-
-#### 14.3.2 Directory Descriptions
-
-- **backend/**  
-  Contains all server-side code including file conversion logic, REST API endpoints, and MongoDB integration.
-- **frontend/**  
-  Manages the user interface and simulation logic (2D display, animations, playback controls). Handlebars templates dynamically generate HTML based on JSON data.
-- **database/**  
-  Contains scripts and modules required for MongoDB connection and configuration.
-- **docs/**  
-  Archives all technical documentation, user manuals, and deployment guides.
 
 ---
