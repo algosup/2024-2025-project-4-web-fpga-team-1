@@ -44,7 +44,7 @@ To launch the web site, you have to:
    npm install
 
    # launch the server
-   node app.js
+   node app
    ```
 1. launch your prefered navigator
 2. type the following link
