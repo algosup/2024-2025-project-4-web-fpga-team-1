@@ -1,10 +1,10 @@
 /**
- * Animation FPGA - Visualisation des délais et des connexions
- * Cette animation montre comment les signaux se propagent à travers un FPGA
- * basé sur les données de timing SDF converties en JSON
+ * FPGA animation - Visualizing delays and connections
+ * This animation shows how signals propagate through an FPGA.
+ * based on SDF timing data converted to JSON
  */
 
-// Variables globales
+// Global variables
 let fpgaData = null;
 let animationSpeed = 1;
 let animationRunning = false;
@@ -14,76 +14,93 @@ let ctx = null;
 let modules = [];
 let connections = [];
 let signals = [];
-let moduleInputsRequired = new Map(); // Suivi des entrées nécessaires par module
-let moduleInputsReceived = new Map(); // Suivi des entrées reçues par module
-// Dimensions initiales, seront ajustées dynamiquement
+let moduleInputsRequired = new Map(); // Tracking of input requirements by module
+let moduleInputsReceived = new Map(); // Track entries received by module
+// Initial dimensions will be dynamically adjusted
 let boardWidth = 800;
 let boardHeight = 600;
 let moduleSize = 60;
 let gridSpacing = 120;
 let startTime = 0;
-// Marges pour éviter que les éléments soient coupés
+// Margins to prevent elements from being cut off
 const MARGIN = 80;
 
+// Add these global variables
+const GRID_SIZE = 20; // Grid size in pixels
+let useSchematicStyle = true; // Activate schematic style
+
+// Variables for zoom and navigation
+let zoomLevel = 1;
+let panOffsetX = 0;
+let panOffsetY = 0;
+let isPanning = false;
+let lastPanX = 0;
+let lastPanY = 0;
+
 /**
- * Initialise l'animation du FPGA avec les données JSON fournies
- * @param {Object} data - Données JSON contenant les modules et connexions
+ * Initializes FPGA animation with supplied JSON data
+ * @param {Object} data - JSON data containing modules and connections
  */
 function initFPGABoardAnimation(data) {
-    console.log("Initialisation de l'animation FPGA", data);
+    console.log("Initializing FPGA animation", data);
     fpgaData = data;
-    
-    // Réinitialisation des données
+
+    // Data reset
     resetAnimation();
-    
-    // Calculer la taille du canvas en fonction des modules
-    calculateCanvasSize();
-    
-    // Initialisation du canvas avec la taille calculée
+
+    // Initialize canvas with fixed size
     canvas = document.getElementById('fpga-canvas');
     if (!canvas) {
         canvas = document.createElement('canvas');
         canvas.id = 'fpga-canvas';
-        canvas.width = boardWidth;
-        canvas.height = boardHeight;
+        canvas.width = 1200; // Larger fixed size
+        canvas.height = 800; // Larger fixed size
         document.getElementById('board-container').appendChild(canvas);
     } else {
-        // Si le canvas existe déjà, mettre à jour sa taille
-        canvas.width = boardWidth;
-        canvas.height = boardHeight;
+        // Keep a fixed size
+        canvas.width = 1200;
+        canvas.height = 800;
     }
-    
-    // Ajouter un style pour que le canvas soit responsive
+
+    // Add a style to make the canvas responsive while keeping its proportions
     canvas.style.maxWidth = '100%';
     canvas.style.height = 'auto';
-    
+    canvas.style.border = '1px solid #ddd';
+    canvas.style.borderRadius = '4px';
+
     ctx = canvas.getContext('2d');
-    
-    // Initialisation des contrôles
+
+    // Initialize controls
     initializeControls();
-    
-    // Placement des modules et connexions
+
+    // Place modules and connections
     placeModules();
     createConnections();
-    
-    // Premier rendu
+
+    // Initialize zoom and pan events
+    initializeZoomPanEvents();
+
+    // Adjust view to fit content
+    fitContentToView();
+
+    // First render
     render();
 }
 
 /**
- * Calcule la taille optimale du canvas en fonction du nombre de modules
+ * Calculates the optimal canvas size based on the number of modules
  */
 function calculateCanvasSize() {
     if (!fpgaData || !fpgaData.modules || fpgaData.modules.length === 0) {
-        // Taille par défaut si pas de modules
+        // Default size if no modules
         boardWidth = 800;
         boardHeight = 600;
         return;
     }
-    
+
     const moduleCount = fpgaData.modules.length;
-    
-    // Ajuster l'espacement de la grille en fonction du nombre de modules
+
+    // Adjust grid spacing based on the number of modules
     if (moduleCount > 100) {
         moduleSize = 40;
         gridSpacing = 80;
@@ -97,26 +114,26 @@ function calculateCanvasSize() {
         moduleSize = 70;
         gridSpacing = 140;
     }
-    
-    // Calculer le nombre de colonnes optimal (approximativement carré)
+
+    // Calculate the optimal number of columns (approximately square)
     const modulesPerRow = Math.ceil(Math.sqrt(moduleCount));
-    
-    // Calculer le nombre de lignes nécessaires
+
+    // Calculate the number of rows needed
     const rowCount = Math.ceil(moduleCount / modulesPerRow);
-    
-    // Calculer la largeur et la hauteur nécessaires pour le canvas
+
+    // Calculate the necessary width and height for the canvas
     boardWidth = modulesPerRow * gridSpacing + MARGIN * 2;
     boardHeight = rowCount * gridSpacing + MARGIN * 2;
-    
-    // Assurer une taille minimale
+
+    // Ensure a minimum size
     boardWidth = Math.max(boardWidth, 600);
     boardHeight = Math.max(boardHeight, 400);
-    
+
     console.log(`Canvas size calculated: ${boardWidth}x${boardHeight} for ${moduleCount} modules`);
 }
 
 /**
- * Réinitialise l'animation
+ * Resets the animation
  */
 function resetAnimation() {
     modules = [];
@@ -125,7 +142,7 @@ function resetAnimation() {
     moduleInputsRequired = new Map();
     moduleInputsReceived = new Map();
     animationRunning = false;
-    
+
     if (animationFrame) {
         cancelAnimationFrame(animationFrame);
         animationFrame = null;
@@ -133,62 +150,69 @@ function resetAnimation() {
 }
 
 /**
- * Initialise les contrôles de l'animation
+ * Initializes animation controls and adds zoom controls
  */
 function initializeControls() {
     const controlsContainer = document.getElementById('animation-controls');
     if (!controlsContainer) return;
-    
-    // Vider les contrôles existants
+
+    // Clear existing controls
     controlsContainer.innerHTML = '';
-    
-    // Créer les boutons de contrôle
+
+    // Create control buttons
     const startButton = document.createElement('button');
     startButton.textContent = 'Start Animation';
     startButton.id = 'start-animation';
     startButton.className = 'btn btn-primary me-2';
     startButton.addEventListener('click', toggleAnimation);
-    
+
     const resetButton = document.createElement('button');
     resetButton.textContent = 'Reset';
     resetButton.id = 'reset-animation';
     resetButton.className = 'btn btn-secondary me-2';
     resetButton.addEventListener('click', resetAnimationAndResize);
-    
-    const speedContainer = document.createElement('div');
-    speedContainer.className = 'd-flex align-items-center ms-2';
-    
-    const speedLabel = document.createElement('label');
-    speedLabel.textContent = 'Speed: ';
-    speedLabel.className = 'me-2';
-    
-    const speedSlider = document.createElement('input');
-    speedSlider.type = 'range';
-    speedSlider.min = '0.2';
-    speedSlider.max = '5';
-    speedSlider.step = '0.2';
-    speedSlider.value = animationSpeed;
-    speedSlider.className = 'form-range';
-    speedSlider.style.width = '100px';
-    speedSlider.addEventListener('input', (e) => {
-        animationSpeed = parseFloat(e.target.value);
-        speedValue.textContent = animationSpeed.toFixed(1) + 'x';
+
+    // Add zoom buttons
+    const zoomContainer = document.createElement('div');
+    zoomContainer.className = 'd-flex align-items-center ms-3';
+
+    const zoomInButton = document.createElement('button');
+    zoomInButton.innerHTML = '<i class="fas fa-search-plus"></i>';
+    zoomInButton.className = 'btn btn-sm btn-outline-secondary me-1';
+    zoomInButton.title = 'Zoom In';
+    zoomInButton.addEventListener('click', function() {
+        zoomLevel = Math.min(10, zoomLevel * 1.2);
+        render();
     });
-    
-    const speedValue = document.createElement('span');
-    speedValue.textContent = animationSpeed.toFixed(1) + 'x';
-    speedValue.className = 'ms-2';
-    
-    speedContainer.appendChild(speedLabel);
-    speedContainer.appendChild(speedSlider);
-    speedContainer.appendChild(speedValue);
-    
-    // Ajouter les boutons au conteneur
+
+    const zoomOutButton = document.createElement('button');
+    zoomOutButton.innerHTML = '<i class="fas fa-search-minus"></i>';
+    zoomOutButton.className = 'btn btn-sm btn-outline-secondary me-1';
+    zoomOutButton.title = 'Zoom Out';
+    zoomOutButton.addEventListener('click', function() {
+        zoomLevel = Math.max(0.1, zoomLevel / 1.2);
+        render();
+    });
+
+    const fitButton = document.createElement('button');
+    fitButton.innerHTML = '<i class="fas fa-expand"></i>';
+    fitButton.className = 'btn btn-sm btn-outline-secondary';
+    fitButton.title = 'Fit to View';
+    fitButton.addEventListener('click', function() {
+        fitContentToView();
+        render();
+    });
+
+    zoomContainer.appendChild(zoomOutButton);
+    zoomContainer.appendChild(zoomInButton);
+    zoomContainer.appendChild(fitButton);
+
+    // Add buttons to the container
     controlsContainer.appendChild(startButton);
     controlsContainer.appendChild(resetButton);
-    controlsContainer.appendChild(speedContainer);
-    
-    // Ajouter une légende
+    controlsContainer.appendChild(zoomContainer);
+
+    // Add a legend
     const legend = document.createElement('div');
     legend.className = 'mt-3 d-flex flex-wrap';
     legend.innerHTML = `
@@ -198,25 +222,38 @@ function initializeControls() {
         <div class="me-4 mb-2"><span style="display:inline-block;width:20px;height:20px;background-color:#e74c3c;margin-right:5px;"></span> Signal</div>
     `;
     controlsContainer.appendChild(legend);
-    
-    // Ajouter des informations d'utilisation
+
+    // Add usage information
     const info = document.createElement('div');
-    info.className = 'mt-3 small text-muted';
-    info.innerHTML = 'Cette animation montre la propagation des signaux à travers les modules FPGA. Les délais sont basés sur les temps définis dans le fichier SDF.';
+    info.className = 'mt-2 small text-muted';
+    info.innerHTML = 'Navigation: Scroll to zoom, right-click and drag to pan.';
     controlsContainer.appendChild(info);
+
+    // Add a button to toggle style
+    const styleButton = document.createElement('button');
+    styleButton.textContent = 'Schematic View';
+    styleButton.id = 'toggle-style';
+    styleButton.className = 'btn btn-outline-secondary me-2';
+    styleButton.addEventListener('click', function() {
+        useSchematicStyle = !useSchematicStyle;
+        this.textContent = useSchematicStyle ? 'Normal View' : 'Schematic View';
+        resetAnimationAndResize();
+    });
+
+    controlsContainer.appendChild(styleButton);
 }
 
 /**
- * Démarre ou arrête l'animation
+ * Starts or stops the animation
  */
 function toggleAnimation() {
     animationRunning = !animationRunning;
-    
+
     const button = document.getElementById('start-animation');
     if (button) {
         button.textContent = animationRunning ? 'Pause Animation' : 'Start Animation';
     }
-    
+
     if (animationRunning) {
         startTime = performance.now();
         signals = [];
@@ -229,105 +266,138 @@ function toggleAnimation() {
 }
 
 /**
- * Place les modules sur le canvas selon une disposition plus logique
+ * Places modules on the canvas in a schematic style
  */
 function placeModules() {
   if (!fpgaData || !fpgaData.modules) return;
-  
+
   modules = [];
-  
-  // Séparer les modules par type
+
+  // Separate modules by type
   const ioModules = fpgaData.modules.filter(m => m.type === 'IO_PORT');
-  const functionalModules = fpgaData.modules.filter(m => m.type !== 'IO_PORT');
-  
-  // Placer d'abord les modules fonctionnels en grille
-  const modulesPerRow = Math.ceil(Math.sqrt(functionalModules.length));
-  
-  // Calculer le décalage pour centrer la grille
-  const offsetX = (boardWidth - (modulesPerRow * gridSpacing)) / 2 + moduleSize;
-  const offsetY = MARGIN + moduleSize * 2; // Laisser de l'espace en haut pour les entrées
-  
-  // Placer chaque module fonctionnel dans la grille
-  functionalModules.forEach((moduleData, index) => {
-    const row = Math.floor(index / modulesPerRow);
-    const col = index % modulesPerRow;
-    
-    const x = offsetX + col * gridSpacing;
-    const y = offsetY + row * gridSpacing;
-    
-    // Déterminer la couleur du module
-    let color = '#4a90e2';  // Bleu par défaut (LUT)
-    
-    if (moduleData.type.includes('DFF')) {
-      color = '#50c878';  // Vert pour les DFF (flip-flops)
-    }
-    
-    modules.push({
-      id: moduleData.instance,
-      type: moduleData.type,
-      x: x,
-      y: y,
-      width: moduleSize,
-      height: moduleSize,
-      color: color,
-      data: moduleData
-    });
-  });
-  
-  // Identifier les entrées et sorties
+  const lutModules = fpgaData.modules.filter(m => m.type.includes('LUT'));
+  const dffModules = fpgaData.modules.filter(m => m.type.includes('DFF') || m.type === 'DFF');
+  const otherModules = fpgaData.modules.filter(m =>
+    !m.type.includes('LUT') &&
+    !m.type.includes('DFF') &&
+    m.type !== 'DFF' &&
+    m.type !== 'IO_PORT'
+  );
+
+  // Identify inputs and outputs
   const inputs = ioModules.filter(m => m.isInput || !m.isOutput);
   const outputs = ioModules.filter(m => m.isOutput);
-  
-  // Placer les entrées en haut
-  const inputWidth = boardWidth / (inputs.length + 1);
+
+  // Define circuit dimensions
+  const inputHeight = inputs.length * gridSpacing;
+  const outputHeight = outputs.length * gridSpacing;
+  const circuitHeight = Math.max(inputHeight, outputHeight, 400);
+
+  // Define column widths
+  const numColumns = 4; // Inputs, LUTs, DFFs, Outputs
+  boardWidth = numColumns * gridSpacing * 3 + MARGIN * 2;
+  boardHeight = circuitHeight + MARGIN * 2;
+
+  // Place inputs on the left
   inputs.forEach((input, index) => {
+    const y = MARGIN + (circuitHeight / (inputs.length + 1)) * (index + 1);
     modules.push({
       id: input.instance,
       type: 'IO_PORT',
-      x: inputWidth * (index + 1),
-      y: MARGIN,
+      x: MARGIN + gridSpacing,
+      y: y,
       width: moduleSize * 0.8,
       height: moduleSize * 0.8,
-      color: '#f39c12', // Orange pour les I/O
+      color: '#f39c12', // Orange for I/O
       isInput: true,
-      data: input
+      data: input,
+      schematicShape: 'input' // For schematic rendering
     });
   });
-  
-  // Placer les sorties en bas
-  const outputWidth = boardWidth / (outputs.length + 1);
+
+  // Place LUTs in the second column
+  lutModules.forEach((lut, index) => {
+    const y = MARGIN + (circuitHeight / (lutModules.length + 1)) * (index + 1);
+    modules.push({
+      id: lut.instance,
+      type: lut.type,
+      x: MARGIN + gridSpacing * 4,
+      y: y,
+      width: moduleSize,
+      height: moduleSize,
+      color: '#4a90e2', // Blue for LUTs
+      data: lut,
+      schematicShape: 'lut' // For schematic rendering
+    });
+  });
+
+  // Place DFFs in the third column
+  dffModules.forEach((dff, index) => {
+    const y = MARGIN + (circuitHeight / (dffModules.length + 1)) * (index + 1);
+    modules.push({
+      id: dff.instance,
+      type: dff.type,
+      x: MARGIN + gridSpacing * 7,
+      y: y,
+      width: moduleSize,
+      height: moduleSize,
+      color: '#50c878', // Green for DFFs
+      data: dff,
+      schematicShape: 'dff' // For schematic rendering
+    });
+  });
+
+  // Place other modules in the middle
+  otherModules.forEach((other, index) => {
+    const y = MARGIN + circuitHeight / 2 + (index - otherModules.length / 2) * gridSpacing;
+    modules.push({
+      id: other.instance,
+      type: other.type,
+      x: MARGIN + gridSpacing * 5.5,
+      y: y,
+      width: moduleSize,
+      height: moduleSize,
+      color: '#9b59b6', // Purple for others
+      data: other,
+      schematicShape: 'other' // For schematic rendering
+    });
+  });
+
+  // Place outputs on the right
   outputs.forEach((output, index) => {
+    const y = MARGIN + (circuitHeight / (outputs.length + 1)) * (index + 1);
     modules.push({
       id: output.instance,
       type: 'IO_PORT',
-      x: outputWidth * (index + 1),
-      y: boardHeight - MARGIN,
+      x: boardWidth - MARGIN - gridSpacing,
+      y: y,
       width: moduleSize * 0.8,
       height: moduleSize * 0.8,
-      color: '#f39c12', // Orange pour les I/O
+      color: '#f39c12', // Orange for I/O
       isOutput: true,
-      data: output
+      data: output,
+      schematicShape: 'output' // For schematic rendering
     });
   });
 }
 
 /**
- * Crée les connexions entre les modules et détecte les entrées requises
+ * Creates connections between modules and detects required inputs
  */
 function createConnections() {
     if (!fpgaData || !fpgaData.connections) return;
-    
+
     connections = [];
-    
-    // Réinitialiser les maps de suivi des entrées
+
+    // Reset input tracking maps
     moduleInputsRequired = new Map();
     moduleInputsReceived = new Map();
-    
+
     fpgaData.connections.forEach(connectionData => {
-        // Trouver les modules source et destination
+        // Find source and target modules
         const sourceModule = findModuleByPartialId(connectionData.from);
         const targetModule = findModuleByPartialId(connectionData.to);
-        
+
         if (sourceModule && targetModule) {
             const connection = {
                 id: connectionData.id,
@@ -336,16 +406,16 @@ function createConnections() {
                 delay: getMaxDelay(connectionData.delays),
                 data: connectionData
             };
-            
+
             connections.push(connection);
-            
-            // Enregistrer cette connexion comme entrée requise pour le module cible
+
+            // Register this connection as a required input for the target module
             if (!moduleInputsRequired.has(targetModule.id)) {
                 moduleInputsRequired.set(targetModule.id, new Set());
             }
             moduleInputsRequired.get(targetModule.id).add(connection.id);
-            
-            // Initialiser l'ensemble des entrées reçues pour le module
+
+            // Initialize the set of received inputs for the module
             if (!moduleInputsReceived.has(targetModule.id)) {
                 moduleInputsReceived.set(targetModule.id, new Set());
             }
@@ -354,23 +424,23 @@ function createConnections() {
 }
 
 /**
- * Trouve un module par ID partiel
+ * Finds a module by partial ID
  */
 function findModuleByPartialId(partialId) {
-    return modules.find(module => 
-        module.id.includes(partialId) || 
+    return modules.find(module =>
+        module.id.includes(partialId) ||
         partialId.includes(module.id)
     );
 }
 
 /**
- * Obtient le délai maximum d'une connexion
+ * Gets the maximum delay of a connection
  */
 function getMaxDelay(delays) {
     if (!delays || !delays.length) return 0;
-    
+
     let maxDelay = 0;
-    
+
     delays.forEach(delay => {
         if (delay.rise && delay.rise.max) {
             maxDelay = Math.max(maxDelay, delay.rise.max);
@@ -379,130 +449,130 @@ function getMaxDelay(delays) {
             maxDelay = Math.max(maxDelay, delay.fall.max);
         }
     });
-    
+
     return maxDelay;
 }
 
 /**
- * Crée les signaux initiaux pour l'animation
+ * Creates initial signals for the animation
  */
 function createInitialSignals() {
-    // Trouver les modules d'entrée (ceux avec isInput=true ou type=IO_PORT)
-    const inputModules = modules.filter(module => 
+    // Find input modules (those with isInput=true or type=IO_PORT)
+    const inputModules = modules.filter(module =>
         module.type === 'IO_PORT' && module.isInput
     );
-    
-    // Si aucun module d'entrée spécifique n'est trouvé, utiliser la méthode précédente
-    const sourcesToUse = inputModules.length > 0 ? inputModules : 
+
+    // If no specific input modules are found, use the previous method
+    const sourcesToUse = inputModules.length > 0 ? inputModules :
         modules.filter(module => {
             return connections.some(conn => conn.source === module) &&
                   !connections.some(conn => conn.target === module);
         });
-    
-    // Créer un signal pour chaque source
+
+    // Create a signal for each source
     sourcesToUse.forEach(source => {
         propagateSignalsFromModule(source, performance.now());
     });
 }
 
 /**
- * Anime les signaux sur le canvas
+ * Animates signals on the canvas
  */
 function animate() {
     const currentTime = performance.now();
     const elapsedTime = (currentTime - startTime) * animationSpeed;
-    
-    // Mettre à jour la progression des signaux existants
+
+    // Update the progress of existing signals
     signals.forEach(signal => {
         if (!signal.active) return;
-        
+
         const signalDuration = signal.connection.delay || 1000;
         signal.progress = Math.min(1, (currentTime - signal.startTime) * animationSpeed / signalDuration);
-        
-        // Si le signal a atteint sa destination
+
+        // If the signal has reached its destination
         if (signal.progress >= 1) {
             signal.active = false;
-            
-            // Trouver le module cible
+
+            // Find the target module
             const targetModule = signal.connection.target;
-            
-            // Marquer cette entrée comme reçue
+
+            // Mark this input as received
             if (moduleInputsReceived.has(targetModule.id)) {
                 moduleInputsReceived.get(targetModule.id).add(signal.connection.id);
             }
-            
-            // Vérifier si toutes les entrées nécessaires sont reçues
+
+            // Check if all required inputs are received
             const allInputsReceived = checkAllInputsReceived(targetModule);
-            
-            // Créer des signaux pour toutes les connexions sortantes du module cible
-            // seulement si toutes les entrées nécessaires sont reçues
+
+            // Create signals for all outgoing connections of the target module
+            // only if all required inputs are received
             if (allInputsReceived || targetModule.type === 'IO_PORT') {
                 propagateSignalsFromModule(targetModule, currentTime);
             }
         }
     });
-    
-    // Dessiner la scène
+
+    // Draw the scene
     render();
-    
-    // Continuer l'animation si activée
+
+    // Continue the animation if active
     if (animationRunning) {
         animationFrame = requestAnimationFrame(animate);
     }
 }
 
 /**
- * Vérifie si un module a reçu toutes ses entrées nécessaires
+ * Checks if a module has received all its required inputs
  */
 function checkAllInputsReceived(module) {
-    // Les modules d'entrée n'ont pas d'entrées requises (ou sont directement actifs)
+    // Input modules do not have required inputs (or are directly active)
     if (module.type === 'IO_PORT' && module.isInput) {
         return true;
     }
-    
-    // Si le module n'a pas d'entrées requises, considérer qu'il est prêt
+
+    // If the module has no required inputs, consider it ready
     if (!moduleInputsRequired.has(module.id)) {
         return true;
     }
-    
+
     const requiredInputs = moduleInputsRequired.get(module.id);
     const receivedInputs = moduleInputsReceived.get(module.id);
-    
-    // Si on n'a pas encore d'entrées reçues, retourner false
+
+    // If we don't have any received inputs yet, return false
     if (!receivedInputs) return false;
-    
-    // Vérifier si toutes les entrées requises sont dans les entrées reçues
+
+    // Check if all required inputs are in the received inputs
     for (const required of requiredInputs) {
         if (!receivedInputs.has(required)) {
             return false;
         }
     }
-    
+
     return true;
 }
 
 /**
- * Propage des signaux depuis un module source
+ * Propagates signals from a source module
  */
 function propagateSignalsFromModule(sourceModule, currentTime) {
-    // Trouver toutes les connexions partant de cette source
+    // Find all connections originating from this source
     const outgoingConnections = connections.filter(conn => conn.source === sourceModule);
-    
-    // Délai de traitement interne du module (pour les éléments qui ne sont pas des I/O)
+
+    // Internal processing delay of the module (for non-I/O elements)
     const processingDelay = sourceModule.type === 'IO_PORT' ? 0 : 50;
-    
+
     outgoingConnections.forEach(connection => {
-        // Vérifier si ce signal existe déjà récemment créé (éviter les doublons)
-        const existingSignal = signals.find(s => 
+        // Check if this signal already exists recently created (avoid duplicates)
+        const existingSignal = signals.find(s =>
             s.connection === connection && s.startTime > currentTime - 5000
         );
-        
+
         if (!existingSignal) {
             signals.push({
                 id: `signal-${sourceModule.id}-${connection.target.id}`,
                 connection: connection,
                 progress: 0,
-                startTime: currentTime + processingDelay, // Ajouter délai de traitement
+                startTime: currentTime + processingDelay, // Add processing delay
                 color: '#e74c3c',
                 active: true
             });
@@ -511,245 +581,381 @@ function propagateSignalsFromModule(sourceModule, currentTime) {
 }
 
 /**
- * Dessine l'état actuel de l'animation
+ * Draws the current state of the animation with support for zoom and pan
  */
 function render() {
-    // Effacer le canvas
+    // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Dessiner l'arrière-plan
+
+    // Draw the background
     ctx.fillStyle = '#f8f9fa';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Dessiner les connexions
+
+    // Save the state before transformation
+    ctx.save();
+
+    // Apply the transformation (zoom and pan)
+    ctx.translate(panOffsetX, panOffsetY);
+    ctx.scale(zoomLevel, zoomLevel);
+
+    // Draw the background grid
+    drawGrid();
+
+    // Draw the connections
     drawConnections();
-    
-    // Dessiner les signaux
+
+    // Draw the signals
     drawSignals();
-    
-    // Dessiner les modules
+
+    // Draw the modules
     drawModules();
-    
-    // Ajouter les délais sur les connexions
+
+    // Add delays on the connections
     if (!animationRunning) {
         addDelayLabels();
     }
+
+    // Restore the original state
+    ctx.restore();
+
+    // Display information about the current zoom level
+    ctx.fillStyle = '#333';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Zoom: ${zoomLevel.toFixed(1)}x`, 10, 20);
 }
 
 /**
- * Dessine les connexions entre les modules
+ * Draws connections between modules in Manhattan style
  */
 function drawConnections() {
-    connections.forEach(connection => {
-        const source = connection.source;
-        const target = connection.target;
-        
-        ctx.beginPath();
-        ctx.moveTo(source.x + source.width / 2, source.y + source.height / 2);
-        
-        // Dessiner une ligne courbe
-        const cp1x = source.x + source.width / 2 + (target.x - source.x) / 3;
-        const cp1y = source.y + source.height / 2;
-        const cp2x = target.x + target.width / 2 - (target.x - source.x) / 3;
-        const cp2y = target.y + target.height / 2;
-        
-        ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, target.x + target.width / 2, target.y + target.height / 2);
-        
-        ctx.strokeStyle = '#ccc';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-    });
+  connections.forEach(connection => {
+    const source = connection.source;
+    const target = connection.target;
+
+    // Starting and ending points
+    let startX = source.x;
+    let startY = source.y;
+    let endX = target.x;
+    let endY = target.y;
+
+    // Adjust connection points based on module type
+    if (source.schematicShape === 'input') {
+      startX = source.x + source.width/2;
+    } else if (source.schematicShape === 'output') {
+      startX = source.x - source.width/2;
+    } else if (source.schematicShape === 'lut') {
+      startX = source.x + source.width/2;
+    } else if (source.schematicShape === 'dff') {
+      startX = source.x + source.width/2;
+    }
+
+    if (target.schematicShape === 'input') {
+      endX = target.x + target.width/2;
+    } else if (target.schematicShape === 'output') {
+      endX = target.x - target.width/2;
+    } else if (target.schematicShape === 'lut') {
+      endX = target.x - target.width/2;
+    } else if (target.schematicShape === 'dff') {
+      endX = target.x - target.width/2;
+    }
+
+    // Draw the Manhattan connection (with right-angle segments)
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+
+    // Calculate the midpoint
+    const midX = (startX + endX) / 2;
+
+    // Draw the path segments
+    ctx.lineTo(midX, startY);
+    ctx.lineTo(midX, endY);
+    ctx.lineTo(endX, endY);
+
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Add a small directional arrow
+    const arrowSize = 6;
+    const angle = Math.atan2(0, endX - midX); // Horizontal arrow
+
+    ctx.beginPath();
+    ctx.moveTo(endX, endY);
+    ctx.lineTo(endX - arrowSize * Math.cos(angle - Math.PI/6),
+              endY - arrowSize * Math.sin(angle - Math.PI/6));
+    ctx.lineTo(endX - arrowSize * Math.cos(angle + Math.PI/6),
+              endY - arrowSize * Math.sin(angle + Math.PI/6));
+    ctx.closePath();
+    ctx.fillStyle = '#888';
+    ctx.fill();
+  });
 }
 
 /**
- * Dessine les signaux en cours de propagation
+ * Draws signals propagating in Manhattan style
  */
 function drawSignals() {
-    signals.forEach(signal => {
-        if (!signal.active) return;
-        
-        const source = signal.connection.source;
-        const target = signal.connection.target;
-        
-        // Calculer la position du signal le long de la courbe de Bézier
-        const t = signal.progress;
-        
-        const cp1x = source.x + source.width / 2 + (target.x - source.x) / 3;
-        const cp1y = source.y + source.height / 2;
-        const cp2x = target.x + target.width / 2 - (target.x - source.x) / 3;
-        const cp2y = target.y + target.height / 2;
-        
-        const startX = source.x + source.width / 2;
-        const startY = source.y + source.height / 2;
-        const endX = target.x + target.width / 2;
-        const endY = target.y + target.height / 2;
-        
-        // Équation paramétrique de la courbe de Bézier cubique
-        const x = Math.pow(1-t, 3) * startX + 
-                 3 * Math.pow(1-t, 2) * t * cp1x +
-                 3 * (1-t) * Math.pow(t, 2) * cp2x +
-                 Math.pow(t, 3) * endX;
-                 
-        const y = Math.pow(1-t, 3) * startY + 
-                 3 * Math.pow(1-t, 2) * t * cp1y +
-                 3 * (1-t) * Math.pow(t, 2) * cp2y +
-                 Math.pow(t, 3) * endY;
-        
-        // Dessiner le point du signal
-        ctx.beginPath();
-        ctx.arc(x, y, 6, 0, Math.PI * 2);
-        ctx.fillStyle = signal.color;
-        ctx.fill();
-        
-        // Tracer sillage
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
-        
-        // Dessiner la partie de la courbe parcourue
-        const steps = 20;
-        for (let i = 1; i <= steps * t; i++) {
-            const st = i / steps;
-            const sx = Math.pow(1-st, 3) * startX + 
-                      3 * Math.pow(1-st, 2) * st * cp1x +
-                      3 * (1-st) * Math.pow(st, 2) * cp2x +
-                      Math.pow(st, 3) * endX;
-                      
-            const sy = Math.pow(1-st, 3) * startY + 
-                      3 * Math.pow(1-st, 2) * st * cp1y +
-                      3 * (1-st) * Math.pow(st, 2) * cp2y +
-                      Math.pow(st, 3) * endY;
-            
-            ctx.lineTo(sx, sy);
-        }
-        
-        ctx.strokeStyle = signal.color;
-        ctx.lineWidth = 3;
-        ctx.stroke();
-    });
+  signals.forEach(signal => {
+    if (!signal.active) return;
+
+    const source = signal.connection.source;
+    const target = signal.connection.target;
+    const t = signal.progress;
+
+    // Starting and ending points (as in drawConnections)
+    let startX = source.x;
+    let startY = source.y;
+    let endX = target.x;
+    let endY = target.y;
+
+    // Adjust connection points based on module type
+    if (source.schematicShape === 'input') {
+      startX = source.x + source.width/2;
+    } else if (source.schematicShape === 'output') {
+      startX = source.x - source.width/2;
+    } else if (source.schematicShape === 'lut') {
+      startX = source.x + source.width/2;
+    } else if (source.schematicShape === 'dff') {
+      startX = source.x + source.width/2;
+    }
+
+    if (target.schematicShape === 'input') {
+      endX = target.x + target.width/2;
+    } else if (target.schematicShape === 'output') {
+      endX = target.x - target.width/2;
+    } else if (target.schematicShape === 'lut') {
+      endX = target.x - target.width/2;
+    } else if (target.schematicShape === 'dff') {
+      endX = target.x - target.width/2;
+    }
+
+    // Midpoint
+    const midX = (startX + endX) / 2;
+
+    // Determine the signal position along the path
+    let x, y;
+
+    // First segment: horizontal from source to midX
+    if (t < 0.33) {
+      x = startX + (midX - startX) * (t * 3);
+      y = startY;
+    }
+    // Second segment: vertical from startY to endY
+    else if (t < 0.66) {
+      x = midX;
+      y = startY + (endY - startY) * ((t - 0.33) * 3);
+    }
+    // Third segment: horizontal from midX to target
+    else {
+      x = midX + (endX - midX) * ((t - 0.66) * 3);
+      y = endY;
+    }
+
+    // Draw the signal point
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#e74c3c';
+    ctx.fill();
+
+    // Draw the path traveled
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+
+    if (t <= 0.33) {
+      // First segment partially traveled
+      ctx.lineTo(x, startY);
+    } else {
+      // First segment complete
+      ctx.lineTo(midX, startY);
+
+      if (t <= 0.66) {
+        // Second segment partially traveled
+        ctx.lineTo(midX, y);
+      } else {
+        // Second segment complete
+        ctx.lineTo(midX, endY);
+        // Third segment partially traveled
+        ctx.lineTo(x, endY);
+      }
+    }
+
+    ctx.strokeStyle = '#e74c3c';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
 }
 
 /**
- * Dessine les modules sur le canvas
+ * Draws modules on the canvas with schematic symbols
  */
 function drawModules() {
+  // Draw the modules
   modules.forEach(module => {
-    // Dessiner le fond du module
-    ctx.fillStyle = module.color;
-    
-    // Forme différente pour les I/O
-    if (module.type === 'IO_PORT') {
-      if (module.isInput) {
-        // Triangle pour les entrées (pointe vers le bas)
-        ctx.beginPath();
-        ctx.moveTo(module.x, module.y - module.height/2);
-        ctx.lineTo(module.x + module.width/2, module.y + module.height/2);
-        ctx.lineTo(module.x - module.width/2, module.y + module.height/2);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-      } else {
-        // Triangle pour les sorties (pointe vers le haut)
-        ctx.beginPath();
-        ctx.moveTo(module.x, module.y + module.height/2);
-        ctx.lineTo(module.x + module.width/2, module.y - module.height/2);
-        ctx.lineTo(module.x - module.width/2, module.y - module.height/2);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-      }
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+
+    if (module.schematicShape === 'input') {
+      // Input: square with triangle
+      ctx.beginPath();
+      // Triangle pointing to the right
+      ctx.moveTo(module.x, module.y - module.height/2);
+      ctx.lineTo(module.x + module.width, module.y);
+      ctx.lineTo(module.x, module.y + module.height/2);
+      ctx.closePath();
+      ctx.fillStyle = module.color;
+      ctx.fill();
+      ctx.stroke();
+
+      // Port name
+      ctx.fillStyle = '#000';
+      ctx.font = '11px Arial';
+      ctx.textAlign = 'right';
+      ctx.fillText(simplifyName(module.id), module.x - 5, module.y);
+
+    } else if (module.schematicShape === 'output') {
+      // Output: triangle pointing to the left
+      ctx.beginPath();
+      ctx.moveTo(module.x, module.y - module.height/2);
+      ctx.lineTo(module.x - module.width, module.y);
+      ctx.lineTo(module.x, module.y + module.height/2);
+      ctx.closePath();
+      ctx.fillStyle = module.color;
+      ctx.fill();
+      ctx.stroke();
+
+      // Port name
+      ctx.fillStyle = '#000';
+      ctx.font = '11px Arial';
+      ctx.textAlign = 'left';
+      ctx.fillText(simplifyName(module.id), module.x + 5, module.y);
+
+    } else if (module.schematicShape === 'lut') {
+      // LUT: Rectangle with "&" symbol (AND) to represent logic
+      const x = module.x - module.width/2;
+      const y = module.y - module.height/2;
+      const w = module.width;
+      const h = module.height;
+
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + w, y);
+      ctx.lineTo(x + w, y + h);
+      ctx.lineTo(x, y + h);
+      ctx.closePath();
+      ctx.fillStyle = module.color;
+      ctx.fill();
+      ctx.stroke();
+
+      // Add the LUT symbol
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 12px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('LUT', module.x, module.y);
+
+      // Name below
+      ctx.font = '10px Arial';
+      ctx.fillText(simplifyName(module.id), module.x, module.y + module.height/2 + 12);
+
+    } else if (module.schematicShape === 'dff') {
+      // DFF: Rectangle with clock symbol
+      const x = module.x - module.width/2;
+      const y = module.y - module.height/2;
+      const w = module.width;
+      const h = module.height;
+
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + w, y);
+      ctx.lineTo(x + w, y + h);
+      ctx.lineTo(x, y + h);
+      ctx.closePath();
+      ctx.fillStyle = module.color;
+      ctx.fill();
+      ctx.stroke();
+
+      // Add the DFF symbol
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 12px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('FF', module.x, module.y);
+
+      // Clock symbol (triangle)
+      ctx.beginPath();
+      ctx.moveTo(x - 5, y + h/2 - 5);
+      ctx.lineTo(x, y + h/2);
+      ctx.lineTo(x - 5, y + h/2 + 5);
+      ctx.stroke();
+
+      // Name below
+      ctx.font = '10px Arial';
+      ctx.fillText(simplifyName(module.id), module.x, module.y + module.height/2 + 12);
+
     } else {
-      // Rectangle arrondi pour les modules fonctionnels
-      roundRect(ctx, module.x - module.width/2, module.y - module.height/2, 
-               module.width, module.height, 8, true, false);
-      
-      // Dessiner le contour
-      ctx.strokeStyle = '#333';
-      ctx.lineWidth = 2;
-      roundRect(ctx, module.x - module.width/2, module.y - module.height/2, 
-               module.width, module.height, 8, false, true);
-    }
-    
-    // Ajouter le nom du module
-    ctx.fillStyle = module.type === 'IO_PORT' ? '#000' : '#fff';
-    ctx.font = '10px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    
-    // Extraire le nom simplifié du module
-    let displayName = module.id;
-    
-    // Si le nom est trop long, extraire une partie plus courte
-    const nameParts = module.id.split('_');
-    if (nameParts.length > 1) {
-      if (module.id.includes('lut_')) {
-        displayName = nameParts[1];
-      } else if (module.type === 'IO_PORT') {
-        // Pour les I/O, utiliser le premier segment qui est souvent le nom du port
-        displayName = nameParts[0];
-      } else {
-        // Prendre la dernière partie significative
-        displayName = nameParts[nameParts.length - 1];
-      }
-    }
-    
-    // Limiter la longueur
-    if (displayName.length > 10) {
-      displayName = displayName.substring(0, 9) + '...';
-    }
-    
-    // Position différente du texte pour les I/O
-    if (module.type === 'IO_PORT') {
-      const textY = module.isInput ? module.y + module.height/2 + 12 : module.y - module.height/2 - 12;
-      ctx.fillText(displayName, module.x, textY);
-    } else {
-      ctx.fillText(displayName, module.x, module.y);
-      // Ajouter le type en dessous (plus petit)
-      ctx.font = '8px Arial';
-      ctx.fillText(module.type, module.x, module.y + 12);
+      // Other modules: Simple rectangle
+      const x = module.x - module.width/2;
+      const y = module.y - module.height/2;
+      const w = module.width;
+      const h = module.height;
+
+      ctx.beginPath();
+      ctx.rect(x, y, w, h);
+      ctx.fillStyle = module.color;
+      ctx.fill();
+      ctx.stroke();
+
+      // Module name
+      ctx.fillStyle = '#fff';
+      ctx.font = '11px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(simplifyName(module.id), module.x, module.y);
     }
   });
 }
 
 /**
- * Ajoute les étiquettes de délai sur les connexions
+ * Adds delay labels on the connections
  */
 function addDelayLabels() {
     connections.forEach(connection => {
         const source = connection.source;
         const target = connection.target;
-        
-        // Calculer le point central de la connexion
+
+        // Calculate the midpoint of the connection
         const midX = (source.x + target.x) / 2;
         const midY = (source.y + target.y) / 2;
-        
-        // Ajouter un décalage pour éviter que les étiquettes se chevauchent
+
+        // Add an offset to prevent labels from overlapping
         const offsetX = (target.y - source.y) * 0.1;
         const offsetY = (source.x - target.x) * 0.1;
-        
-        // Afficher le délai arrondi
+
+        // Display the rounded delay
         const delayValue = connection.delay;
-        const displayDelay = delayValue >= 1000 
-            ? (delayValue / 1000).toFixed(1) + ' ns' 
+        const displayDelay = delayValue >= 1000
+            ? (delayValue / 1000).toFixed(1) + ' ns'
             : delayValue.toFixed(0) + ' ps';
-        
+
         ctx.fillStyle = '#333';
         ctx.font = '10px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        
-        // Fond blanc pour l'étiquette
+
+        // White background for the label
         const textWidth = ctx.measureText(displayDelay).width;
         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
         ctx.fillRect(midX + offsetX - textWidth/2 - 2, midY + offsetY - 7, textWidth + 4, 14);
-        
-        // Texte du délai
+
+        // Delay text
         ctx.fillStyle = '#333';
         ctx.fillText(displayDelay, midX + offsetX, midY + offsetY);
     });
 }
 
 /**
- * Dessine un rectangle avec coins arrondis
+ * Draws a rectangle with rounded corners
  */
 function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
     ctx.beginPath();
@@ -763,39 +969,209 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
     ctx.lineTo(x, y + radius);
     ctx.quadraticCurveTo(x, y, x + radius, y);
     ctx.closePath();
-    
+
     if (fill) {
         ctx.fill();
     }
-    
+
     if (stroke) {
         ctx.stroke();
     }
 }
 
-// Ajouter un gestionnaire de redimensionnement de fenêtre
+/**
+ * Simplifies a module name for display
+ */
+function simplifyName(id) {
+  // Extract the simplified module name
+  let displayName = id;
+
+  // If the name is too long, extract a shorter part
+  const nameParts = id.split('_');
+  if (nameParts.length > 1) {
+    if (id.includes('lut_')) {
+      displayName = nameParts[nameParts.length - 1];
+    } else if (id.includes('DFF') || id.includes('latch')) {
+      displayName = nameParts[nameParts.length - 1];
+    } else {
+      // For I/O, use the simple name
+      displayName = nameParts[0];
+    }
+  }
+
+  // Limit the length
+  if (displayName.length > 8) {
+    displayName = displayName.substring(0, 7) + '..';
+  }
+
+  return displayName;
+}
+
+/**
+ * Draws a background grid adjusted to zoom
+ */
+function drawGrid() {
+    ctx.strokeStyle = '#e0e0e0';
+    ctx.lineWidth = 0.5;
+
+    // Calculate visible bounds
+    const visibleLeft = -panOffsetX / zoomLevel;
+    const visibleTop = -panOffsetY / zoomLevel;
+    const visibleRight = (canvas.width - panOffsetX) / zoomLevel;
+    const visibleBottom = (canvas.height - panOffsetY) / zoomLevel;
+
+    // Adjust grid size based on zoom
+    const gridStep = GRID_SIZE * (zoomLevel < 0.5 ? 2 : 1);
+
+    // Calculate grid starting points aligned to the grid
+    const startX = Math.floor(visibleLeft / gridStep) * gridStep;
+    const startY = Math.floor(visibleTop / gridStep) * gridStep;
+
+    // Horizontal lines
+    for (let y = startY; y <= visibleBottom; y += gridStep) {
+        ctx.beginPath();
+        ctx.moveTo(visibleLeft, y);
+        ctx.lineTo(visibleRight, y);
+        ctx.stroke();
+    }
+
+    // Vertical lines
+    for (let x = startX; x <= visibleRight; x += gridStep) {
+        ctx.beginPath();
+        ctx.moveTo(x, visibleTop);
+        ctx.lineTo(x, visibleBottom);
+        ctx.stroke();
+    }
+}
+
+// Add a window resize event handler
 window.addEventListener('resize', function() {
-    // Seulement si le canvas et les données sont initialisés
+    // Only if the canvas and data are initialized
     if (canvas && fpgaData) {
-        // Recalculer la taille et redessiner
+        // Recalculate size and redraw
         render();
     }
 });
 
 /**
- * Réinitialise l'animation et redimensionne le canvas
+ * Resets the animation and resizes the canvas
  */
 function resetAnimationAndResize() {
     resetAnimation();
     calculateCanvasSize();
-    
-    // Mettre à jour la taille du canvas
+
+    // Update the canvas size
     if (canvas) {
         canvas.width = boardWidth;
         canvas.height = boardHeight;
     }
-    
+
     placeModules();
     createConnections();
     render();
+}
+
+/**
+ * Initializes zoom and pan events
+ */
+function initializeZoomPanEvents() {
+    // Zoom handler (mouse wheel)
+    canvas.addEventListener('wheel', function(e) {
+        e.preventDefault();
+
+        // Calculate the focal point of the zoom (mouse position)
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        // Zoom factor (adjust as needed)
+        const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
+
+        // Calculate the new zoom level
+        const newZoomLevel = zoomLevel * zoomFactor;
+
+        // Limit the zoom level
+        if (newZoomLevel >= 0.1 && newZoomLevel <= 10) {
+            // Calculate the new pan offset to maintain the focal point
+            panOffsetX = mouseX - (mouseX - panOffsetX) * zoomFactor;
+            panOffsetY = mouseY - (mouseY - panOffsetY) * zoomFactor;
+
+            zoomLevel = newZoomLevel;
+            render(); // Redraw with the new zoom
+        }
+    });
+
+    // Right-click handler (start panning)
+    canvas.addEventListener('contextmenu', function(e) {
+        e.preventDefault(); // Prevent the browser's context menu
+        isPanning = true;
+        lastPanX = e.clientX;
+        lastPanY = e.clientY;
+        canvas.style.cursor = 'grabbing';
+    });
+
+    // Mouse move handler (panning in progress)
+    canvas.addEventListener('mousemove', function(e) {
+        if (isPanning) {
+            const deltaX = e.clientX - lastPanX;
+            const deltaY = e.clientY - lastPanY;
+
+            panOffsetX += deltaX;
+            panOffsetY += deltaY;
+
+            lastPanX = e.clientX;
+            lastPanY = e.clientY;
+
+            render(); // Redraw with the new pan offset
+        }
+    });
+
+    // Mouse up handler (end panning)
+    window.addEventListener('mouseup', function() {
+        if (isPanning) {
+            isPanning = false;
+            canvas.style.cursor = 'default';
+        }
+    });
+}
+
+/**
+ * Adjusts the view to fit all content
+ */
+function fitContentToView() {
+    // Find the content bounds
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+    modules.forEach(module => {
+        const x = module.x;
+        const y = module.y;
+        const halfWidth = module.width / 2;
+        const halfHeight = module.height / 2;
+
+        minX = Math.min(minX, x - halfWidth);
+        minY = Math.min(minY, y - halfHeight);
+        maxX = Math.max(maxX, x + halfWidth);
+        maxY = Math.max(maxY, y + halfHeight);
+    });
+
+    // Add a margin
+    const margin = 50;
+    minX -= margin;
+    minY -= margin;
+    maxX += margin;
+    maxY += margin;
+
+    // Calculate the necessary zoom to fit all content
+    const contentWidth = maxX - minX;
+    const contentHeight = maxY - minY;
+
+    const zoomX = canvas.width / contentWidth;
+    const zoomY = canvas.height / contentHeight;
+
+    // Use the smaller zoom level to ensure everything is visible
+    zoomLevel = Math.min(zoomX, zoomY, 1); // Limit to 1x max to avoid excessive enlargement
+
+    // Center the content
+    panOffsetX = canvas.width / 2 - (minX + maxX) / 2 * zoomLevel;
+    panOffsetY = canvas.height / 2 - (minY + maxY) / 2 * zoomLevel;
 }

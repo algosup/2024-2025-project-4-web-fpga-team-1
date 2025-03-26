@@ -1,34 +1,34 @@
 /**
- * Convertit un fichier SDF en format JSON
- * @param {string} sdfContent - Le contenu du fichier SDF
- * @returns {Object} - Représentation JSON du fichier SDF
+ * Converts an SDF file to JSON format
+ * @param {string} sdfContent - The content of the SDF file
+ * @returns {Object} - JSON representation of the SDF file
  */
 function sdfToJson(sdfContent) {
-  // Normalisation du contenu
+  // Normalize content
   const normalizedContent = sdfContent
     .replace(/\r\n|\r/g, '\n')
     .replace(/\/\/.*$/gm, '')
     .replace(/\/\*[\s\S]*?\*\//g, '');
-    
+
   let currentIndex = 0;
-  
+
   function parseBlock() {
     skipWhitespace();
-    
+
     if (currentIndex >= normalizedContent.length) {
       return null;
     }
-    
-    // Début d'un bloc
+
+    // Start of a block
     if (normalizedContent[currentIndex] === '(') {
       currentIndex++; // Skip open parenthesis
       skipWhitespace();
-      
-      // Parse le nom du bloc
+
+      // Parse the block name
       const name = parseIdentifier();
       skipWhitespace();
-      
-      // Traitement selon le type de bloc
+
+      // Process based on block type
       if (name === 'DELAYFILE') {
         return parseDelayFile();
       } else if (name === 'CELL') {
@@ -44,51 +44,51 @@ function sdfToJson(sdfContent) {
       } else if (name === 'SETUP') {
         return parseSetup();
       } else {
-        // Blocs génériques
+        // Generic blocks
         const value = parseValue();
         skipToClosingParenthesis();
         return { type: name, value };
       }
     } else if (normalizedContent[currentIndex] === '"') {
-      // Chaîne de caractères entre guillemets
+      // Quoted string
       return parseQuotedString();
     } else {
-      // Valeur simple
+      // Simple value
       return parseValue();
     }
   }
-  
+
   function parseDelayFile() {
     const result = {
       type: 'DELAYFILE',
       header: {},
       cells: []
     };
-    
-    // Parse les propriétés du DELAYFILE
+
+    // Parse DELAYFILE properties
     while (currentIndex < normalizedContent.length) {
       skipWhitespace();
-      
+
       if (normalizedContent[currentIndex] === ')') {
         currentIndex++; // Skip closing parenthesis
         break;
       }
-      
+
       if (normalizedContent[currentIndex] === '(') {
         const child = parseBlock();
-        
+
         if (child) {
-          if (child.type === 'SDFVERSION' || 
-              child.type === 'DESIGN' || 
-              child.type === 'VENDOR' || 
-              child.type === 'PROGRAM' || 
-              child.type === 'VERSION' || 
-              child.type === 'DIVIDER' || 
+          if (child.type === 'SDFVERSION' ||
+              child.type === 'DESIGN' ||
+              child.type === 'VENDOR' ||
+              child.type === 'PROGRAM' ||
+              child.type === 'VERSION' ||
+              child.type === 'DIVIDER' ||
               child.type === 'TIMESCALE') {
-            // Information d'en-tête
+            // Header information
             result.header[child.type.toLowerCase()] = child.value;
           } else if (child.type === 'CELL') {
-            // Définition de cellule
+            // Cell definition
             result.cells.push(child);
           }
         }
@@ -96,10 +96,10 @@ function sdfToJson(sdfContent) {
         currentIndex++;
       }
     }
-    
+
     return result;
   }
-  
+
   function parseCell() {
     const result = {
       type: 'CELL',
@@ -107,19 +107,19 @@ function sdfToJson(sdfContent) {
       delays: [],
       timingchecks: []
     };
-    
-    // Parse les propriétés de la cellule
+
+    // Parse cell properties
     while (currentIndex < normalizedContent.length) {
       skipWhitespace();
-      
+
       if (normalizedContent[currentIndex] === ')') {
         currentIndex++; // Skip closing parenthesis
         break;
       }
-      
+
       if (normalizedContent[currentIndex] === '(') {
         const child = parseBlock();
-        
+
         if (child) {
           if (child.type === 'CELLTYPE' || child.type === 'INSTANCE') {
             result.properties[child.type.toLowerCase()] = child.value;
@@ -133,28 +133,28 @@ function sdfToJson(sdfContent) {
         currentIndex++;
       }
     }
-    
+
     return result;
   }
-  
+
   function parseDelay() {
     const result = {
       type: 'DELAY',
       paths: []
     };
-    
-    // Parse les enfants DELAY (typiquement des blocs ABSOLUTE)
+
+    // Parse DELAY children (typically ABSOLUTE blocks)
     while (currentIndex < normalizedContent.length) {
       skipWhitespace();
-      
+
       if (normalizedContent[currentIndex] === ')') {
         currentIndex++; // Skip closing parenthesis
         break;
       }
-      
+
       if (normalizedContent[currentIndex] === '(') {
         const child = parseBlock();
-        
+
         if (child && child.type === 'ABSOLUTE') {
           result.paths = result.paths.concat(child.paths || []);
         }
@@ -162,28 +162,28 @@ function sdfToJson(sdfContent) {
         currentIndex++;
       }
     }
-    
+
     return result;
   }
-  
+
   function parseAbsolute() {
     const result = {
       type: 'ABSOLUTE',
       paths: []
     };
-    
-    // Parse les entrées IOPATH
+
+    // Parse IOPATH entries
     while (currentIndex < normalizedContent.length) {
       skipWhitespace();
-      
+
       if (normalizedContent[currentIndex] === ')') {
         currentIndex++; // Skip closing parenthesis
         break;
       }
-      
+
       if (normalizedContent[currentIndex] === '(') {
         const child = parseBlock();
-        
+
         if (child && child.type === 'IOPATH') {
           result.paths.push({
             from: child.from,
@@ -196,55 +196,55 @@ function sdfToJson(sdfContent) {
         currentIndex++;
       }
     }
-    
+
     return result;
   }
-  
+
   function parseIoPath() {
     const result = {
       type: 'IOPATH'
     };
-    
-    // Parse les composants IOPATH
+
+    // Parse IOPATH components
     skipWhitespace();
-    result.from = parseValue(); // 'datain' ou similaire
+    result.from = parseValue(); // 'datain' or similar
     skipWhitespace();
-    result.to = parseValue();   // 'dataout' ou similaire
+    result.to = parseValue();   // 'dataout' or similar
     skipWhitespace();
-    
-    // Parse le délai de montée
+
+    // Parse rise delay
     if (normalizedContent[currentIndex] === '(') {
       result.rise = parseTimingValue();
       skipWhitespace();
-      
-      // Parse le délai de descente
+
+      // Parse fall delay
       if (normalizedContent[currentIndex] === '(') {
         result.fall = parseTimingValue();
       }
     }
-    
+
     skipToClosingParenthesis();
     return result;
   }
-  
+
   function parseTimingCheck() {
     const result = {
       type: 'TIMINGCHECK',
       checks: []
     };
-    
-    // Parse les vérifications de timing
+
+    // Parse timing checks
     while (currentIndex < normalizedContent.length) {
       skipWhitespace();
-      
+
       if (normalizedContent[currentIndex] === ')') {
         currentIndex++; // Skip closing parenthesis
         break;
       }
-      
+
       if (normalizedContent[currentIndex] === '(') {
         const child = parseBlock();
-        
+
         if (child && child.type === 'SETUP') {
           result.checks.push({
             type: 'SETUP',
@@ -257,108 +257,108 @@ function sdfToJson(sdfContent) {
         currentIndex++;
       }
     }
-    
+
     return result;
   }
-  
+
   function parseSetup() {
     const result = {
       type: 'SETUP'
     };
-    
-    // Parse les composants setup
+
+    // Parse setup components
     skipWhitespace();
-    result.from = parseValue(); // Premier port
+    result.from = parseValue(); // First port
     skipWhitespace();
     result.to = parseValue();   // Second port
     skipWhitespace();
-    
-    // Parse la valeur de timing
+
+    // Parse timing value
     if (normalizedContent[currentIndex] === '(') {
       result.value = parseTimingValue();
     }
-    
+
     skipToClosingParenthesis();
     return result;
   }
-  
+
   function parseIdentifier() {
     let identifier = '';
-    
-    // Parse les caractères alphanumérique et certains symboles
-    while (currentIndex < normalizedContent.length && 
+
+    // Parse alphanumeric characters and some symbols
+    while (currentIndex < normalizedContent.length &&
            /[A-Za-z0-9_~\$\[\]\{\}\.\:\\]/.test(normalizedContent[currentIndex])) {
       identifier += normalizedContent[currentIndex++];
     }
-    
+
     return identifier;
   }
-  
+
   function parseValue() {
     skipWhitespace();
-    
+
     if (currentIndex >= normalizedContent.length) {
       return null;
     }
-    
+
     if (normalizedContent[currentIndex] === '"') {
       return parseQuotedString();
     } else if (normalizedContent[currentIndex] === '(') {
       return parseBlock();
     } else {
-      // Valeurs simples
+      // Simple values
       let value = '';
-      while (currentIndex < normalizedContent.length && 
+      while (currentIndex < normalizedContent.length &&
              /[^()\s]/.test(normalizedContent[currentIndex])) {
         value += normalizedContent[currentIndex++];
       }
-      
-      // Conversion en nombre si possible
+
+      // Convert to number if possible
       const num = parseFloat(value);
       if (!isNaN(num) && num.toString() === value) {
         return num;
       }
-      
+
       return value;
     }
   }
-  
+
   function parseQuotedString() {
     currentIndex++; // Skip opening quote
     let value = '';
-    
+
     while (currentIndex < normalizedContent.length && normalizedContent[currentIndex] !== '"') {
       if (normalizedContent[currentIndex] === '\\' && currentIndex + 1 < normalizedContent.length) {
-        currentIndex++; // Saute le caractère d'échappement
+        currentIndex++; // Skip escape character
       }
       value += normalizedContent[currentIndex++];
     }
-    
+
     currentIndex++; // Skip closing quote
     return value;
   }
-  
+
   function parseTimingValue() {
     if (normalizedContent[currentIndex] !== '(') {
       return null;
     }
-    
+
     currentIndex++; // Skip opening parenthesis
     let valueStr = '';
-    
-    // Récupère tout jusqu'à la parenthèse fermante
+
+    // Get everything until the closing parenthesis
     let parenCount = 1;
     while (currentIndex < normalizedContent.length && parenCount > 0) {
       if (normalizedContent[currentIndex] === '(') parenCount++;
       if (normalizedContent[currentIndex] === ')') parenCount--;
-      
+
       if (parenCount > 0) {
         valueStr += normalizedContent[currentIndex];
       }
       currentIndex++;
     }
-    
-    // Gère le format min:typ:max
+
+    // Handle min:typ:max format
     if (valueStr.includes(':')) {
       const parts = valueStr.split(':');
       if (parts.length === 3) {
@@ -369,35 +369,35 @@ function sdfToJson(sdfContent) {
         };
       }
     }
-    
-    // Gère une valeur simple
+
+    // Handle a simple value
     return parseFloat(valueStr);
   }
-  
+
   function skipWhitespace() {
     while (currentIndex < normalizedContent.length && /\s/.test(normalizedContent[currentIndex])) {
       currentIndex++;
     }
   }
-  
+
   function skipToClosingParenthesis() {
     let parenCount = 1;
-    
+
     while (currentIndex < normalizedContent.length && parenCount > 0) {
       if (normalizedContent[currentIndex] === '(') parenCount++;
       if (normalizedContent[currentIndex] === ')') parenCount--;
       currentIndex++;
     }
   }
-  
-  // Commence l'analyse à la racine
+
+  // Start parsing at the root
   return parseBlock();
 }
 
 /**
- * Fonction d'aide pour charger et convertir un fichier SDF
- * @param {string} filePath - Chemin vers le fichier SDF
- * @returns {Promise<Object>} - Représentation JSON du fichier SDF
+ * Helper function to load and convert an SDF file
+ * @param {string} filePath - Path to the SDF file
+ * @returns {Promise<Object>} - JSON representation of the SDF file
  */
 async function loadAndConvertSdf(filePath) {
   try {
@@ -405,7 +405,7 @@ async function loadAndConvertSdf(filePath) {
     const content = await fs.readFile(filePath, 'utf8');
     return sdfToJson(content);
   } catch (error) {
-    console.error('Erreur lors de la conversion du fichier SDF:', error);
+    console.error('Error converting SDF file:', error);
     throw error;
   }
 }
