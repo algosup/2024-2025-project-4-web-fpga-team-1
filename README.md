@@ -34,8 +34,20 @@ This project aims to develop a web-based interface for an FPGA simulator. The in
 
 To launch the web site, you have to:
 
+1. open your control terminal
+2. write the following commands
+   ```txt
+   # move on the backend folder
+   cd src/backend
+
+   # install all dependencies
+   npm install
+
+   # launch the server
+   node app
+   ```
 1. launch your prefered navigator
-2. type the link following link
+2. type the following link
    ```txt
    localhost
    ```
