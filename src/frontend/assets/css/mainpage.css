@@ -16,7 +16,7 @@
 /* Title box */
 .Title {
     margin-top: 75px;
-    padding-block: 18%;
+    padding-block: 15%;
     text-align: center;
 }
 
@@ -26,6 +26,19 @@
 
 .Title h2 {
     font-size: 35px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: rgb(00, 51, 91);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: rgb(255, 99, 71);
 }
 /*-------------------*/
 
@@ -71,16 +84,66 @@
     flex-direction: line;
 }
 
-.Board #text {
-    padding-block: 5%;
-    padding-left: 5%;
-    padding-right: 5%;
-    width: 25%;
+.Board img {
+    width: 35%;
+    padding-block: 3%;
+    padding-left: 535px;
+    filter: drop-shadow(.5vh .5vh .5vh black);
+}
+/*-------------------*/
+
+/* Interactive points */
+.container {
+    position: relative;
 }
 
-.Board img {
-    width: 30%;
-    filter: drop-shadow(.5vh .5vh .5vh black);
+.point {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: rgb(255, 99, 71);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    z-index: 10;
+}
+
+.point:hover {
+    transform: scale(1.4);
+}
+/*-------------------*/
+
+/* Information box */
+.info-box-left {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: none;
+    z-index: 20;
+    pointer-events: none;
+    
+    width: 350px;
+    top: 3500px;
+    left: 150px;
+}
+
+.info-box-right {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: none;
+    z-index: 20;
+    pointer-events: none;
+    
+    width: 350px;
+    top: 3500px;
+    left: 950px;
 }
 /*-------------------*/
 

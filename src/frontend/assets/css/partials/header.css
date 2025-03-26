@@ -37,7 +37,7 @@
     color: white;
     font-size: 32px;
     font-weight: bold;
-    font-family: 'Saira Stencil One';
+    font-family: Arial, sans-serif,'normal system-ui', cursive;
   }
   
   /* Style for the right section (navigation links) */
@@ -63,7 +63,7 @@
     font-size: 24px;
     transition: color 0.2s ease-in-out;
     padding-right: 20px;
-    font-family: 'Bold Saira Stencil One';
+    font-family: Arial, sans-serif,'normal system-ui', cursive;
   }
   
   .nav-right a:hover {

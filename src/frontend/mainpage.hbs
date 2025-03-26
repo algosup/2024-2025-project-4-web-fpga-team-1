@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/mainpage.css" />
+    <link rel="stylesheet" href="/css/interactivespoints.css" />
 </head>
 <body>
 
@@ -16,6 +17,7 @@
         <div class="Title" id="one">
             <h1>FPGA Explorer</h1>
             <h2>The best tool to learn how work FPGA boards<br>thanks simplify virtual modelisations</h2>
+            <button onclick="window.location.href='/animation';">Animate your files</button>
         </div>
         <div class="CNES" id="two">
             <div id="text">
@@ -128,16 +130,28 @@
                 </p>
             </div>
         </div>
-        <h2 style="text-align: center; background-color: rgb(00, 51, 91); color: white;margin: 0; padding: 35px;">The board</h2>
+        <h2 style="text-align: center; background-color: rgb(00, 51, 91); color: white;margin: 0; padding-top: 35px;">The board</h2>
+        <div id="infoBoxleft" class="info-box-left"></div>
         <div class="Board" id="two">
-            <div class="left" id="text">
-                <p></p>
-            </div>
-            <img src="/images/FPGAboard.png" alt="FPGA board" style="margin-bottom: 35px;">
-            <div class="right" id="text">
-                <p></p>
+            <div class="container">
+                <img src="/images/FPGAboard.png" alt="FPGA board" style="margin-bottom: 35px;" class="image">
+                <div class="point" data-info="Power Input:  Provides electrical power to the FPGA board." style="top: 23%; left: 550px;"></div>
+                <div class="point" data-info="USB Micro-A Port: Used for programming and debugging the FPGA." style="top: 23%; left: 585px;"></div>
+                <div class="point" data-info="USB Host Port: Allows the FPGA to connect to external USB devices like keyboards or flash drives." style="top: 23%; left: 640px;"></div>
+                <div class="point" data-info="VGA Video Port: Used to connect a graphics card to an analogue computer screen." style="top: 20%; left: 713px;"></div>
+                <div class="point" data-info="CPU: The main processing unit that executes instructions and manages operations." style="top: 38%; left: 572px;"></div>
+                <div class="point" data-info="Buzzer: Generates sound signals for alerts or notifications." style="top: 38%; left: 798px;"></div>
+                <div class="point" data-info="SD Card Port: Provides storage expansion for saving or loading data." style="top: 35%; left: 850px;"></div>
+                <div class="point" data-info="RAM: Temporary memory for storing data while the FPGA is running." style="top: 44%; left: 725px;"></div>
+                <div class="point" data-info="Clock: Provides timing signals to synchronize operations within the FPGA." style="top: 43%; left: 760px;"></div>
+                <div class="point" data-info="7-segment Displays: Used to visually display numerical or character output." style="top: 57%; left: 605px;"></div>
+                <div class="point" data-info="LUT (Look-Up Table): A key component in FPGA logic, used to implement combinational logic." style="top: 55%; left: 725px;"></div>
+                <div class="point" data-info="Debounced Pushbuttons Switches: Buttons that provide stable input signals by eliminating mechanical bouncing." style="top: 55%; left: 808px;"></div>
+                <div class="point" data-info="Toggle Switches: Used to provide manual input for controlling different FPGA functions." style="top: 71%; left: 713px;"></div>
+                <div class="point" data-info="Power ON/OFF Switch: Turns the FPGA board on or off." style="top: 70%; left: 864px;"></div>
             </div>
         </div>
+        <div id="infoBoxright" class="info-box-right"></div>
         <div class="Verilog" id="one">
             <div id="text">
                 <h1>What is Verilog?</h1>
@@ -191,5 +205,7 @@
     </div>
     
     {{> footer}}
+
+    <script src="js/mainpage.js"></script>
 </body>
 </html>
