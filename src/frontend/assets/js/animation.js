@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const boardContainer = document.getElementById('board-container');
     const animationControls = document.getElementById('animation-controls');
     
-    let verilogFile = null;
     let sdfFile = null;
     let parsedData = null;
     
@@ -42,15 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to handle the uploaded files
     function handleFiles(files) {
-        verilogFile = null;
         sdfFile = null;
         
         Array.from(files).forEach(file => {
             const extension = file.name.split('.').pop().toLowerCase();
             
-            if (extension === 'v' || extension === 'sv') {
-                verilogFile = file;
-            } else if (extension === 'sdf') {
+            if (extension === 'sdf') {
                 sdfFile = file;
             }
         });
@@ -61,23 +57,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update file information display
     function updateFileInfo() {
-        let infoText = '<p>No files loaded yet</p>';
+        let infoText = '<p>No SDF file loaded yet</p>';
         
-        if (verilogFile || sdfFile) {
-            const fileList = [];
-            
-            if (verilogFile) {
-                fileList.push(`<p><strong>Verilog File:</strong> ${verilogFile.name} (${formatFileSize(verilogFile.size)})</p>`);
-            }
-            
-            if (sdfFile) {
-                fileList.push(`<p><strong>SDF File:</strong> ${sdfFile.name} (${formatFileSize(sdfFile.size)})</p>`);
-            }
-            
-            infoText = fileList.join('');
+        if (sdfFile) {
+            infoText = `<p><strong>SDF File:</strong> ${sdfFile.name} (${formatFileSize(sdfFile.size)})</p>`;
         }
         
-        fileInfo.innerHTML = `<h3>Loaded Files:</h3>${infoText}`;
+        fileInfo.innerHTML = `<h3>Loaded File:</h3>${infoText}`;
     }
     
     // Format file size in KB/MB
@@ -98,35 +84,218 @@ document.addEventListener('DOMContentLoaded', function() {
         boardContainer.classList.add('hidden');
         animationControls.classList.add('hidden');
         
-        // Check if both required files are present
-        if (!verilogFile) {
-            jsonOutput.textContent = 'Error: Verilog file is missing or empty. Please upload a Verilog (.v) file.';
-            return;
-        }
-        
+        // Check if SDF file is present
         if (!sdfFile) {
             jsonOutput.textContent = 'Error: SDF file is missing or empty. Please upload an SDF (.sdf) file.';
             return;
         }
         
-        // Both files are present, proceed with parsing
-        const verilogReader = new FileReader();
-        verilogReader.onload = function(e) {
-            const verilogContent = e.target.result;
-            
-            const sdfReader = new FileReader();
-            sdfReader.onload = function(e) {
-                const sdfContent = e.target.result;
-                try {
-                    parsedData = parseFiles(verilogContent, sdfContent);
-                    displayResults(parsedData);
-                } catch (error) {
-                    jsonOutput.textContent = `Error: ${error.message}`;
-                }
-            };
-            sdfReader.readAsText(sdfFile);
+        // SDF file is present, proceed with parsing
+        const sdfReader = new FileReader();
+        sdfReader.onload = function(e) {
+            const sdfContent = e.target.result;
+            try {
+                parsedData = parseSdfFile(sdfContent);
+                displayResults(parsedData);
+            } catch (error) {
+                jsonOutput.textContent = `Error: ${error.message}`;
+            }
         };
-        verilogReader.readAsText(verilogFile);
+        sdfReader.readAsText(sdfFile);
+    }
+    
+    // Remplacez la fonction parseSdfFile existante par celle-ci
+
+    function parseSdfFile(sdfContent) {
+      // Le premier niveau de parsing est géré par converter.js
+      // Nous l'exposons globalement pour le rendre accessible
+      window.converterSdfToJson = window.sdfToJson || sdfToJson;
+      
+      // Puis on applique notre restructuration
+      return sdfToJson(sdfContent);
+    }
+    
+    // Remplacer la fonction sdfToJson dans votre fichier animation.js
+
+    function sdfToJson(sdfContent) {
+      // Utiliser le parseur existant pour obtenir la structure brute
+      const rawData = parseSdfRaw(sdfContent);
+      
+      // Restructurer les données pour séparer modules et connexions
+      return restructureFpgaData(rawData);
+    }
+    
+    // Fonction pour parser le SDF en structure brute (comme avant)
+    function parseSdfRaw(sdfContent) {
+      // Appel au parser externe ou utilisation du code de converter.js
+      // Cette partie reste inchangée, elle utilise le parser existant
+    
+      // Utilisez la fonction window.sdfToJson si elle est disponible
+      if (window.sdfToJson) {
+        return window.sdfToJson(sdfContent);
+      }
+      
+      // Sinon, si le code est accessible, importez-le ou copiez-le ici
+      // Code du parser de converter.js...
+      
+      // En dernier recours, tentez d'appeler l'API
+      console.error("Parser SDF non disponible. Tentative d'appel à l'API...");
+      return { type: 'DELAYFILE', parsed: false, error: "Parser non disponible" };
+    }
+    
+    // Fonction pour restructurer les données FPGA
+
+    function restructureFpgaData(rawData) {
+      if (!rawData || !rawData.cells || rawData.type !== 'DELAYFILE') {
+        return rawData; // Retourner tel quel si format incorrect
+      }
+    
+      const result = {
+        type: 'FPGA',
+        header: rawData.header,
+        modules: [],
+        connections: []
+      };
+    
+      // Map pour suivre les modules déjà créés (par ID)
+      const moduleMap = new Map();
+    
+      // Première passe: extraire les modules explicitement définis
+      rawData.cells.forEach(cell => {
+        const cellType = cell.properties.celltype;
+        
+        if (cellType !== 'fpga_interconnect') {
+          // C'est un module fonctionnel (LUT, DFF, etc.)
+          const moduleInstance = cell.properties.instance;
+          
+          const module = {
+            type: cellType,
+            instance: moduleInstance,
+            delays: extractDelays(cell.delays),
+            timingchecks: cell.timingchecks || []
+          };
+          
+          result.modules.push(module);
+          moduleMap.set(moduleInstance, module);
+        }
+      });
+    
+      // Deuxième passe: traiter les connexions et détecter les modules manquants
+      rawData.cells.forEach(cell => {
+        const cellType = cell.properties.celltype;
+        
+        if (cellType === 'fpga_interconnect') {
+          // C'est une connexion entre modules
+          const instance = cell.properties.instance;
+          const pathInfo = extractPathInfo(instance);
+          
+          // Créer les modules source/destination s'ils n'existent pas encore
+          if (pathInfo.from && !moduleMap.has(pathInfo.fromClean)) {
+            const ioModule = {
+              type: 'IO_PORT',
+              instance: pathInfo.fromClean,
+              isInput: true,
+              delays: [],
+              timingchecks: []
+            };
+            result.modules.push(ioModule);
+            moduleMap.set(pathInfo.fromClean, ioModule);
+          }
+          
+          if (pathInfo.to && !moduleMap.has(pathInfo.toClean)) {
+            const ioModule = {
+              type: 'IO_PORT',
+              instance: pathInfo.toClean,
+              isOutput: true,
+              delays: [],
+              timingchecks: []
+            };
+            result.modules.push(ioModule);
+            moduleMap.set(pathInfo.toClean, ioModule);
+          }
+    
+          // Ajouter la connexion
+          const connection = {
+            id: instance,
+            from: pathInfo.from,
+            to: pathInfo.to,
+            fromClean: pathInfo.fromClean,
+            toClean: pathInfo.toClean,
+            delays: extractDelays(cell.delays)
+          };
+          
+          result.connections.push(connection);
+        }
+      });
+    
+      return result;
+    }
+    
+    // Extraire les informations de chemin depuis le nom d'instance
+    function extractPathInfo(instanceName) {
+      // Format typique: routing_segment_SOURCE_output_X_Y_to_TARGET_input_A_B
+      const parts = instanceName.split('_');
+      let fromPart = '';
+      let toPart = '';
+      let isFromPart = true;
+      let toIndex = parts.indexOf('to');
+      
+      if (toIndex === -1) {
+        return { from: '', to: '', fromClean: '', toClean: '' };
+      }
+      
+      // Extraire la partie source (avant "to")
+      for (let i = 2; i < toIndex; i++) {
+        fromPart += (fromPart ? '_' : '') + parts[i];
+      }
+    
+      // Extraire la partie destination (après "to")
+      for (let i = toIndex + 1; i < parts.length; i++) {
+        toPart += (toPart ? '_' : '') + parts[i];
+      }
+      
+      // Nettoyer les noms pour extraire les modules de base
+      const fromClean = cleanModuleName(fromPart);
+      const toClean = cleanModuleName(toPart);
+    
+      return {
+        from: fromPart,
+        to: toPart,
+        fromClean: fromClean,
+        toClean: toClean
+      };
+    }
+    
+    // Nettoie un nom de module en enlevant les suffixes comme "output_0_0"
+    function cleanModuleName(name) {
+      // Supprimer les suffixes communs
+      return name
+        .replace(/output_\d+_\d+$/, '')
+        .replace(/input_\d+_\d+$/, '')
+        .replace(/clock_\d+_\d+$/, '')
+        .replace(/_+$/, ''); // Supprimer les underscores finaux
+    }
+    
+    // Extraire les délais d'une cellule
+    function extractDelays(delays) {
+      if (!delays || !delays.length) return [];
+      
+      const result = [];
+      
+      delays.forEach(delay => {
+        if (delay.paths) {
+          delay.paths.forEach(path => {
+            result.push({
+              from: path.from,
+              to: path.to,
+              rise: path.rise,
+              fall: path.fall
+            });
+          });
+        }
+      });
+      
+      return result;
     }
     
     // Display the parsed results
