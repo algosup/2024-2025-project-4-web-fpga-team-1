@@ -1186,6 +1186,7 @@ function resetAnimationAndResize() {
     placeModules();
     createConnections();
     render();
+    fitContentToView();
 }
 
 /**
