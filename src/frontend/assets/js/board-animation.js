@@ -329,17 +329,6 @@ function initializeControls() {
   controlsContainer.appendChild(zoomContainer);
   controlsContainer.appendChild(speedControlContainer);
 
-  // Add a legend
-  const legend = document.createElement('div');
-  legend.className = 'mt-3 d-flex flex-wrap';
-  legend.innerHTML = `
-        <div class="me-4 mb-2"><span style="display:inline-block;width:20px;height:20px;background-color:#4a90e2;margin-right:5px;"></span> LUT</div>
-        <div class="me-4 mb-2"><span style="display:inline-block;width:20px;height:20px;background-color:#50c878;margin-right:5px;"></span> DFF</div>
-        <div class="me-4 mb-2"><span style="display:inline-block;width:20px;height:20px;background-color:#f39c12;margin-right:5px;"></span> I/O</div>
-        <div class="me-4 mb-2"><span style="display:inline-block;width:20px;height:20px;background-color:#e74c3c;margin-right:5px;"></span> Signal</div>
-    `;
-  controlsContainer.appendChild(legend);
-
   // Add usage information
   const info = document.createElement('div');
   info.className = 'mt-2 small text-muted';
