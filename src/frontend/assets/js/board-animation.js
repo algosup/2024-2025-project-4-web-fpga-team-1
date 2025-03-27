@@ -1266,4 +1266,7 @@ function fitContentToView() {
   // Center the content
   panOffsetX = canvas.width / 2 - (minX + maxX) / 2 * zoomLevel;
   panOffsetY = canvas.height / 2 - (minY + maxY) / 2 * zoomLevel;
+
+  // Re-render the canvas
+  render();
 }
