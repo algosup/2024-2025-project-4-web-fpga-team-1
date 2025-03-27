@@ -66,6 +66,90 @@ function initFPGABoardAnimation(data) {
     canvas.style.maxWidth = '100%';
     canvas.style.height = 'auto';
     canvas.style.border = '1px solid #ddd';
+
+    // Draw the FPGA board with modules and ports
+    drawFPGA(data.modules);
+}
+
+/**
+ * Draws the FPGA board with modules and ports
+ * @param {Array} modules - List of modules to draw
+ */
+function drawFPGA(modules) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    modules.forEach((module, index) => {
+        const moduleX = 100 + index * 300; // Horizontal spacing between modules
+        const moduleY = 100;
+
+        // Draw module rectangle
+        ctx.fillStyle = '#cccccc';
+        ctx.fillRect(moduleX, moduleY, 200, 300);
+
+        // Draw module name
+        ctx.fillStyle = '#000000';
+        ctx.textAlign = 'center';
+        ctx.font = '16px Arial';
+        ctx.fillText(module.name, moduleX + 100, moduleY + 20);
+
+        // Draw input ports
+        module.inputs.forEach((input, i) => {
+            const portX = moduleX - 20; // Position to the left of the module
+            const portY = moduleY + 50 + i * 30;
+
+            ctx.fillStyle = '#ff0000'; // Red for inputs
+            ctx.fillRect(portX, portY, 10, 10);
+
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'right';
+            ctx.fillText(input.name, portX - 5, portY + 8);
+        });
+
+        // Draw output ports
+        module.outputs.forEach((output, i) => {
+            const portX = moduleX + 210; // Position to the right of the module
+            const portY = moduleY + 50 + i * 30;
+
+            ctx.fillStyle = '#00ff00'; // Green for outputs
+            ctx.fillRect(portX, portY, 10, 10);
+
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'left';
+            ctx.fillText(output.name, portX + 15, portY + 8);
+        });
+    });
+}
+
+/**
+ * Initializes FPGA animation with supplied JSON data
+ * @param {Object} data - JSON data containing modules and connections
+ */
+function initFPGABoardAnimation(data) {
+    console.log("Initializing FPGA animation", data);
+    fpgaData = data;
+
+    // Data reset
+    resetAnimation();
+
+    // Initialize canvas with fixed size
+    canvas = document.getElementById('fpga-canvas');
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.id = 'fpga-canvas';
+        canvas.width = 1200; // Larger fixed size
+        canvas.height = 800; // Larger fixed size
+        document.getElementById('board-container').appendChild(canvas);
+    } else {
+        // Keep a fixed size
+        canvas.width = 1200;
+        canvas.height = 800;
+    }
+
+    // Add a style to make the canvas responsive while keeping its proportions
+    canvas.style.maxWidth = '100%';
+    canvas.style.height = 'auto';
+    canvas.style.border = '1px solid #ddd';
     canvas.style.borderRadius = '4px';
 
     ctx = canvas.getContext('2d');
@@ -172,6 +256,34 @@ function initializeControls() {
     resetButton.className = 'btn btn-secondary me-2';
     resetButton.addEventListener('click', resetAnimationAndResize);
 
+    // Add speed control slider
+    const speedControlContainer = document.createElement('div');
+    speedControlContainer.className = 'd-flex align-items-center ms-3';
+
+    const speedLabel = document.createElement('span');
+    speedLabel.textContent = 'Speed: ';
+    speedLabel.className = 'me-2';
+
+    const speedValue = document.createElement('span');
+    speedValue.textContent = '1x'; // Default speed
+    speedValue.id = 'speed-value';
+    speedValue.className = 'me-2';
+
+    const speedSlider = document.createElement('input');
+    speedSlider.type = 'range';
+    speedSlider.min = '0.1';
+    speedSlider.max = '4';
+    speedSlider.step = '0.1';
+    speedSlider.value = '1'; // Default speed
+    speedSlider.className = 'form-range';
+    speedSlider.style.width = '150px';
+    speedSlider.addEventListener('input', (event) => {
+        const speed = parseFloat(event.target.value);
+        speedValue.textContent = `${speed.toFixed(1)}x`;
+        animationSpeed = speed; // Update the global animation speed variable
+    });
+
+
     // Add zoom buttons
     const zoomContainer = document.createElement('div');
     zoomContainer.className = 'd-flex align-items-center ms-3';
@@ -207,10 +319,16 @@ function initializeControls() {
     zoomContainer.appendChild(zoomInButton);
     zoomContainer.appendChild(fitButton);
 
+    // Add speed control
+    speedControlContainer.appendChild(speedLabel);
+    speedControlContainer.appendChild(speedValue);
+    speedControlContainer.appendChild(speedSlider);
+
     // Add buttons to the container
     controlsContainer.appendChild(startButton);
     controlsContainer.appendChild(resetButton);
     controlsContainer.appendChild(zoomContainer);
+    controlsContainer.appendChild(speedControlContainer);
 
     // Add a legend
     const legend = document.createElement('div');
@@ -1058,7 +1176,6 @@ window.addEventListener('resize', function() {
  */
 function resetAnimationAndResize() {
     resetAnimation();
-    calculateCanvasSize();
 
     // Update the canvas size
     if (canvas) {
