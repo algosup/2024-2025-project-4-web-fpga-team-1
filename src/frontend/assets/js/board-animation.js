@@ -27,7 +27,6 @@ const MARGIN = 80;
 
 // Add these global variables
 const GRID_SIZE = 20; // Grid size in pixels
-let useSchematicStyle = true; // Activate schematic style
 
 // Variables for zoom and navigation
 let zoomLevel = 1;
@@ -334,19 +333,6 @@ function initializeControls() {
   info.className = 'mt-2 small text-muted';
   info.innerHTML = 'Navigation: Scroll to zoom, right-click and drag to pan.';
   controlsContainer.appendChild(info);
-
-  // Add a button to toggle style
-  const styleButton = document.createElement('button');
-  styleButton.textContent = 'Schematic View';
-  styleButton.id = 'toggle-style';
-  styleButton.className = 'btn btn-outline-secondary me-2';
-  styleButton.addEventListener('click', function () {
-    useSchematicStyle = !useSchematicStyle;
-    this.textContent = useSchematicStyle ? 'Normal View' : 'Schematic View';
-    resetAnimationAndResize();
-  });
-
-  controlsContainer.appendChild(styleButton);
 }
 
 /**
