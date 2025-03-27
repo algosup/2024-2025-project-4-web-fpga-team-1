@@ -42,33 +42,33 @@ let lastPanY = 0;
  * @param {Object} data - JSON data containing modules and connections
  */
 function initFPGABoardAnimation(data) {
-    console.log("Initializing FPGA animation", data);
-    fpgaData = data;
+  console.log("Initializing FPGA animation", data);
+  fpgaData = data;
 
-    // Data reset
-    resetAnimation();
+  // Data reset
+  resetAnimation();
 
-    // Initialize canvas with fixed size
-    canvas = document.getElementById('fpga-canvas');
-    if (!canvas) {
-        canvas = document.createElement('canvas');
-        canvas.id = 'fpga-canvas';
-        canvas.width = 1200; // Larger fixed size
-        canvas.height = 800; // Larger fixed size
-        document.getElementById('board-container').appendChild(canvas);
-    } else {
-        // Keep a fixed size
-        canvas.width = 1200;
-        canvas.height = 800;
-    }
+  // Initialize canvas with fixed size
+  canvas = document.getElementById('fpga-canvas');
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.id = 'fpga-canvas';
+    canvas.width = 1200; // Larger fixed size
+    canvas.height = 800; // Larger fixed size
+    document.getElementById('board-container').appendChild(canvas);
+  } else {
+    // Keep a fixed size
+    canvas.width = 1200;
+    canvas.height = 800;
+  }
 
-    // Add a style to make the canvas responsive while keeping its proportions
-    canvas.style.maxWidth = '100%';
-    canvas.style.height = 'auto';
-    canvas.style.border = '1px solid #ddd';
+  // Add a style to make the canvas responsive while keeping its proportions
+  canvas.style.maxWidth = '100%';
+  canvas.style.height = 'auto';
+  canvas.style.border = '1px solid #ddd';
 
-    // Draw the FPGA board with modules and ports
-    drawFPGA(data.modules);
+  // Draw the FPGA board with modules and ports
+  drawFPGA(data.modules);
 }
 
 /**
@@ -76,49 +76,49 @@ function initFPGABoardAnimation(data) {
  * @param {Array} modules - List of modules to draw
  */
 function drawFPGA(modules) {
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    modules.forEach((module, index) => {
-        const moduleX = 100 + index * 300; // Horizontal spacing between modules
-        const moduleY = 100;
+  modules.forEach((module, index) => {
+    const moduleX = 100 + index * 300; // Horizontal spacing between modules
+    const moduleY = 100;
 
-        // Draw module rectangle
-        ctx.fillStyle = '#cccccc';
-        ctx.fillRect(moduleX, moduleY, 200, 300);
+    // Draw module rectangle
+    ctx.fillStyle = '#cccccc';
+    ctx.fillRect(moduleX, moduleY, 200, 300);
 
-        // Draw module name
-        ctx.fillStyle = '#000000';
-        ctx.textAlign = 'center';
-        ctx.font = '16px Arial';
-        ctx.fillText(module.name, moduleX + 100, moduleY + 20);
+    // Draw module name
+    ctx.fillStyle = '#000000';
+    ctx.textAlign = 'center';
+    ctx.font = '16px Arial';
+    ctx.fillText(module.name, moduleX + 100, moduleY + 20);
 
-        // Draw input ports
-        module.inputs.forEach((input, i) => {
-            const portX = moduleX - 20; // Position to the left of the module
-            const portY = moduleY + 50 + i * 30;
+    // Draw input ports
+    module.inputs.forEach((input, i) => {
+      const portX = moduleX - 20; // Position to the left of the module
+      const portY = moduleY + 50 + i * 30;
 
-            ctx.fillStyle = '#ff0000'; // Red for inputs
-            ctx.fillRect(portX, portY, 10, 10);
+      ctx.fillStyle = '#ff0000'; // Red for inputs
+      ctx.fillRect(portX, portY, 10, 10);
 
-            ctx.fillStyle = '#000000';
-            ctx.textAlign = 'right';
-            ctx.fillText(input.name, portX - 5, portY + 8);
-        });
-
-        // Draw output ports
-        module.outputs.forEach((output, i) => {
-            const portX = moduleX + 210; // Position to the right of the module
-            const portY = moduleY + 50 + i * 30;
-
-            ctx.fillStyle = '#00ff00'; // Green for outputs
-            ctx.fillRect(portX, portY, 10, 10);
-
-            ctx.fillStyle = '#000000';
-            ctx.textAlign = 'left';
-            ctx.fillText(output.name, portX + 15, portY + 8);
-        });
+      ctx.fillStyle = '#000000';
+      ctx.textAlign = 'right';
+      ctx.fillText(input.name, portX - 5, portY + 8);
     });
+
+    // Draw output ports
+    module.outputs.forEach((output, i) => {
+      const portX = moduleX + 210; // Position to the right of the module
+      const portY = moduleY + 50 + i * 30;
+
+      ctx.fillStyle = '#00ff00'; // Green for outputs
+      ctx.fillRect(portX, portY, 10, 10);
+
+      ctx.fillStyle = '#000000';
+      ctx.textAlign = 'left';
+      ctx.fillText(output.name, portX + 15, portY + 8);
+    });
+  });
 }
 
 /**
@@ -126,261 +126,260 @@ function drawFPGA(modules) {
  * @param {Object} data - JSON data containing modules and connections
  */
 function initFPGABoardAnimation(data) {
-    console.log("Initializing FPGA animation", data);
-    fpgaData = data;
+  console.log("Initializing FPGA animation", data);
+  fpgaData = data;
 
-    // Data reset
-    resetAnimation();
+  // Data reset
+  resetAnimation();
 
-    // Initialize canvas with fixed size
-    canvas = document.getElementById('fpga-canvas');
-    if (!canvas) {
-        canvas = document.createElement('canvas');
-        canvas.id = 'fpga-canvas';
-        canvas.width = 1200; // Larger fixed size
-        canvas.height = 800; // Larger fixed size
-        document.getElementById('board-container').appendChild(canvas);
-    } else {
-        // Keep a fixed size
-        canvas.width = 1200;
-        canvas.height = 800;
-    }
+  // Initialize canvas with fixed size
+  canvas = document.getElementById('fpga-canvas');
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.id = 'fpga-canvas';
+    canvas.width = 1200; // Larger fixed size
+    canvas.height = 800; // Larger fixed size
+    document.getElementById('board-container').appendChild(canvas);
+  } else {
+    // Keep a fixed size
+    canvas.width = 1200;
+    canvas.height = 800;
+  }
 
-    // Add a style to make the canvas responsive while keeping its proportions
-    canvas.style.maxWidth = '100%';
-    canvas.style.height = 'auto';
-    canvas.style.border = '1px solid #ddd';
-    canvas.style.borderRadius = '4px';
+  // Add a style to make the canvas responsive while keeping its proportions
+  canvas.style.maxWidth = '100%';
+  canvas.style.height = 'auto';
+  canvas.style.border = '1px solid #ddd';
+  canvas.style.borderRadius = '4px';
 
-    ctx = canvas.getContext('2d');
+  ctx = canvas.getContext('2d');
 
-    // Initialize controls
-    initializeControls();
+  // Initialize controls
+  initializeControls();
 
-    // Place modules and connections
-    placeModules();
-    createConnections();
+  // Place modules and connections
+  placeModules();
+  createConnections();
 
-    // Initialize zoom and pan events
-    initializeZoomPanEvents();
+  // Initialize zoom and pan events
+  initializeZoomPanEvents();
 
-    // Adjust view to fit content
-    fitContentToView();
+  // Adjust view to fit content
+  fitContentToView();
 
-    // First render
-    render();
+  // First render
+  render();
 }
 
 /**
  * Calculates the optimal canvas size based on the number of modules
  */
 function calculateCanvasSize() {
-    if (!fpgaData || !fpgaData.modules || fpgaData.modules.length === 0) {
-        // Default size if no modules
-        boardWidth = 800;
-        boardHeight = 600;
-        return;
-    }
+  if (!fpgaData || !fpgaData.modules || fpgaData.modules.length === 0) {
+    // Default size if no modules
+    boardWidth = 800;
+    boardHeight = 600;
+    return;
+  }
 
-    const moduleCount = fpgaData.modules.length;
+  const moduleCount = fpgaData.modules.length;
 
-    // Adjust grid spacing based on the number of modules
-    if (moduleCount > 100) {
-        moduleSize = 40;
-        gridSpacing = 80;
-    } else if (moduleCount > 50) {
-        moduleSize = 50;
-        gridSpacing = 100;
-    } else if (moduleCount > 20) {
-        moduleSize = 60;
-        gridSpacing = 120;
-    } else {
-        moduleSize = 70;
-        gridSpacing = 140;
-    }
+  // Adjust grid spacing based on the number of modules
+  if (moduleCount > 100) {
+    moduleSize = 40;
+    gridSpacing = 80;
+  } else if (moduleCount > 50) {
+    moduleSize = 50;
+    gridSpacing = 100;
+  } else if (moduleCount > 20) {
+    moduleSize = 60;
+    gridSpacing = 120;
+  } else {
+    moduleSize = 70;
+    gridSpacing = 140;
+  }
 
-    // Calculate the optimal number of columns (approximately square)
-    const modulesPerRow = Math.ceil(Math.sqrt(moduleCount));
+  // Calculate the optimal number of columns (approximately square)
+  const modulesPerRow = Math.ceil(Math.sqrt(moduleCount));
 
-    // Calculate the number of rows needed
-    const rowCount = Math.ceil(moduleCount / modulesPerRow);
+  // Calculate the number of rows needed
+  const rowCount = Math.ceil(moduleCount / modulesPerRow);
 
-    // Calculate the necessary width and height for the canvas
-    boardWidth = modulesPerRow * gridSpacing + MARGIN * 2;
-    boardHeight = rowCount * gridSpacing + MARGIN * 2;
+  // Calculate the necessary width and height for the canvas
+  boardWidth = modulesPerRow * gridSpacing + MARGIN * 2;
+  boardHeight = rowCount * gridSpacing + MARGIN * 2;
 
-    // Ensure a minimum size
-    boardWidth = Math.max(boardWidth, 600);
-    boardHeight = Math.max(boardHeight, 400);
+  // Ensure a minimum size
+  boardWidth = Math.max(boardWidth, 600);
+  boardHeight = Math.max(boardHeight, 400);
 
-    console.log(`Canvas size calculated: ${boardWidth}x${boardHeight} for ${moduleCount} modules`);
+  console.log(`Canvas size calculated: ${boardWidth}x${boardHeight} for ${moduleCount} modules`);
 }
 
 /**
  * Resets the animation
  */
 function resetAnimation() {
-    modules = [];
-    connections = [];
-    signals = [];
-    moduleInputsRequired = new Map();
-    moduleInputsReceived = new Map();
-    animationRunning = false;
+  modules = [];
+  connections = [];
+  signals = [];
+  moduleInputsRequired = new Map();
+  moduleInputsReceived = new Map();
+  animationRunning = false;
 
-    if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-        animationFrame = null;
-    }
+  if (animationFrame) {
+    cancelAnimationFrame(animationFrame);
+    animationFrame = null;
+  }
 }
 
 /**
  * Initializes animation controls and adds zoom controls
  */
 function initializeControls() {
-    const controlsContainer = document.getElementById('animation-controls');
-    if (!controlsContainer) return;
+  const controlsContainer = document.getElementById('animation-controls');
+  if (!controlsContainer) return;
 
-    // Clear existing controls
-    controlsContainer.innerHTML = '';
+  // Clear existing controls
+  controlsContainer.innerHTML = '';
 
-    // Create control buttons
-    const startButton = document.createElement('button');
-    startButton.textContent = 'Start Animation';
-    startButton.id = 'start-animation';
-    startButton.className = 'btn btn-primary me-2';
-    startButton.addEventListener('click', toggleAnimation);
+  // Create control buttons
+  const startButton = document.createElement('button');
+  startButton.textContent = 'Start Animation';
+  startButton.id = 'start-animation';
+  startButton.className = 'btn btn-primary me-2';
+  startButton.addEventListener('click', toggleAnimation);
 
-    const resetButton = document.createElement('button');
-    resetButton.textContent = 'Reset';
-    resetButton.id = 'reset-animation';
-    resetButton.className = 'btn btn-secondary me-2';
-    resetButton.addEventListener('click', resetAnimationAndResize);
+  const resetButton = document.createElement('button');
+  resetButton.textContent = 'Reset';
+  resetButton.id = 'reset-animation';
+  resetButton.className = 'btn btn-secondary me-2';
+  resetButton.addEventListener('click', resetAnimationAndResize);
 
-    // Add speed control slider
-    const speedControlContainer = document.createElement('div');
-    speedControlContainer.className = 'd-flex align-items-center ms-3';
+  // Add speed control slider
+  const speedControlContainer = document.createElement('div');
+  speedControlContainer.className = 'd-flex align-items-center ms-3';
 
-    const speedLabel = document.createElement('span');
-    speedLabel.textContent = 'Speed: ';
-    speedLabel.className = 'me-2';
+  const speedLabel = document.createElement('span');
+  speedLabel.textContent = 'Speed: ';
+  speedLabel.className = 'me-2';
 
-    const speedValue = document.createElement('span');
-    speedValue.textContent = '1x'; // Default speed
-    speedValue.id = 'speed-value';
-    speedValue.className = 'me-2';
+  const speedValue = document.createElement('span');
+  speedValue.textContent = '1x'; // Default speed
+  speedValue.id = 'speed-value';
+  speedValue.className = 'me-2';
 
-    const speedSlider = document.createElement('input');
-    speedSlider.type = 'range';
-    speedSlider.min = '0.1';
-    speedSlider.max = '4';
-    speedSlider.step = '0.1';
-    speedSlider.value = '1'; // Default speed
-    speedSlider.className = 'form-range';
-    speedSlider.style.width = '150px';
-    speedSlider.addEventListener('input', (event) => {
-        const speed = parseFloat(event.target.value);
-        speedValue.textContent = `${speed.toFixed(1)}x`;
-        animationSpeed = speed; // Update the global animation speed variable
-    });
+  const speedSlider = document.createElement('input');
+  speedSlider.type = 'range';
+  speedSlider.min = '0.1';
+  speedSlider.max = '4';
+  speedSlider.step = '0.1';
+  speedSlider.value = '1'; // Default speed
+  speedSlider.className = 'form-range';
+  speedSlider.style.width = '150px';
+  speedSlider.addEventListener('input', (event) => {
+    const speed = parseFloat(event.target.value);
+    speedValue.textContent = `${speed.toFixed(1)}x`;
+    animationSpeed = speed; // Update the global animation speed variable
+  });
 
 
-    // Add zoom buttons
-    const zoomContainer = document.createElement('div');
-    zoomContainer.className = 'd-flex align-items-center ms-3';
+  // Add zoom buttons
+  const zoomContainer = document.createElement('div');
+  zoomContainer.className = 'd-flex align-items-center ms-3';
 
-    const zoomInButton = document.createElement('button');
-    zoomInButton.innerHTML = '<i class="fas fa-search-plus"></i>';
-    zoomInButton.className = 'btn btn-sm btn-outline-secondary me-1';
-    zoomInButton.title = 'Zoom In';
-    zoomInButton.addEventListener('click', function() {
-        zoomLevel = Math.min(10, zoomLevel * 1.2);
-        render();
-    });
+  const zoomInButton = document.createElement('button');
+  zoomInButton.innerHTML = '<i class="fas fa-search-plus"></i>';
+  zoomInButton.className = 'btn btn-secondary me-2';
+  zoomInButton.textContent = 'Zoom In';
+  zoomInButton.addEventListener('click', function () {
+    zoomLevel *= 1.2;
+    render();
+  });
 
-    const zoomOutButton = document.createElement('button');
-    zoomOutButton.innerHTML = '<i class="fas fa-search-minus"></i>';
-    zoomOutButton.className = 'btn btn-sm btn-outline-secondary me-1';
-    zoomOutButton.title = 'Zoom Out';
-    zoomOutButton.addEventListener('click', function() {
-        zoomLevel = Math.max(0.1, zoomLevel / 1.2);
-        render();
-    });
+  const zoomOutButton = document.createElement('button');
+  zoomOutButton.innerHTML = '<i class="fas fa-search-minus"></i>';
+  zoomOutButton.className = 'btn btn-secondary me-2';
+  zoomOutButton.textContent = 'Zoom Out';
+  zoomOutButton.addEventListener('click', function () {
+    zoomLevel /= 1.2;
+    render();
+  });
 
-    const fitButton = document.createElement('button');
-    fitButton.innerHTML = '<i class="fas fa-expand"></i>';
-    fitButton.className = 'btn btn-sm btn-outline-secondary';
-    fitButton.title = 'Fit to View';
-    fitButton.addEventListener('click', function() {
-        fitContentToView();
-        render();
-    });
+  const fitButton = document.createElement('button');
+  fitButton.innerHTML = '<i class="fas fa-expand"></i>';
+  fitButton.className = 'btn btn-secondary me-2';
+  fitButton.textContent = 'Fit to View';
+  fitButton.addEventListener('click', function () {
+    fitContentToView();
+  });
 
-    zoomContainer.appendChild(zoomOutButton);
-    zoomContainer.appendChild(zoomInButton);
-    zoomContainer.appendChild(fitButton);
+  zoomContainer.appendChild(zoomOutButton);
+  zoomContainer.appendChild(zoomInButton);
+  zoomContainer.appendChild(fitButton);
 
-    // Add speed control
-    speedControlContainer.appendChild(speedLabel);
-    speedControlContainer.appendChild(speedValue);
-    speedControlContainer.appendChild(speedSlider);
+  // Add speed control
+  speedControlContainer.appendChild(speedLabel);
+  speedControlContainer.appendChild(speedValue);
+  speedControlContainer.appendChild(speedSlider);
 
-    // Add buttons to the container
-    controlsContainer.appendChild(startButton);
-    controlsContainer.appendChild(resetButton);
-    controlsContainer.appendChild(zoomContainer);
-    controlsContainer.appendChild(speedControlContainer);
+  // Add buttons to the container
+  controlsContainer.appendChild(startButton);
+  controlsContainer.appendChild(resetButton);
+  controlsContainer.appendChild(zoomContainer);
+  controlsContainer.appendChild(speedControlContainer);
 
-    // Add a legend
-    const legend = document.createElement('div');
-    legend.className = 'mt-3 d-flex flex-wrap';
-    legend.innerHTML = `
+  // Add a legend
+  const legend = document.createElement('div');
+  legend.className = 'mt-3 d-flex flex-wrap';
+  legend.innerHTML = `
         <div class="me-4 mb-2"><span style="display:inline-block;width:20px;height:20px;background-color:#4a90e2;margin-right:5px;"></span> LUT</div>
         <div class="me-4 mb-2"><span style="display:inline-block;width:20px;height:20px;background-color:#50c878;margin-right:5px;"></span> DFF</div>
         <div class="me-4 mb-2"><span style="display:inline-block;width:20px;height:20px;background-color:#f39c12;margin-right:5px;"></span> I/O</div>
         <div class="me-4 mb-2"><span style="display:inline-block;width:20px;height:20px;background-color:#e74c3c;margin-right:5px;"></span> Signal</div>
     `;
-    controlsContainer.appendChild(legend);
+  controlsContainer.appendChild(legend);
 
-    // Add usage information
-    const info = document.createElement('div');
-    info.className = 'mt-2 small text-muted';
-    info.innerHTML = 'Navigation: Scroll to zoom, right-click and drag to pan.';
-    controlsContainer.appendChild(info);
+  // Add usage information
+  const info = document.createElement('div');
+  info.className = 'mt-2 small text-muted';
+  info.innerHTML = 'Navigation: Scroll to zoom, right-click and drag to pan.';
+  controlsContainer.appendChild(info);
 
-    // Add a button to toggle style
-    const styleButton = document.createElement('button');
-    styleButton.textContent = 'Schematic View';
-    styleButton.id = 'toggle-style';
-    styleButton.className = 'btn btn-outline-secondary me-2';
-    styleButton.addEventListener('click', function() {
-        useSchematicStyle = !useSchematicStyle;
-        this.textContent = useSchematicStyle ? 'Normal View' : 'Schematic View';
-        resetAnimationAndResize();
-    });
+  // Add a button to toggle style
+  const styleButton = document.createElement('button');
+  styleButton.textContent = 'Schematic View';
+  styleButton.id = 'toggle-style';
+  styleButton.className = 'btn btn-outline-secondary me-2';
+  styleButton.addEventListener('click', function () {
+    useSchematicStyle = !useSchematicStyle;
+    this.textContent = useSchematicStyle ? 'Normal View' : 'Schematic View';
+    resetAnimationAndResize();
+  });
 
-    controlsContainer.appendChild(styleButton);
+  controlsContainer.appendChild(styleButton);
 }
 
 /**
  * Starts or stops the animation
  */
 function toggleAnimation() {
-    animationRunning = !animationRunning;
+  animationRunning = !animationRunning;
 
-    const button = document.getElementById('start-animation');
-    if (button) {
-        button.textContent = animationRunning ? 'Pause Animation' : 'Start Animation';
-    }
+  const button = document.getElementById('start-animation');
+  if (button) {
+    button.textContent = animationRunning ? 'Pause Animation' : 'Start Animation';
+  }
 
-    if (animationRunning) {
-        startTime = performance.now();
-        signals = [];
-        createInitialSignals();
-        animate();
-    } else if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-        animationFrame = null;
-    }
+  if (animationRunning) {
+    startTime = performance.now();
+    signals = [];
+    createInitialSignals();
+    animate();
+  } else if (animationFrame) {
+    cancelAnimationFrame(animationFrame);
+    animationFrame = null;
+  }
 }
 
 /**
@@ -503,244 +502,244 @@ function placeModules() {
  * Creates connections between modules and detects required inputs
  */
 function createConnections() {
-    if (!fpgaData || !fpgaData.connections) return;
+  if (!fpgaData || !fpgaData.connections) return;
 
-    connections = [];
+  connections = [];
 
-    // Reset input tracking maps
-    moduleInputsRequired = new Map();
-    moduleInputsReceived = new Map();
+  // Reset input tracking maps
+  moduleInputsRequired = new Map();
+  moduleInputsReceived = new Map();
 
-    fpgaData.connections.forEach(connectionData => {
-        // Find source and target modules
-        const sourceModule = findModuleByPartialId(connectionData.from);
-        const targetModule = findModuleByPartialId(connectionData.to);
+  fpgaData.connections.forEach(connectionData => {
+    // Find source and target modules
+    const sourceModule = findModuleByPartialId(connectionData.from);
+    const targetModule = findModuleByPartialId(connectionData.to);
 
-        if (sourceModule && targetModule) {
-            const connection = {
-                id: connectionData.id,
-                source: sourceModule,
-                target: targetModule,
-                delay: getMaxDelay(connectionData.delays),
-                data: connectionData
-            };
+    if (sourceModule && targetModule) {
+      const connection = {
+        id: connectionData.id,
+        source: sourceModule,
+        target: targetModule,
+        delay: getMaxDelay(connectionData.delays),
+        data: connectionData
+      };
 
-            connections.push(connection);
+      connections.push(connection);
 
-            // Register this connection as a required input for the target module
-            if (!moduleInputsRequired.has(targetModule.id)) {
-                moduleInputsRequired.set(targetModule.id, new Set());
-            }
-            moduleInputsRequired.get(targetModule.id).add(connection.id);
+      // Register this connection as a required input for the target module
+      if (!moduleInputsRequired.has(targetModule.id)) {
+        moduleInputsRequired.set(targetModule.id, new Set());
+      }
+      moduleInputsRequired.get(targetModule.id).add(connection.id);
 
-            // Initialize the set of received inputs for the module
-            if (!moduleInputsReceived.has(targetModule.id)) {
-                moduleInputsReceived.set(targetModule.id, new Set());
-            }
-        }
-    });
+      // Initialize the set of received inputs for the module
+      if (!moduleInputsReceived.has(targetModule.id)) {
+        moduleInputsReceived.set(targetModule.id, new Set());
+      }
+    }
+  });
 }
 
 /**
  * Finds a module by partial ID
  */
 function findModuleByPartialId(partialId) {
-    return modules.find(module =>
-        module.id.includes(partialId) ||
-        partialId.includes(module.id)
-    );
+  return modules.find(module =>
+    module.id.includes(partialId) ||
+    partialId.includes(module.id)
+  );
 }
 
 /**
  * Gets the maximum delay of a connection
  */
 function getMaxDelay(delays) {
-    if (!delays || !delays.length) return 0;
+  if (!delays || !delays.length) return 0;
 
-    let maxDelay = 0;
+  let maxDelay = 0;
 
-    delays.forEach(delay => {
-        if (delay.rise && delay.rise.max) {
-            maxDelay = Math.max(maxDelay, delay.rise.max);
-        }
-        if (delay.fall && delay.fall.max) {
-            maxDelay = Math.max(maxDelay, delay.fall.max);
-        }
-    });
+  delays.forEach(delay => {
+    if (delay.rise && delay.rise.max) {
+      maxDelay = Math.max(maxDelay, delay.rise.max);
+    }
+    if (delay.fall && delay.fall.max) {
+      maxDelay = Math.max(maxDelay, delay.fall.max);
+    }
+  });
 
-    return maxDelay;
+  return maxDelay;
 }
 
 /**
  * Creates initial signals for the animation
  */
 function createInitialSignals() {
-    // Find input modules (those with isInput=true or type=IO_PORT)
-    const inputModules = modules.filter(module =>
-        module.type === 'IO_PORT' && module.isInput
-    );
+  // Find input modules (those with isInput=true or type=IO_PORT)
+  const inputModules = modules.filter(module =>
+    module.type === 'IO_PORT' && module.isInput
+  );
 
-    // If no specific input modules are found, use the previous method
-    const sourcesToUse = inputModules.length > 0 ? inputModules :
-        modules.filter(module => {
-            return connections.some(conn => conn.source === module) &&
-                  !connections.some(conn => conn.target === module);
-        });
-
-    // Create a signal for each source
-    sourcesToUse.forEach(source => {
-        propagateSignalsFromModule(source, performance.now());
+  // If no specific input modules are found, use the previous method
+  const sourcesToUse = inputModules.length > 0 ? inputModules :
+    modules.filter(module => {
+      return connections.some(conn => conn.source === module) &&
+        !connections.some(conn => conn.target === module);
     });
+
+  // Create a signal for each source
+  sourcesToUse.forEach(source => {
+    propagateSignalsFromModule(source, performance.now());
+  });
 }
 
 /**
  * Animates signals on the canvas
  */
 function animate() {
-    const currentTime = performance.now();
-    const elapsedTime = (currentTime - startTime) * animationSpeed;
+  const currentTime = performance.now();
+  const elapsedTime = (currentTime - startTime) * animationSpeed;
 
-    // Update the progress of existing signals
-    signals.forEach(signal => {
-        if (!signal.active) return;
+  // Update the progress of existing signals
+  signals.forEach(signal => {
+    if (!signal.active) return;
 
-        const signalDuration = signal.connection.delay || 1000;
-        signal.progress = Math.min(1, (currentTime - signal.startTime) * animationSpeed / signalDuration);
+    const signalDuration = signal.connection.delay || 1000;
+    signal.progress = Math.min(1, (currentTime - signal.startTime) * animationSpeed / signalDuration);
 
-        // If the signal has reached its destination
-        if (signal.progress >= 1) {
-            signal.active = false;
+    // If the signal has reached its destination
+    if (signal.progress >= 1) {
+      signal.active = false;
 
-            // Find the target module
-            const targetModule = signal.connection.target;
+      // Find the target module
+      const targetModule = signal.connection.target;
 
-            // Mark this input as received
-            if (moduleInputsReceived.has(targetModule.id)) {
-                moduleInputsReceived.get(targetModule.id).add(signal.connection.id);
-            }
+      // Mark this input as received
+      if (moduleInputsReceived.has(targetModule.id)) {
+        moduleInputsReceived.get(targetModule.id).add(signal.connection.id);
+      }
 
-            // Check if all required inputs are received
-            const allInputsReceived = checkAllInputsReceived(targetModule);
+      // Check if all required inputs are received
+      const allInputsReceived = checkAllInputsReceived(targetModule);
 
-            // Create signals for all outgoing connections of the target module
-            // only if all required inputs are received
-            if (allInputsReceived || targetModule.type === 'IO_PORT') {
-                propagateSignalsFromModule(targetModule, currentTime);
-            }
-        }
-    });
-
-    // Draw the scene
-    render();
-
-    // Continue the animation if active
-    if (animationRunning) {
-        animationFrame = requestAnimationFrame(animate);
+      // Create signals for all outgoing connections of the target module
+      // only if all required inputs are received
+      if (allInputsReceived || targetModule.type === 'IO_PORT') {
+        propagateSignalsFromModule(targetModule, currentTime);
+      }
     }
+  });
+
+  // Draw the scene
+  render();
+
+  // Continue the animation if active
+  if (animationRunning) {
+    animationFrame = requestAnimationFrame(animate);
+  }
 }
 
 /**
  * Checks if a module has received all its required inputs
  */
 function checkAllInputsReceived(module) {
-    // Input modules do not have required inputs (or are directly active)
-    if (module.type === 'IO_PORT' && module.isInput) {
-        return true;
-    }
-
-    // If the module has no required inputs, consider it ready
-    if (!moduleInputsRequired.has(module.id)) {
-        return true;
-    }
-
-    const requiredInputs = moduleInputsRequired.get(module.id);
-    const receivedInputs = moduleInputsReceived.get(module.id);
-
-    // If we don't have any received inputs yet, return false
-    if (!receivedInputs) return false;
-
-    // Check if all required inputs are in the received inputs
-    for (const required of requiredInputs) {
-        if (!receivedInputs.has(required)) {
-            return false;
-        }
-    }
-
+  // Input modules do not have required inputs (or are directly active)
+  if (module.type === 'IO_PORT' && module.isInput) {
     return true;
+  }
+
+  // If the module has no required inputs, consider it ready
+  if (!moduleInputsRequired.has(module.id)) {
+    return true;
+  }
+
+  const requiredInputs = moduleInputsRequired.get(module.id);
+  const receivedInputs = moduleInputsReceived.get(module.id);
+
+  // If we don't have any received inputs yet, return false
+  if (!receivedInputs) return false;
+
+  // Check if all required inputs are in the received inputs
+  for (const required of requiredInputs) {
+    if (!receivedInputs.has(required)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 /**
  * Propagates signals from a source module
  */
 function propagateSignalsFromModule(sourceModule, currentTime) {
-    // Find all connections originating from this source
-    const outgoingConnections = connections.filter(conn => conn.source === sourceModule);
+  // Find all connections originating from this source
+  const outgoingConnections = connections.filter(conn => conn.source === sourceModule);
 
-    // Internal processing delay of the module (for non-I/O elements)
-    const processingDelay = sourceModule.type === 'IO_PORT' ? 0 : 50;
+  // Internal processing delay of the module (for non-I/O elements)
+  const processingDelay = sourceModule.type === 'IO_PORT' ? 0 : 50;
 
-    outgoingConnections.forEach(connection => {
-        // Check if this signal already exists recently created (avoid duplicates)
-        const existingSignal = signals.find(s =>
-            s.connection === connection && s.startTime > currentTime - 5000
-        );
+  outgoingConnections.forEach(connection => {
+    // Check if this signal already exists recently created (avoid duplicates)
+    const existingSignal = signals.find(s =>
+      s.connection === connection && s.startTime > currentTime - 5000
+    );
 
-        if (!existingSignal) {
-            signals.push({
-                id: `signal-${sourceModule.id}-${connection.target.id}`,
-                connection: connection,
-                progress: 0,
-                startTime: currentTime + processingDelay, // Add processing delay
-                color: '#e74c3c',
-                active: true
-            });
-        }
-    });
+    if (!existingSignal) {
+      signals.push({
+        id: `signal-${sourceModule.id}-${connection.target.id}`,
+        connection: connection,
+        progress: 0,
+        startTime: currentTime + processingDelay, // Add processing delay
+        color: '#e74c3c',
+        active: true
+      });
+    }
+  });
 }
 
 /**
  * Draws the current state of the animation with support for zoom and pan
  */
 function render() {
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw the background
-    ctx.fillStyle = '#f8f9fa';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Draw the background
+  ctx.fillStyle = '#f8f9fa';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Save the state before transformation
-    ctx.save();
+  // Save the state before transformation
+  ctx.save();
 
-    // Apply the transformation (zoom and pan)
-    ctx.translate(panOffsetX, panOffsetY);
-    ctx.scale(zoomLevel, zoomLevel);
+  // Apply the transformation (zoom and pan)
+  ctx.translate(panOffsetX, panOffsetY);
+  ctx.scale(zoomLevel, zoomLevel);
 
-    // Draw the background grid
-    drawGrid();
+  // Draw the background grid
+  drawGrid();
 
-    // Draw the connections
-    drawConnections();
+  // Draw the connections
+  drawConnections();
 
-    // Draw the signals
-    drawSignals();
+  // Draw the signals
+  drawSignals();
 
-    // Draw the modules
-    drawModules();
+  // Draw the modules
+  drawModules();
 
-    // Add delays on the connections
-    if (!animationRunning) {
-        addDelayLabels();
-    }
+  // Add delays on the connections
+  if (!animationRunning) {
+    addDelayLabels();
+  }
 
-    // Restore the original state
-    ctx.restore();
+  // Restore the original state
+  ctx.restore();
 
-    // Display information about the current zoom level
-    ctx.fillStyle = '#333';
-    ctx.font = '12px Arial';
-    ctx.textAlign = 'left';
-    ctx.fillText(`Zoom: ${zoomLevel.toFixed(1)}x`, 10, 20);
+  // Display information about the current zoom level
+  ctx.fillStyle = '#333';
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'left';
+  ctx.fillText(`Zoom: ${zoomLevel.toFixed(1)}x`, 10, 20);
 }
 
 /**
@@ -759,23 +758,23 @@ function drawConnections() {
 
     // Adjust connection points based on module type
     if (source.schematicShape === 'input') {
-      startX = source.x + source.width/2;
+      startX = source.x + source.width / 2;
     } else if (source.schematicShape === 'output') {
-      startX = source.x - source.width/2;
+      startX = source.x - source.width / 2;
     } else if (source.schematicShape === 'lut') {
-      startX = source.x + source.width/2;
+      startX = source.x + source.width / 2;
     } else if (source.schematicShape === 'dff') {
-      startX = source.x + source.width/2;
+      startX = source.x + source.width / 2;
     }
 
     if (target.schematicShape === 'input') {
-      endX = target.x + target.width/2;
+      endX = target.x + target.width / 2;
     } else if (target.schematicShape === 'output') {
-      endX = target.x - target.width/2;
+      endX = target.x - target.width / 2;
     } else if (target.schematicShape === 'lut') {
-      endX = target.x - target.width/2;
+      endX = target.x - target.width / 2;
     } else if (target.schematicShape === 'dff') {
-      endX = target.x - target.width/2;
+      endX = target.x - target.width / 2;
     }
 
     // Draw the Manhattan connection (with right-angle segments)
@@ -800,10 +799,10 @@ function drawConnections() {
 
     ctx.beginPath();
     ctx.moveTo(endX, endY);
-    ctx.lineTo(endX - arrowSize * Math.cos(angle - Math.PI/6),
-              endY - arrowSize * Math.sin(angle - Math.PI/6));
-    ctx.lineTo(endX - arrowSize * Math.cos(angle + Math.PI/6),
-              endY - arrowSize * Math.sin(angle + Math.PI/6));
+    ctx.lineTo(endX - arrowSize * Math.cos(angle - Math.PI / 6),
+      endY - arrowSize * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(endX - arrowSize * Math.cos(angle + Math.PI / 6),
+      endY - arrowSize * Math.sin(angle + Math.PI / 6));
     ctx.closePath();
     ctx.fillStyle = '#888';
     ctx.fill();
@@ -829,23 +828,23 @@ function drawSignals() {
 
     // Adjust connection points based on module type
     if (source.schematicShape === 'input') {
-      startX = source.x + source.width/2;
+      startX = source.x + source.width / 2;
     } else if (source.schematicShape === 'output') {
-      startX = source.x - source.width/2;
+      startX = source.x - source.width / 2;
     } else if (source.schematicShape === 'lut') {
-      startX = source.x + source.width/2;
+      startX = source.x + source.width / 2;
     } else if (source.schematicShape === 'dff') {
-      startX = source.x + source.width/2;
+      startX = source.x + source.width / 2;
     }
 
     if (target.schematicShape === 'input') {
-      endX = target.x + target.width/2;
+      endX = target.x + target.width / 2;
     } else if (target.schematicShape === 'output') {
-      endX = target.x - target.width/2;
+      endX = target.x - target.width / 2;
     } else if (target.schematicShape === 'lut') {
-      endX = target.x - target.width/2;
+      endX = target.x - target.width / 2;
     } else if (target.schematicShape === 'dff') {
-      endX = target.x - target.width/2;
+      endX = target.x - target.width / 2;
     }
 
     // Midpoint
@@ -917,9 +916,9 @@ function drawModules() {
       // Input: square with triangle
       ctx.beginPath();
       // Triangle pointing to the right
-      ctx.moveTo(module.x, module.y - module.height/2);
+      ctx.moveTo(module.x, module.y - module.height / 2);
       ctx.lineTo(module.x + module.width, module.y);
-      ctx.lineTo(module.x, module.y + module.height/2);
+      ctx.lineTo(module.x, module.y + module.height / 2);
       ctx.closePath();
       ctx.fillStyle = module.color;
       ctx.fill();
@@ -934,9 +933,9 @@ function drawModules() {
     } else if (module.schematicShape === 'output') {
       // Output: triangle pointing to the left
       ctx.beginPath();
-      ctx.moveTo(module.x, module.y - module.height/2);
+      ctx.moveTo(module.x, module.y - module.height / 2);
       ctx.lineTo(module.x - module.width, module.y);
-      ctx.lineTo(module.x, module.y + module.height/2);
+      ctx.lineTo(module.x, module.y + module.height / 2);
       ctx.closePath();
       ctx.fillStyle = module.color;
       ctx.fill();
@@ -950,8 +949,8 @@ function drawModules() {
 
     } else if (module.schematicShape === 'lut') {
       // LUT: Rectangle with "&" symbol (AND) to represent logic
-      const x = module.x - module.width/2;
-      const y = module.y - module.height/2;
+      const x = module.x - module.width / 2;
+      const y = module.y - module.height / 2;
       const w = module.width;
       const h = module.height;
 
@@ -974,12 +973,12 @@ function drawModules() {
 
       // Name below
       ctx.font = '10px Arial';
-      ctx.fillText(simplifyName(module.id), module.x, module.y + module.height/2 + 12);
+      ctx.fillText(simplifyName(module.id), module.x, module.y + module.height / 2 + 12);
 
     } else if (module.schematicShape === 'dff') {
       // DFF: Rectangle with clock symbol
-      const x = module.x - module.width/2;
-      const y = module.y - module.height/2;
+      const x = module.x - module.width / 2;
+      const y = module.y - module.height / 2;
       const w = module.width;
       const h = module.height;
 
@@ -1002,19 +1001,19 @@ function drawModules() {
 
       // Clock symbol (triangle)
       ctx.beginPath();
-      ctx.moveTo(x - 5, y + h/2 - 5);
-      ctx.lineTo(x, y + h/2);
-      ctx.lineTo(x - 5, y + h/2 + 5);
+      ctx.moveTo(x - 5, y + h / 2 - 5);
+      ctx.lineTo(x, y + h / 2);
+      ctx.lineTo(x - 5, y + h / 2 + 5);
       ctx.stroke();
 
       // Name below
       ctx.font = '10px Arial';
-      ctx.fillText(simplifyName(module.id), module.x, module.y + module.height/2 + 12);
+      ctx.fillText(simplifyName(module.id), module.x, module.y + module.height / 2 + 12);
 
     } else {
       // Other modules: Simple rectangle
-      const x = module.x - module.width/2;
-      const y = module.y - module.height/2;
+      const x = module.x - module.width / 2;
+      const y = module.y - module.height / 2;
       const w = module.width;
       const h = module.height;
 
@@ -1038,63 +1037,63 @@ function drawModules() {
  * Adds delay labels on the connections
  */
 function addDelayLabels() {
-    connections.forEach(connection => {
-        const source = connection.source;
-        const target = connection.target;
+  connections.forEach(connection => {
+    const source = connection.source;
+    const target = connection.target;
 
-        // Calculate the midpoint of the connection
-        const midX = (source.x + target.x) / 2;
-        const midY = (source.y + target.y) / 2;
+    // Calculate the midpoint of the connection
+    const midX = (source.x + target.x) / 2;
+    const midY = (source.y + target.y) / 2;
 
-        // Add an offset to prevent labels from overlapping
-        const offsetX = (target.y - source.y) * 0.1;
-        const offsetY = (source.x - target.x) * 0.1;
+    // Add an offset to prevent labels from overlapping
+    const offsetX = (target.y - source.y) * 0.1;
+    const offsetY = (source.x - target.x) * 0.1;
 
-        // Display the rounded delay
-        const delayValue = connection.delay;
-        const displayDelay = delayValue >= 1000
-            ? (delayValue / 1000).toFixed(1) + ' ns'
-            : delayValue.toFixed(0) + ' ps';
+    // Display the rounded delay
+    const delayValue = connection.delay;
+    const displayDelay = delayValue >= 1000
+      ? (delayValue / 1000).toFixed(1) + ' ns'
+      : delayValue.toFixed(0) + ' ps';
 
-        ctx.fillStyle = '#333';
-        ctx.font = '10px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#333';
+    ctx.font = '10px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
 
-        // White background for the label
-        const textWidth = ctx.measureText(displayDelay).width;
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        ctx.fillRect(midX + offsetX - textWidth/2 - 2, midY + offsetY - 7, textWidth + 4, 14);
+    // White background for the label
+    const textWidth = ctx.measureText(displayDelay).width;
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillRect(midX + offsetX - textWidth / 2 - 2, midY + offsetY - 7, textWidth + 4, 14);
 
-        // Delay text
-        ctx.fillStyle = '#333';
-        ctx.fillText(displayDelay, midX + offsetX, midY + offsetY);
-    });
+    // Delay text
+    ctx.fillStyle = '#333';
+    ctx.fillText(displayDelay, midX + offsetX, midY + offsetY);
+  });
 }
 
 /**
  * Draws a rectangle with rounded corners
  */
 function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
 
-    if (fill) {
-        ctx.fill();
-    }
+  if (fill) {
+    ctx.fill();
+  }
 
-    if (stroke) {
-        ctx.stroke();
-    }
+  if (stroke) {
+    ctx.stroke();
+  }
 }
 
 /**
@@ -1129,167 +1128,167 @@ function simplifyName(id) {
  * Draws a background grid adjusted to zoom
  */
 function drawGrid() {
-    ctx.strokeStyle = '#e0e0e0';
-    ctx.lineWidth = 0.5;
+  ctx.strokeStyle = '#e0e0e0';
+  ctx.lineWidth = 0.5;
 
-    // Calculate visible bounds
-    const visibleLeft = -panOffsetX / zoomLevel;
-    const visibleTop = -panOffsetY / zoomLevel;
-    const visibleRight = (canvas.width - panOffsetX) / zoomLevel;
-    const visibleBottom = (canvas.height - panOffsetY) / zoomLevel;
+  // Calculate visible bounds
+  const visibleLeft = -panOffsetX / zoomLevel;
+  const visibleTop = -panOffsetY / zoomLevel;
+  const visibleRight = (canvas.width - panOffsetX) / zoomLevel;
+  const visibleBottom = (canvas.height - panOffsetY) / zoomLevel;
 
-    // Adjust grid size based on zoom
-    const gridStep = GRID_SIZE * (zoomLevel < 0.5 ? 2 : 1);
+  // Adjust grid size based on zoom
+  const gridStep = GRID_SIZE * (zoomLevel < 0.5 ? 2 : 1);
 
-    // Calculate grid starting points aligned to the grid
-    const startX = Math.floor(visibleLeft / gridStep) * gridStep;
-    const startY = Math.floor(visibleTop / gridStep) * gridStep;
+  // Calculate grid starting points aligned to the grid
+  const startX = Math.floor(visibleLeft / gridStep) * gridStep;
+  const startY = Math.floor(visibleTop / gridStep) * gridStep;
 
-    // Horizontal lines
-    for (let y = startY; y <= visibleBottom; y += gridStep) {
-        ctx.beginPath();
-        ctx.moveTo(visibleLeft, y);
-        ctx.lineTo(visibleRight, y);
-        ctx.stroke();
-    }
+  // Horizontal lines
+  for (let y = startY; y <= visibleBottom; y += gridStep) {
+    ctx.beginPath();
+    ctx.moveTo(visibleLeft, y);
+    ctx.lineTo(visibleRight, y);
+    ctx.stroke();
+  }
 
-    // Vertical lines
-    for (let x = startX; x <= visibleRight; x += gridStep) {
-        ctx.beginPath();
-        ctx.moveTo(x, visibleTop);
-        ctx.lineTo(x, visibleBottom);
-        ctx.stroke();
-    }
+  // Vertical lines
+  for (let x = startX; x <= visibleRight; x += gridStep) {
+    ctx.beginPath();
+    ctx.moveTo(x, visibleTop);
+    ctx.lineTo(x, visibleBottom);
+    ctx.stroke();
+  }
 }
 
 // Add a window resize event handler
-window.addEventListener('resize', function() {
-    // Only if the canvas and data are initialized
-    if (canvas && fpgaData) {
-        // Recalculate size and redraw
-        render();
-    }
+window.addEventListener('resize', function () {
+  // Only if the canvas and data are initialized
+  if (canvas && fpgaData) {
+    // Recalculate size and redraw
+    render();
+  }
 });
 
 /**
  * Resets the animation and resizes the canvas
  */
 function resetAnimationAndResize() {
-    resetAnimation();
+  resetAnimation();
 
-    // Update the canvas size
-    if (canvas) {
-        canvas.width = boardWidth;
-        canvas.height = boardHeight;
-    }
+  // Update the canvas size
+  if (canvas) {
+    canvas.width = boardWidth;
+    canvas.height = boardHeight;
+  }
 
-    placeModules();
-    createConnections();
-    render();
-    fitContentToView();
+  placeModules();
+  createConnections();
+  render();
+  fitContentToView();
 }
 
 /**
  * Initializes zoom and pan events
  */
 function initializeZoomPanEvents() {
-    // Zoom handler (mouse wheel)
-    canvas.addEventListener('wheel', function(e) {
-        e.preventDefault();
+  // Zoom handler (mouse wheel)
+  canvas.addEventListener('wheel', function (e) {
+    e.preventDefault();
 
-        // Calculate the focal point of the zoom (mouse position)
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
+    // Calculate the focal point of the zoom (mouse position)
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
 
-        // Zoom factor (adjust as needed)
-        const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
+    // Zoom factor (adjust as needed)
+    const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
 
-        // Calculate the new zoom level
-        const newZoomLevel = zoomLevel * zoomFactor;
+    // Calculate the new zoom level
+    const newZoomLevel = zoomLevel * zoomFactor;
 
-        // Limit the zoom level
-        if (newZoomLevel >= 0.1 && newZoomLevel <= 10) {
-            // Calculate the new pan offset to maintain the focal point
-            panOffsetX = mouseX - (mouseX - panOffsetX) * zoomFactor;
-            panOffsetY = mouseY - (mouseY - panOffsetY) * zoomFactor;
+    // Limit the zoom level
+    if (newZoomLevel >= 0.1 && newZoomLevel <= 10) {
+      // Calculate the new pan offset to maintain the focal point
+      panOffsetX = mouseX - (mouseX - panOffsetX) * zoomFactor;
+      panOffsetY = mouseY - (mouseY - panOffsetY) * zoomFactor;
 
-            zoomLevel = newZoomLevel;
-            render(); // Redraw with the new zoom
-        }
-    });
+      zoomLevel = newZoomLevel;
+      render(); // Redraw with the new zoom
+    }
+  });
 
-    // Right-click handler (start panning)
-    canvas.addEventListener('contextmenu', function(e) {
-        e.preventDefault(); // Prevent the browser's context menu
-        isPanning = true;
-        lastPanX = e.clientX;
-        lastPanY = e.clientY;
-        canvas.style.cursor = 'grabbing';
-    });
+  // Right-click handler (start panning)
+  canvas.addEventListener('contextmenu', function (e) {
+    e.preventDefault(); // Prevent the browser's context menu
+    isPanning = true;
+    lastPanX = e.clientX;
+    lastPanY = e.clientY;
+    canvas.style.cursor = 'grabbing';
+  });
 
-    // Mouse move handler (panning in progress)
-    canvas.addEventListener('mousemove', function(e) {
-        if (isPanning) {
-            const deltaX = e.clientX - lastPanX;
-            const deltaY = e.clientY - lastPanY;
+  // Mouse move handler (panning in progress)
+  canvas.addEventListener('mousemove', function (e) {
+    if (isPanning) {
+      const deltaX = e.clientX - lastPanX;
+      const deltaY = e.clientY - lastPanY;
 
-            panOffsetX += deltaX;
-            panOffsetY += deltaY;
+      panOffsetX += deltaX;
+      panOffsetY += deltaY;
 
-            lastPanX = e.clientX;
-            lastPanY = e.clientY;
+      lastPanX = e.clientX;
+      lastPanY = e.clientY;
 
-            render(); // Redraw with the new pan offset
-        }
-    });
+      render(); // Redraw with the new pan offset
+    }
+  });
 
-    // Mouse up handler (end panning)
-    window.addEventListener('mouseup', function() {
-        if (isPanning) {
-            isPanning = false;
-            canvas.style.cursor = 'default';
-        }
-    });
+  // Mouse up handler (end panning)
+  window.addEventListener('mouseup', function () {
+    if (isPanning) {
+      isPanning = false;
+      canvas.style.cursor = 'default';
+    }
+  });
 }
 
 /**
  * Adjusts the view to fit all content
  */
 function fitContentToView() {
-    // Find the content bounds
-    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  // Find the content bounds
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
 
-    modules.forEach(module => {
-        const x = module.x;
-        const y = module.y;
-        const halfWidth = module.width / 2;
-        const halfHeight = module.height / 2;
+  modules.forEach(module => {
+    const x = module.x;
+    const y = module.y;
+    const halfWidth = module.width / 2;
+    const halfHeight = module.height / 2;
 
-        minX = Math.min(minX, x - halfWidth);
-        minY = Math.min(minY, y - halfHeight);
-        maxX = Math.max(maxX, x + halfWidth);
-        maxY = Math.max(maxY, y + halfHeight);
-    });
+    minX = Math.min(minX, x - halfWidth);
+    minY = Math.min(minY, y - halfHeight);
+    maxX = Math.max(maxX, x + halfWidth);
+    maxY = Math.max(maxY, y + halfHeight);
+  });
 
-    // Add a margin
-    const margin = 50;
-    minX -= margin;
-    minY -= margin;
-    maxX += margin;
-    maxY += margin;
+  // Add a margin
+  const margin = 50;
+  minX -= margin;
+  minY -= margin;
+  maxX += margin;
+  maxY += margin;
 
-    // Calculate the necessary zoom to fit all content
-    const contentWidth = maxX - minX;
-    const contentHeight = maxY - minY;
+  // Calculate the necessary zoom to fit all content
+  const contentWidth = maxX - minX;
+  const contentHeight = maxY - minY;
 
-    const zoomX = canvas.width / contentWidth;
-    const zoomY = canvas.height / contentHeight;
+  const zoomX = canvas.width / contentWidth;
+  const zoomY = canvas.height / contentHeight;
 
-    // Use the smaller zoom level to ensure everything is visible
-    zoomLevel = Math.min(zoomX, zoomY, 1); // Limit to 1x max to avoid excessive enlargement
+  // Use the smaller zoom level to ensure everything is visible
+  zoomLevel = Math.min(zoomX, zoomY, 1); // Limit to 1x max to avoid excessive enlargement
 
-    // Center the content
-    panOffsetX = canvas.width / 2 - (minX + maxX) / 2 * zoomLevel;
-    panOffsetY = canvas.height / 2 - (minY + maxY) / 2 * zoomLevel;
+  // Center the content
+  panOffsetX = canvas.width / 2 - (minX + maxX) / 2 * zoomLevel;
+  panOffsetY = canvas.height / 2 - (minY + maxY) / 2 * zoomLevel;
 }
