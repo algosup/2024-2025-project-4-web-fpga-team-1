@@ -225,11 +225,49 @@ function resetAnimation() {
   moduleInputsRequired = new Map();
   moduleInputsReceived = new Map();
   animationRunning = false;
+  signals.forEach(signal => {
+    signal.progress = 0; // Réinitialiser la progression des signaux
+    signal.active = true; // Réactiver les signaux
+});
 
   if (animationFrame) {
     cancelAnimationFrame(animationFrame);
     animationFrame = null;
   }
+}
+
+/**
+ * Updates the animation frame
+ */
+function updateAnimation() {
+    if (!animationRunning) return;
+
+    // Mettre à jour les signaux
+    signals.forEach(signal => {
+        if (signal.active) {
+            signal.progress += animationSpeed * 0.01; // Ajustez la vitesse si nécessaire
+            if (signal.progress >= 1) {
+                signal.progress = 1; // Limiter la progression à 1
+                signal.active = false; // Désactiver le signal une fois terminé
+            }
+        }
+    });
+
+    // Vérifier si tous les signaux sont terminés
+    const allSignalsComplete = signals.every(signal => !signal.active);
+    if (allSignalsComplete) {
+        console.log('Animation terminée. Réinitialisation...');
+        resetAnimation(); // Réinitialiser automatiquement l'animation
+        return;
+    }
+
+    // Redessiner le canvas
+    drawFPGA(modules);
+    drawConnections();
+    drawSignals();
+
+    // Demander le prochain frame
+    animationFrame = requestAnimationFrame(updateAnimation);
 }
 
 /**
@@ -248,12 +286,6 @@ function initializeControls() {
   startButton.id = 'start-animation';
   startButton.className = 'btn btn-primary me-2';
   startButton.addEventListener('click', toggleAnimation);
-
-  const resetButton = document.createElement('button');
-  resetButton.textContent = 'Reset';
-  resetButton.id = 'reset-animation';
-  resetButton.className = 'btn btn-secondary me-2';
-  resetButton.addEventListener('click', resetAnimationAndResize);
 
   // Add speed control slider
   const speedControlContainer = document.createElement('div');
@@ -324,7 +356,6 @@ function initializeControls() {
 
   // Add buttons to the container
   controlsContainer.appendChild(startButton);
-  controlsContainer.appendChild(resetButton);
   controlsContainer.appendChild(zoomContainer);
   controlsContainer.appendChild(speedControlContainer);
 
@@ -339,11 +370,21 @@ function initializeControls() {
  * Starts or stops the animation
  */
 function toggleAnimation() {
-  animationRunning = !animationRunning;
 
   const button = document.getElementById('start-animation');
+  console.log('Toggle animation', animationRunning);
+  console.log('Signals', signals.length);
+  if (!animationRunning && signals.length > 0) {
+    // Reset state
+    resetAnimationAndResize();
+    button.textContent = 'Start Animation';
+    return;
+  }
+
+  animationRunning = !animationRunning;
+
   if (button) {
-    button.textContent = animationRunning ? 'Pause Animation' : 'Start Animation';
+    button.textContent = (!animationRunning && signals.length > 0) ? 'Reset Animation' : animationRunning ? 'Pause Animation' : 'Start Animation';
   }
 
   if (animationRunning) {
