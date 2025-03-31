@@ -56,6 +56,51 @@ h1 small {
     width: 85%;
 }
 
+/* Tips box */
+#tips {
+    background-color: rgba(249, 225, 63, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+}
+
+#tips img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+/*--------------------*/
+
+/* Info box */
+#info {
+    background-color: rgba(0, 118, 218, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+}
+
+#info img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+/*--------------------*/
+
+/* Warning box */
+#warn {
+    background-color: rgba(248, 72, 72, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+}
+
+#warn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+/*--------------------*/
+
 /* table */
 table{
     border-collapse: collapse;
