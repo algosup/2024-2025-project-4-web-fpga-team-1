@@ -55,7 +55,7 @@ To launch the web site, you have to:
 
 ## Usage
 
-For more information on the use of our website, please refer to the [User Manual]().
+For more information on the use of our website, please refer to the [User Manual](https://github.com/algosup/2024-2025-project-4-web-fpga-team-1/blob/main/userManual/userManual(v.1.2).pdf).
 
 ## Team Members
 
