@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+
+    {{> header}}
+
+    <div class="content">
+        <div class="Title" id="one">
+            <h1>FPGA Explorer</h1>
+            <h2>The best tool to learn how work FPGA boards<br>thanks simplify virtual modelisations</h2>
+            <button onclick="window.location.href='/animation';">Animate your files</button>
+        </div>
+        <div class="CNES" id="two">
+            <div id="text">
+                <h1>What is CNES?</h1>
+                <p>
+                    The Centre National d'Études Spatiales (CNES) is the French space agency responsible for defining and executing France's space policy. 
+                    Established in 1961, CNES operates under the supervision of the French government and plays a leading role in Europe's space exploration efforts. 
+                    It is one of the world's most influential space agencies, working closely with both national and international partners, 
+                    including the European Space Agency (ESA), NASA, and other space organizations. CNES is at the forefront of space innovation, 
+                    contributing to scientific research, satellite development, and the future of space exploration.
+                </p>
+                <hr>
+                <h3>Missions and Responsibilities</h3>
+                <p>
+                    CNES engages in diverse space activities, including scientific research, Earth observation, telecommunications, navigation, and defense. 
+                    It develops and launches satellites for climate monitoring, disaster management, and global connectivity while contributing to planetary exploration missions. 
+                    CNES also plays a key role in launch vehicle development, notably through the Ariane rocket program with ESA, facilitating satellite deployment and deep-space missions. 
+                    Additionally, it supports human spaceflight, collaborating on projects like the ISS and future lunar and Martian missions.
+                </p>
+                <hr>
+                <h3>CNES: Innovation and Leadership in Global Space Exploration</h3>
+                <p>
+                    CNES aims to position France as a global leader in space science and technology by fostering innovation for societal benefit. It advances Earth observation, secure communications, 
+                    navigation, and defense while investing in emerging technologies like AI, autonomous systems, and reusable launch vehicles. Through collaboration with global space agencies, 
+                    research institutions, and industry, CNES drives high-resolution Earth imaging, deep-space exploration, and eco-friendly propulsion. Committed to sustainability, 
+                    it develops solutions to mitigate space debris and ensure long-term space operations, keeping France at the forefront of global space innovation.
+                </p>
+            </div>
+            <img src="/images/satellite.png" alt="CNES logo">
+        </div>
+        <div class="FPGA" id="one">
+            <img src="/images/FPGA.png" alt="Verilog code">
+            <div id="text">
+                <h1>What is FPGA?</h1>
+                <p>
+                    A Field-Programmable Gate Array (FPGA) is a type of Integrated Circuit (IC) that can be programmed and reconfigured after manufacturing. 
+                    Unlike traditional processors (CPUs) or Application-Specific Integrated Circuits (ASICs), which have fixed functions, 
+                    an FPGA allows users to customize its hardware functionality according to specific needs. This flexibility makes FPGAs widely used in high-performance computing, 
+                    telecommunications, automotive, aerospace, and industrial applications.
+                </p>
+                <hr>
+                <h3>How Does an FPGA Work?</h3>
+                <p>
+                    An FPGA features a matrix of Configurable Logic Blocks (CLBs) interconnected through a programmable network, enabling the execution of complex logical functions in parallel. 
+                    This parallelism grants FPGAs significant speed and efficiency advantages over conventional processors. Programming is done using Hardware Description Languages (HDLs) 
+                    like VHDL or Verilog, defining logic gate configurations and interconnections. This hardware-level customization delivers superior performance for specialized applications compared to software-based solutions.
+                </p>
+                <hr>
+                <h3>Advantages of FPGAs</h3>
+                <ul>
+                    <li>Reconfigurability: Can be reprogrammed as needed, allowing hardware updates without changing physical components.</li>
+                    <li>Parallel Processing: Executes multiple operations simultaneously, improving speed and efficiency.</li>
+                    <li>Low Latency: Performs tasks in real-time with minimal delays, ideal for time-sensitive applications.</li>
+                    <li>Power Efficiency: Consumes less power compared to general-purpose processors for certain workloads.</li>
+                    <li>Customization: Can be tailored to specific applications, optimizing performance and resource usage.</li>
+                </ul>
+            </div>
+        </div>
+        <h2 style="text-align: center; background-color: rgb(00, 51, 91); color: white;margin: 0; padding-top: 35px;">The board</h2>
+        <div id="infoBoxleft" class="info-box-left"></div>
+        <div class="Board" id="two">
+            <div class="container">
+                <img src="/images/FPGAboard.png" alt="FPGA board" style="margin-bottom: 35px;" class="image">
+                <div class="point" data-info="Power Input:  Provides electrical power to the FPGA board." style="top: 23%; left: 550px;"></div>
+                <div class="point" data-info="USB Micro-A Port: Used for programming and debugging the FPGA." style="top: 23%; left: 585px;"></div>
+                <div class="point" data-info="USB Host Port: Allows the FPGA to connect to external USB devices like keyboards or flash drives." style="top: 23%; left: 640px;"></div>
+                <div class="point" data-info="VGA Video Port: Used to connect a graphics card to an analogue computer screen." style="top: 20%; left: 713px;"></div>
+                <div class="point" data-info="CPU: The main processing unit that executes instructions and manages operations." style="top: 38%; left: 572px;"></div>
+                <div class="point" data-info="Buzzer: Generates sound signals for alerts or notifications." style="top: 38%; left: 798px;"></div>
+                <div class="point" data-info="SD Card Port: Provides storage expansion for saving or loading data." style="top: 35%; left: 850px;"></div>
+                <div class="point" data-info="RAM: Temporary memory for storing data while the FPGA is running." style="top: 44%; left: 725px;"></div>
+                <div class="point" data-info="Clock: Provides timing signals to synchronize operations within the FPGA." style="top: 43%; left: 760px;"></div>
+                <div class="point" data-info="7-segment Displays: Used to visually display numerical or character output." style="top: 57%; left: 605px;"></div>
+                <div class="point" data-info="LUT (Look-Up Table): A key component in FPGA logic, used to implement combinational logic." style="top: 55%; left: 725px;"></div>
+                <div class="point" data-info="Debounced Pushbuttons Switches: Buttons that provide stable input signals by eliminating mechanical bouncing." style="top: 55%; left: 808px;"></div>
+                <div class="point" data-info="Toggle Switches: Used to provide manual input for controlling different FPGA functions." style="top: 71%; left: 713px;"></div>
+                <div class="point" data-info="Power ON/OFF Switch: Turns the FPGA board on or off." style="top: 70%; left: 864px;"></div>
+            </div>
+        </div>
+        <div id="infoBoxright" class="info-box-right"></div>
+        <div class="Verilog" id="one">
+            <div id="text">
+                <h1>What is Verilog?</h1>
+                <p>
+                    Verilog is a HDL used for designing and modeling digital circuits and systems. It allows engineers to describe the structure and behavior of electronic circuits, 
+                    particularly for FPGAs and ASICs. Developed in the 1980s and later standardized as IEEE 1364, Verilog has become one of the most widely used languages in digital design, alongside VHDL.
+                </p>
+                <hr>
+                <h3>Purpose and Applications</h3>
+                <p>
+                    Verilog enables engineers to design, simulate, and verify digital circuits before manufacturing. Widely used in microprocessor design, signal processing, 
+                    memory systems, and embedded systems, it allows for writing Register-Transfer Level (RTL) code to define data flow between registers under clock control. 
+                    Verilog also plays a crucial role in design verification through testbenches and simulations. It supports both behavioral modeling, which defines circuit functionality, 
+                    and structural modeling, which specifies component interconnections.
+                </p>
+                <hr>
+                <h3>Advantages of Verilog</h3>
+                <ul>
+                    <li>Widely Used in Industry: Many semiconductor companies and research institutions rely on Verilog for FPGA and ASIC design.</li>
+                    <li>Faster Simulation and Prototyping: Compared to manual circuit design, Verilog enables rapid prototyping, debugging, and testing.</li>
+                    <li>Interoperability: Verilog-based designs can be integrated with standard Electronic Design Automation (EDA) tools, making it compatible with various chip fabrication processes.</li>
+                    <li>Scalability: From simple logic circuits to complex processors, Verilog can handle designs of varying complexity.</li>
+                </ul>
+            </div>
+            <img src="/images/Verilog.png" alt="Verilog code">
+        </div>
+    </div>
+    
+    {{> footer}}
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+body {
+    color: black;
+}
+
+hr {
+    color: rgb(00, 51, 91);
+}
+
+header {
+    text-align: center;
+    color: rgb(00, 51, 91);
+    padding-top: 35px;
+    background-color: rgba(0, 118, 218, 0.3);
+}
+
+header h1 {
+    font-size: 2.5em;
+}
+
+h1 small {
+    font-size: 1%;
+}
+
+.siteContent {
+    display: flex;
+    flex-direction: row;
+}
+
+.tableOfContents {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    border-right: 2px solid rgb(00, 51, 91);
+}
+
+#title {
+    margin-top: 35px;
+}
+
+/*
+.deroulant > a::after {
+    content: " \25BC";
+}
+*/
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2%;
+    width: 85%;
+}
+
+#tips {
+    background-color: rgba(249, 225, 63, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+}
+
+#tips img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+#info {
+    background-color: rgba(0, 118, 218, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+}
+
+#info img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+#warn {
+    background-color: rgba(248, 72, 72, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+}
+
+#warn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+table{
+    border-collapse: collapse;
+    margin-right: 25px;
+}
+
+td{
+    border: 1px solid black;
+    padding: 10px;
+}
+
+th{
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.words {
+    width: 25%;
+}
+
+.Credit {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.Credit h2 {
+    margin: 50px;
+    font-size: 35px;
+}
+
+.Credit h3 {
+    margin-bottom: 5px;
+}
+
+.Credit small {
+    padding-top: 10px;
+}
+
+.team {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.roles {
+    text-align: right;
+    width: 47%;
+}
+
+.names {
+    text-align: left;
+    width: 47%;
+}
+
+.names p
+{
+    margin: 18px;
+}
