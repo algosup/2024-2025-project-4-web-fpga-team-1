@@ -4,12 +4,6 @@ body {
     margin: 0;
 }
 
-/* html, body {
-  font-family: 'Dongle', sans-serif;
-  margin: 0;
-  padding: 0;
-} */
-
 .text-container {
   z-index: 100;
   width: 100vw;

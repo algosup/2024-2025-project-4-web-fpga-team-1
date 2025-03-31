@@ -1,5 +1,3 @@
-/* This file contains the css for the user manual page */
-
 body {
     color: black;
 }
@@ -8,7 +6,6 @@ hr {
     color: rgb(00, 51, 91);
 }
 
-/* Header */
 header {
     text-align: center;
     color: rgb(00, 51, 91);
@@ -23,21 +20,18 @@ header h1 {
 h1 small {
     font-size: 1%;
 }
-/*-------------------*/
 
 .siteContent {
     display: flex;
     flex-direction: row;
 }
 
-/* Table of contents */
 .tableOfContents {
     display: flex;
     flex-direction: column;
     width: 250px;
     border-right: 2px solid rgb(00, 51, 91);
 }
-/*-------------------*/
 
 #title {
     margin-top: 35px;
@@ -56,7 +50,6 @@ h1 small {
     width: 85%;
 }
 
-/* Tips box */
 #tips {
     background-color: rgba(249, 225, 63, 0.3);
     border-radius: 10px;
@@ -69,9 +62,7 @@ h1 small {
     height: 20px;
     margin-right: 10px;
 }
-/*--------------------*/
 
-/* Info box */
 #info {
     background-color: rgba(0, 118, 218, 0.3);
     border-radius: 10px;
@@ -84,9 +75,7 @@ h1 small {
     height: 20px;
     margin-right: 10px;
 }
-/*--------------------*/
 
-/* Warning box */
 #warn {
     background-color: rgba(248, 72, 72, 0.3);
     border-radius: 10px;
@@ -99,9 +88,7 @@ h1 small {
     height: 20px;
     margin-right: 10px;
 }
-/*--------------------*/
 
-/* table */
 table{
     border-collapse: collapse;
     margin-right: 25px;
@@ -120,9 +107,7 @@ th{
 .words {
     width: 25%;
 }
-/*-------------------*/
 
-/* Credits */
 .Credit {
     text-align: center;
     margin-bottom: 35px;
@@ -161,4 +146,3 @@ th{
 {
     margin: 18px;
 }
-/*-------------------*/
