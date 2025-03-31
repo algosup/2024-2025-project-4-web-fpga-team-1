@@ -10,7 +10,7 @@
 
 | Name                     | Deadlines    | links                                                                               |
 | ------------------------ | ------------ | ----------------------------------------------------------------------------------- |
-| Functional Specification | 03/13/2025   | [functionalSpecifications.md](functionalSpecifications.md)                          |
+| Functional Specification | 03/13/2025   | [functionalSpecifications.md](https://github.com/algosup/2024-2025-project-4-web-fpga-team-1/blob/main/functionalSpecifications/functionalSpecifications.md)                          |
 | Technical Specification  | 03/25/2025   | [technicalSpecifications.md](../technicalSpecifications/technicalSpecifications.md) |
 | Test Plan                | 03/25/2025   | [testPlan.md](testplan.md)                                                                     |
 | Developement             | 04/01/2025   | No links for now                                                                    |
