@@ -1,8 +1,6 @@
-/**
- * FPGA animation - Visualizing delays and connections
- * This animation shows how signals propagate through an FPGA.
- * based on SDF timing data converted to JSON
- */
+ // FPGA animation - Visualizing delays and connections
+ // This animation shows how signals propagate through an FPGA.
+ // based on SDF timing data converted to JSON
 
 // Global variables
 let fpgaData = null;
@@ -17,6 +15,7 @@ let connections = [];
 let signals = [];
 let moduleInputsRequired = new Map(); // Tracking of input requirements by module
 let moduleInputsReceived = new Map(); // Track entries received by module
+
 // Initial dimensions will be dynamically adjusted
 let boardWidth = 800;
 let boardHeight = 600;
@@ -53,28 +52,43 @@ function initFPGABoardAnimation(data) {
   if (!canvas) {
     canvas = document.createElement('canvas');
     canvas.id = 'fpga-canvas';
-    canvas.height = canvaSize.height; // Larger fixed size
     canvas.width = canvaSize.width; // Larger fixed size
+    canvas.height = canvaSize.height; // Larger fixed size
     document.getElementById('board-container').appendChild(canvas);
   } else {
     // Keep a fixed size
-    canvas.height = canvaSize.height;
     canvas.width = canvaSize.width;
+    canvas.height = canvaSize.height;
   }
 
   // Add a style to make the canvas responsive while keeping its proportions
   canvas.style.maxWidth = '100%';
   canvas.style.height = 'auto';
   canvas.style.border = '1px solid #ddd';
+  canvas.style.borderRadius = '4px';
 
-  // Draw the FPGA board with modules and ports
-  drawFPGA(data.modules);
+  ctx = canvas.getContext('2d');
+
+  // Initialize controls
+  initializeControls();
+
+  // Place modules and connections
+  placeModules();
+  createConnections();
+
+  // Initialize zoom and pan events
+  initializeZoomPanEvents();
+
+  // Adjust view to fit content
+  fitContentToView();
+
+  // First render
+  render();
 }
 
-/**
- * Draws the FPGA board with modules and ports
- * @param {Array} modules - List of modules to draw
- */
+ // Draws the FPGA board with modules and ports
+ // @param {Array} modules - List of modules to draw
+
 function drawFPGA(modules) {
   console.log("Drawing FPGA board with modules");
   const ctx = canvas.getContext('2d');
@@ -122,59 +136,7 @@ function drawFPGA(modules) {
   });
 }
 
-/**
- * Initializes FPGA animation with supplied JSON data
- * @param {Object} data - JSON data containing modules and connections
- */
-function initFPGABoardAnimation(data) {
-  console.log("Initializing FPGA animation", data);
-  fpgaData = data;
-
-  // Data reset
-  resetAnimation();
-
-  // Initialize canvas with fixed size
-  canvas = document.getElementById('fpga-canvas');
-  if (!canvas) {
-    canvas = document.createElement('canvas');
-    canvas.id = 'fpga-canvas';
-    canvas.width = 1200; // Larger fixed size
-    canvas.height = 800; // Larger fixed size
-    document.getElementById('board-container').appendChild(canvas);
-  } else {
-    // Keep a fixed size
-    canvas.width = 1200;
-    canvas.height = 800;
-  }
-
-  // Add a style to make the canvas responsive while keeping its proportions
-  canvas.style.maxWidth = '100%';
-  canvas.style.height = 'auto';
-  canvas.style.border = '1px solid #ddd';
-  canvas.style.borderRadius = '4px';
-
-  ctx = canvas.getContext('2d');
-
-  // Initialize controls
-  initializeControls();
-
-  // Place modules and connections
-  placeModules();
-  createConnections();
-
-  // Initialize zoom and pan events
-  initializeZoomPanEvents();
-
-  // Adjust view to fit content
-  fitContentToView();
-
-  // First render
-  render();
-}
-
-/**
- * Calculates the optimal canvas size based on the number of modules
- */
+ // Calculates the optimal canvas size based on the number of modules
 function calculateCanvasSize() {
   if (!fpgaData || !fpgaData.modules || fpgaData.modules.length === 0) {
     // Default size if no modules
@@ -217,9 +179,7 @@ function calculateCanvasSize() {
   console.log(`Canvas size calculated: ${boardWidth}x${boardHeight} for ${moduleCount} modules`);
 }
 
-/**
- * Resets the animation
- */
+ // Resets the animation
 function resetAnimation() {
   console.log("Resetting animation");
   modules = [];
@@ -239,9 +199,7 @@ function resetAnimation() {
   }
 }
 
-/**
- * Updates the animation frame
- */
+ // Updates the animation frame
 function updateAnimation() {
   if (!animationRunning) return;
 
@@ -273,9 +231,9 @@ function updateAnimation() {
   animationFrame = requestAnimationFrame(updateAnimation);
 }
 
-/**
- * Initializes animation controls and adds zoom controls
- */
+
+ // Initializes animation controls and adds zoom controls
+
 function initializeControls() {
   console.log("Initializing animation controls");
   const controlsContainer = document.getElementById('animation-controls');
@@ -369,9 +327,8 @@ function initializeControls() {
   controlsContainer.appendChild(info);
 }
 
-/**
- * Starts or stops the animation
- */
+ // Starts or stops the animation
+ 
 function toggleAnimation() {
   const button = document.getElementById('start-animation');
   console.log('Toggle animation', animationRunning);
@@ -400,9 +357,8 @@ function toggleAnimation() {
   }
 }
 
-/**
- * Places modules on the canvas in a schematic style
- */
+ // Places modules on the canvas in a schematic style
+ 
 function placeModules() {
   console.log("Placing modules on the canvas");
   if (!fpgaData || !fpgaData.modules) return;
@@ -531,9 +487,8 @@ function placeModules() {
   });
 }
 
-/**
- * Creates connections between modules and detects required inputs
- */
+ // Creates connections between modules and detects required inputs
+
 function createConnections() {
   console.log("Creating connections between modules");
   if (!fpgaData || !fpgaData.connections) return;
@@ -574,9 +529,8 @@ function createConnections() {
   });
 }
 
-/**
- * Finds a module by partial ID
- */
+ // Finds a module by partial ID
+ 
 function findModuleByPartialId(partialId) {
   return modules.find(module =>
     module.id.includes(partialId) ||
@@ -584,9 +538,9 @@ function findModuleByPartialId(partialId) {
   );
 }
 
-/**
- * Gets the maximum delay of a connection
- */
+
+ // Gets the maximum delay of a connection
+
 function getMaxDelay(delays) {
   if (!delays || !delays.length) return 0;
 
@@ -604,9 +558,8 @@ function getMaxDelay(delays) {
   return maxDelay;
 }
 
-/**
- * Creates initial signals for the animation
- */
+ // Creates initial signals for the animation
+ 
 function createInitialSignals() {
   console.log("Creating initial signals for the animation");
   // Find input modules (those with isInput=true or type=IO_PORT)
@@ -627,9 +580,8 @@ function createInitialSignals() {
   });
 }
 
-/**
- * Animates signals on the canvas
- */
+ // Animates signals on the canvas
+ 
 function animate() {
   const currentTime = performance.now();
 
@@ -672,9 +624,8 @@ function animate() {
   }
 }
 
-/**
- * Checks if a module has received all its required inputs
- */
+ // Checks if a module has received all its required inputs
+ 
 function checkAllInputsReceived(module) {
   // Input modules do not have required inputs (or are directly active)
   if (module.type === 'IO_PORT' && module.isInput) {
@@ -702,9 +653,6 @@ function checkAllInputsReceived(module) {
   return true;
 }
 
-/**
- * Propagates signals from a source module
- */
 function propagateSignalsFromModule(sourceModule, currentTime) {
   // Find all connections originating from this source
   const outgoingConnections = connections.filter(conn => conn.source === sourceModule);
@@ -731,9 +679,6 @@ function propagateSignalsFromModule(sourceModule, currentTime) {
   });
 }
 
-/**
- * Draws the current state of the animation with support for zoom and pan
- */
 function render() {
   console.log("Rendering the current state of the animation");
   // Clear the canvas
@@ -777,9 +722,6 @@ function render() {
   ctx.fillText(`Zoom: ${zoomLevel.toFixed(1)}x`, 10, 20);
 }
 
-/**
- * Draws connections between modules in Manhattan style
- */
 function drawConnections() {
   connections.forEach(connection => {
     const source = connection.source;
@@ -844,9 +786,6 @@ function drawConnections() {
   });
 }
 
-/**
- * Draws signals propagating in Manhattan style
- */
 function drawSignals() {
   signals.forEach(signal => {
     if (!signal.active) return;
@@ -938,9 +877,6 @@ function drawSignals() {
   });
 }
 
-/**
- * Draws modules on the canvas with schematic symbols
- */
 function drawModules() {
   // Draw the modules
   modules.forEach(module => {
@@ -1068,9 +1004,6 @@ function drawModules() {
   });
 }
 
-/**
- * Adds delay labels on the connections
- */
 function addDelayLabels() {
   connections.forEach(connection => {
     const source = connection.source;
@@ -1106,9 +1039,6 @@ function addDelayLabels() {
   });
 }
 
-/**
- * Draws a rectangle with rounded corners
- */
 function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
   ctx.beginPath();
   ctx.moveTo(x + radius, y);
@@ -1131,9 +1061,6 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
   }
 }
 
-/**
- * Simplifies a module name for display
- */
 function simplifyName(id) {
   // Extract the simplified module name
   let displayName = id;
@@ -1159,9 +1086,6 @@ function simplifyName(id) {
   return displayName;
 }
 
-/**
- * Draws a background grid adjusted to zoom
- */
 function drawGrid() {
   ctx.strokeStyle = '#e0e0e0';
   ctx.lineWidth = 0.5;
@@ -1205,9 +1129,6 @@ window.addEventListener('resize', function () {
   }
 });
 
-/**
- * Resets the animation and resizes the canvas
- */
 function resetAnimationAndResize() {
   console.log("Resetting animation and resizing canvas");
   resetAnimation();
@@ -1224,9 +1145,6 @@ function resetAnimationAndResize() {
   fitContentToView();
 }
 
-/**
- * Initializes zoom and pan events
- */
 function initializeZoomPanEvents() {
   console.log("Initializing zoom and pan events");
   // Zoom handler (mouse wheel)
@@ -1289,9 +1207,6 @@ function initializeZoomPanEvents() {
   });
 }
 
-/**
- * Adjusts the view to fit all content
- */
 function fitContentToView() {
   console.log("Adjusting view to fit all content");
   // Find the content bounds

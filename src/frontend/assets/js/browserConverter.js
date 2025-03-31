@@ -1,7 +1,3 @@
-/**
- * Browser-compatible version of the SDF to JSON converter
- */
-
 // Make sdfToJson available globally for the browser
 window.sdfToJson = function(sdfContent) {
   // Normalize content

@@ -8,8 +8,8 @@ router.get('/', (req, res) => {
 });
 
 // Route to serve the converter.js file directly
-router.get('/converter.js', (req, res) => {
-    res.sendFile(path.join(__dirname, '../utils/converter.js'));
+router.get('/browserConverter.js', (req, res) => {
+    res.sendFile(path.join(__dirname, '../utils/browserConverter.js'));
 });
 
 module.exports = router;
