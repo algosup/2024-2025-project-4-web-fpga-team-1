@@ -10,7 +10,7 @@ let animationSpeed = 1;
 let animationRunning = false;
 let animationFrame = null;
 let canvas = null;
-const canvaSize = {height: 800, width: 1200};
+const canvaSize = { height: 800, width: 1200 };
 let ctx = null;
 let modules = [];
 let connections = [];
@@ -76,6 +76,7 @@ function initFPGABoardAnimation(data) {
  * @param {Array} modules - List of modules to draw
  */
 function drawFPGA(modules) {
+  console.log("Drawing FPGA board with modules");
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -220,6 +221,7 @@ function calculateCanvasSize() {
  * Resets the animation
  */
 function resetAnimation() {
+  console.log("Resetting animation");
   modules = [];
   connections = [];
   signals = [];
@@ -229,7 +231,7 @@ function resetAnimation() {
   signals.forEach(signal => {
     signal.progress = 0; // Réinitialiser la progression des signaux
     signal.active = true; // Réactiver les signaux
-});
+  });
 
   if (animationFrame) {
     cancelAnimationFrame(animationFrame);
@@ -241,40 +243,41 @@ function resetAnimation() {
  * Updates the animation frame
  */
 function updateAnimation() {
-    if (!animationRunning) return;
+  if (!animationRunning) return;
 
-    // Mettre à jour les signaux
-    signals.forEach(signal => {
-        if (signal.active) {
-            signal.progress += animationSpeed * 0.01; // Ajustez la vitesse si nécessaire
-            if (signal.progress >= 1) {
-                signal.progress = 1; // Limiter la progression à 1
-                signal.active = false; // Désactiver le signal une fois terminé
-            }
-        }
-    });
-
-    // Vérifier si tous les signaux sont terminés
-    const allSignalsComplete = signals.every(signal => !signal.active);
-    if (allSignalsComplete) {
-        console.log('Animation terminée. Réinitialisation...');
-        resetAnimation(); // Réinitialiser automatiquement l'animation
-        return;
+  // Mettre à jour les signaux
+  signals.forEach(signal => {
+    if (signal.active) {
+      signal.progress += animationSpeed * 0.01; // Ajustez la vitesse si nécessaire
+      if (signal.progress >= 1) {
+        signal.progress = 1; // Limiter la progression à 1
+        signal.active = false; // Désactiver le signal une fois terminé
+      }
     }
+  });
 
-    // Redessiner le canvas
-    drawFPGA(modules);
-    drawConnections();
-    drawSignals();
+  // Vérifier si tous les signaux sont terminés
+  const allSignalsComplete = signals.every(signal => !signal.active);
+  if (allSignalsComplete) {
+    console.log('Animation terminée. Réinitialisation...');
+    resetAnimation(); // Réinitialiser automatiquement l'animation
+    return;
+  }
 
-    // Demander le prochain frame
-    animationFrame = requestAnimationFrame(updateAnimation);
+  // Redessiner le canvas
+  drawFPGA(modules);
+  drawConnections();
+  drawSignals();
+
+  // Demander le prochain frame
+  animationFrame = requestAnimationFrame(updateAnimation);
 }
 
 /**
  * Initializes animation controls and adds zoom controls
  */
 function initializeControls() {
+  console.log("Initializing animation controls");
   const controlsContainer = document.getElementById('animation-controls');
   if (!controlsContainer) return;
 
@@ -314,7 +317,6 @@ function initializeControls() {
     speedValue.textContent = `${speed.toFixed(1)}x`;
     animationSpeed = speed; // Update the global animation speed variable
   });
-
 
   // Add zoom buttons
   const zoomContainer = document.createElement('div');
@@ -371,7 +373,6 @@ function initializeControls() {
  * Starts or stops the animation
  */
 function toggleAnimation() {
-
   const button = document.getElementById('start-animation');
   console.log('Toggle animation', animationRunning);
   console.log('Signals', signals.length);
@@ -403,9 +404,12 @@ function toggleAnimation() {
  * Places modules on the canvas in a schematic style
  */
 function placeModules() {
+  console.log("Placing modules on the canvas");
   if (!fpgaData || !fpgaData.modules) return;
 
   modules = [];
+
+  console.log('Modules', modules);
 
   // Separate modules by type
   const ioModules = fpgaData.modules.filter(m => m.type === 'IO_PORT');
@@ -422,6 +426,8 @@ function placeModules() {
   const inputs = ioModules.filter(m => m.isInput || !m.isOutput);
   const outputs = ioModules.filter(m => m.isOutput);
 
+  console.log('Inputs', inputs, 'Outputs', outputs, 'LUTs', lutModules, 'DFFs', dffModules, 'Others', otherModules);
+
   // Define circuit dimensions
   const inputHeight = inputs.length * gridSpacing;
   const outputHeight = outputs.length * gridSpacing;
@@ -434,7 +440,9 @@ function placeModules() {
 
   // Place inputs on the left
   inputs.forEach((input, index) => {
-    const y = MARGIN + (circuitHeight / (inputs.length + 1)) * (index + 1);
+    const spacing = circuitHeight / (inputs.length + 1);
+    const y = MARGIN + spacing * (index + 1) + (circuitHeight / (inputs.length + 1)) * (index + 1);
+    console.log("Input Spacing :", spacing, "Input lenght :", inputs.length);
     modules.push({
       id: input.instance,
       type: 'IO_PORT',
@@ -451,7 +459,9 @@ function placeModules() {
 
   // Place LUTs in the second column
   lutModules.forEach((lut, index) => {
-    const y = MARGIN + (circuitHeight / (lutModules.length + 1)) * (index + 1);
+    const spacing = circuitHeight / (lutModules.length + 1);
+    const y = MARGIN + spacing * (index + 1) + (circuitHeight / (lutModules.length + 1)) * (index + 1);
+    console.log("LUT Spacing :", spacing);
     modules.push({
       id: lut.instance,
       type: lut.type,
@@ -467,7 +477,9 @@ function placeModules() {
 
   // Place DFFs in the third column
   dffModules.forEach((dff, index) => {
-    const y = MARGIN + (circuitHeight / (dffModules.length + 1)) * (index + 1);
+    const spacing = circuitHeight / (dffModules.length + 1);
+    const y = MARGIN + spacing * (index + 1) + (circuitHeight / (dffModules.length + 1)) * (index + 1);
+    console.log("DFF Spacing :", spacing);
     modules.push({
       id: dff.instance,
       type: dff.type,
@@ -483,7 +495,9 @@ function placeModules() {
 
   // Place other modules in the middle
   otherModules.forEach((other, index) => {
-    const y = MARGIN + circuitHeight / 2 + (index - otherModules.length / 2) * gridSpacing;
+    const spacing = circuitHeight / (otherModules.length + 1);
+    const y = MARGIN + spacing * (index + 1) + circuitHeight / 2 + (index - otherModules.length / 2) * gridSpacing;
+    console.log("Other Module Spacing :", spacing);
     modules.push({
       id: other.instance,
       type: other.type,
@@ -499,7 +513,9 @@ function placeModules() {
 
   // Place outputs on the right
   outputs.forEach((output, index) => {
-    const y = MARGIN + (circuitHeight / (outputs.length + 1)) * (index + 1);
+    const spacing = circuitHeight / (outputs.length + 1);
+    const y = MARGIN + spacing * (index + 1) + (circuitHeight / (outputs.length + 1)) * (index + 1);
+    console.log("Output Spacing :", spacing);
     modules.push({
       id: output.instance,
       type: 'IO_PORT',
@@ -519,6 +535,7 @@ function placeModules() {
  * Creates connections between modules and detects required inputs
  */
 function createConnections() {
+  console.log("Creating connections between modules");
   if (!fpgaData || !fpgaData.connections) return;
 
   connections = [];
@@ -591,6 +608,7 @@ function getMaxDelay(delays) {
  * Creates initial signals for the animation
  */
 function createInitialSignals() {
+  console.log("Creating initial signals for the animation");
   // Find input modules (those with isInput=true or type=IO_PORT)
   const inputModules = modules.filter(module =>
     module.type === 'IO_PORT' && module.isInput
@@ -717,6 +735,7 @@ function propagateSignalsFromModule(sourceModule, currentTime) {
  * Draws the current state of the animation with support for zoom and pan
  */
 function render() {
+  console.log("Rendering the current state of the animation");
   // Clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -798,7 +817,7 @@ function drawConnections() {
     ctx.moveTo(startX, startY);
 
     // Calculate the midpoint
-    const midX = (startX + endX) / 2;
+    const midX = (startX + endX) *0.6;
 
     // Draw the path segments
     ctx.lineTo(midX, startY);
@@ -1190,6 +1209,7 @@ window.addEventListener('resize', function () {
  * Resets the animation and resizes the canvas
  */
 function resetAnimationAndResize() {
+  console.log("Resetting animation and resizing canvas");
   resetAnimation();
 
   // Update the canvas size
@@ -1208,6 +1228,7 @@ function resetAnimationAndResize() {
  * Initializes zoom and pan events
  */
 function initializeZoomPanEvents() {
+  console.log("Initializing zoom and pan events");
   // Zoom handler (mouse wheel)
   canvas.addEventListener('wheel', function (e) {
     e.preventDefault();
@@ -1272,6 +1293,7 @@ function initializeZoomPanEvents() {
  * Adjusts the view to fit all content
  */
 function fitContentToView() {
+  console.log("Adjusting view to fit all content");
   // Find the content bounds
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
 
