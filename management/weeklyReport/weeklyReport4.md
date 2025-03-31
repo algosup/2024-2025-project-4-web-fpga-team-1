@@ -1,4 +1,5 @@
-# Weekly Report 4
+<h1 align="center"> Weekly Report 4 </h1>
+
 | Author      | Role            |
 | ----------- | --------------- |
 | NOGUES Loïc | Project Manager |

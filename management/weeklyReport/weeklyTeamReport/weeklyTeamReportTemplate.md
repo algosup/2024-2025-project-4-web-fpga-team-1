@@ -1,4 +1,4 @@
-# Team Week Report
+<h1 align="center"> Team Week Report </h1>
 
 |Author|Role|
 |------|----|
