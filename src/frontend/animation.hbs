@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/animation.css">
-    <script src="/js/converter.js"></script>
 </head>
 <body>
 
@@ -22,10 +21,14 @@
                     <path d="M12 3v12m0 0l-4-4m4 4l4-4m-10 8h12" />
                 </svg>
             </div>
-            <p>Drag & drop your Verilog (.v) and SDF (.sdf) files here</p>
+            <p>Drag & drop your SDF (.sdf) file here</p>
             <p class="or-divider">or</p>
-            <button id="browse-button" type="button">Browse Files</button>
-            <input type="file" id="file-input" accept=".v,.sv,.sdf" multiple style="display: none;" />
+            <div class="button-group">
+                <button id="browse-button" type="button" class="primary-button">Browse Files</button>
+                <button id="lut-example-button" type="button" class="example-button">LUT Example</button>
+                <button id="ff-example-button" type="button" class="example-button">Flip Flop Example</button>
+            </div>
+            <input type="file" id="file-input" accept=".sdf" style="display: none;" />
         </div>
         
         <div id="file-info" class="file-info">
@@ -69,7 +72,7 @@
 
     {{> footer}}
 
-    <script src="/animation/converter.js"></script>
+    <script src="js/browser-converter.js"></script>
     <script src="js/board-animation.js"></script>
     <script src="js/animation.js"></script>
 </body>

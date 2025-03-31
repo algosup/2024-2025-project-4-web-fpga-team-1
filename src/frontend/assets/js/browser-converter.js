@@ -1,9 +1,9 @@
 /**
- * Converts an SDF file to JSON format
- * @param {string} sdfContent - The content of the SDF file
- * @returns {Object} - JSON representation of the SDF file
+ * Browser-compatible version of the SDF to JSON converter
  */
-function sdfToJson(sdfContent) {
+
+// Make sdfToJson available globally for the browser
+window.sdfToJson = function(sdfContent) {
   // Normalize content
   const normalizedContent = sdfContent
     .replace(/\r\n|\r/g, '\n')
@@ -392,25 +392,4 @@ function sdfToJson(sdfContent) {
 
   // Start parsing at the root
   return parseBlock();
-}
-
-/**
- * Helper function to load and convert an SDF file
- * @param {string} filePath - Path to the SDF file
- * @returns {Promise<Object>} - JSON representation of the SDF file
- */
-async function loadAndConvertSdf(filePath) {
-  try {
-    const fs = require('fs').promises;
-    const content = await fs.readFile(filePath, 'utf8');
-    return sdfToJson(content);
-  } catch (error) {
-    console.error('Error converting SDF file:', error);
-    throw error;
-  }
-}
-
-module.exports = {
-  sdfToJson,
-  loadAndConvertSdf
 };

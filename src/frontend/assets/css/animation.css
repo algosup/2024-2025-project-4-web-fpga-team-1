@@ -174,3 +174,41 @@ h1, h2 {
     display: inline-block;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.primary-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.primary-button:hover {
+    background-color: #0069d9;
+}
+
+.example-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.example-button:hover {
+    background-color: #218838;
+}
