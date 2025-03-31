@@ -8,7 +8,7 @@
 In agreement with the whole team, the following rules have been defined below:
 
 - Respect for each other through an adapted vocabulary.
-- English and French are the primary languages during the project time. You can train your english and if you don't want to, its fine you can speak in french.
+- English and French are the primary languages during project time. You can train your english and if you don't want to, its fine you can speak in french.
 - Any unjustified absences will be noted and you will have to do a 50% overtime of the time you were not present to reimburse the time you were not here. If it is justified, notice me and we can talk about it.
 - Respect Deadlines we have this project.
 
