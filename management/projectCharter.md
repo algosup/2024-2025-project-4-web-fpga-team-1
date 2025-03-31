@@ -26,7 +26,7 @@ This project is made by ALGOSUP's students.The goal of this project is to make a
 
 # Project Scope
 
-The project scope for developping a web interface. This FPGA simulator will have some key components and functionnalities. The fuctional goes more in detail about all the features.
+The project scope for developping a web interface. This FPGA simulator will have some key components and functionnalities. The [Functional Specification](https://github.com/algosup/2024-2025-project-4-web-fpga-team-1/blob/main/functionalSpecifications/functionalSpecifications.md) goes more in detail about all the features.
 
 # Project Deadlines
 
@@ -47,5 +47,5 @@ For this project, we are limited to the material we are provided. For the time, 
 
 - Time: We have only 6 weeks/70 hours of project time. If we encounter to many issues, we might have not enough time to finish the project. To counter that we will prioritize the tasks according to the Deadlines order.
 
-- Out of scope: This project is complex to understand for some people and we have a risk to be out of scope. To be in the scope, we will ask questions and do meetings with the client do be sure that we are not out of scope.
+- Out of scope: This project is complex to understand for some people and we have a risk to be out of scope. To be in the scope, we will ask questions and do meetings with the client to be sure that we are not out of scope.
 
