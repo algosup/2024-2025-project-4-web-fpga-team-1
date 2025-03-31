@@ -10,6 +10,7 @@ let animationSpeed = 1;
 let animationRunning = false;
 let animationFrame = null;
 let canvas = null;
+const canvaSize = {height: 800, width: 1200};
 let ctx = null;
 let modules = [];
 let connections = [];
@@ -52,13 +53,13 @@ function initFPGABoardAnimation(data) {
   if (!canvas) {
     canvas = document.createElement('canvas');
     canvas.id = 'fpga-canvas';
-    canvas.width = 1200; // Larger fixed size
-    canvas.height = 800; // Larger fixed size
+    canvas.height = canvaSize.height; // Larger fixed size
+    canvas.width = canvaSize.width; // Larger fixed size
     document.getElementById('board-container').appendChild(canvas);
   } else {
     // Keep a fixed size
-    canvas.width = 1200;
-    canvas.height = 800;
+    canvas.height = canvaSize.height;
+    canvas.width = canvaSize.width;
   }
 
   // Add a style to make the canvas responsive while keeping its proportions
@@ -613,7 +614,6 @@ function createInitialSignals() {
  */
 function animate() {
   const currentTime = performance.now();
-  const elapsedTime = (currentTime - startTime) * animationSpeed;
 
   // Update the progress of existing signals
   signals.forEach(signal => {
@@ -1194,8 +1194,8 @@ function resetAnimationAndResize() {
 
   // Update the canvas size
   if (canvas) {
-    canvas.width = boardWidth;
-    canvas.height = boardHeight;
+    canvas.width = canvaSize.width;
+    canvas.height = canvaSize.height;
   }
 
   placeModules();
