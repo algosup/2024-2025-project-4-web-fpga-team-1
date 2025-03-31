@@ -142,3 +142,6 @@ Each test case will include:
 |----------|-----------------|----------|
 | Data Protection | Ensure user data is protected if the application is hosted online. | High |
 | File Validation | Verify that only valid Verilog and SDF files can be uploaded. | Medium |
+
+
+test case -> https://docs.google.com/spreadsheets/d/1uzy8luN_kilpvH8tnA-QmEzOFDz9xlUGwssUnnfccqY/edit?gid=1343644299#gid=1343644299
