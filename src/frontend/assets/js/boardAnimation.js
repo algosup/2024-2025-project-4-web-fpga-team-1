@@ -822,7 +822,7 @@ function drawSignals() {
     }
 
     // Midpoint
-    const midX = (startX + endX) / 2;
+    const midX = (startX + endX) * 0.6;
 
     // Determine the signal position along the path
     let x, y;
