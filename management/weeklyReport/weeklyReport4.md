@@ -39,5 +39,5 @@ Same problem as before, some people are scared of not giving a good product a th
 
 # 5.Plan For Next Week
 Meet the deadline of the Technical Specification and the Test plan.
-They are almost finished and they will be finished before the deadlines.
-We will try to start to start the test cases when the code have a V1.
+They are almost finished with the code and they will be done before meeting the deadline.
+We will try to start the test cases when the code have a V1.

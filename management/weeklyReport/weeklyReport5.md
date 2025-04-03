@@ -4,7 +4,7 @@
 | ----------- | --------------- |
 | NOGUES Loïc | Project Manager |
 # 1.Overview Of The Week
-Overall the week was productive because we meet all the deadlines for now. Some issues as been discovered with some members and the code.
+Overall the week was productive because we meet all the deadlines for now. Some issues has been discovered with some members and the code.
 
 
 
@@ -20,14 +20,14 @@ Overall the week was productive because we meet all the deadlines for now. Some 
 
 
 # 3.Work Done
-The Technical Specification and the Test plan has been done during this week and the deadline is respected.
+The Technical Specification and the Test plan were completed during this week and the deadline was met.
 
 
 
 
 
 # 4.Issues
-As always a team member is putting a minimum effort to do his work. This issue is resolved because it is the last week and he will work a lot, he have a lot of review to do and also he have to do is test-cases.
+As always a team member is putting a minimum effort to do his work. This issue is resolved because it is the last week and he will work a lot, he has a lot of review to do and also he has to do is test-cases.
 Another issue is a team-member had to restart over a big part of the code because it was not working. This issue can be explained by the fact that he didn't prioritize the requirements of the project and try to make something beatifull and do not concentrate on the things that are important. So he didn't have time so he rush the important part of the project and it was not working. To solve this issue, our PgM helped him. Both of them manage to make it work and now the code function well. It still have some bugs do resolve but the code will meet the deadline.
 
 
