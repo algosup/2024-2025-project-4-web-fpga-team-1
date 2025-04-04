@@ -1,10 +1,5 @@
 # 2024-2025 - FPGA Explorer - Team 1- Post Mortem
 
-<details>
-<summary>Table of Contents</summary>
-
-
-</details>
 
 ## Introduction
 
@@ -12,41 +7,41 @@ This document is a summary of what was the difficulties for different team membe
 
 ## Mad, Glad.
 
-| Team Member      | Mad                                                                                                                  |Glad                                                                                 | Overwiew of Him/Her by the Team                                                                                                                                                                                                             |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------- | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Alexis SANTOS    | After finishing my fucntional I didn't know what to do and I just waited Lucas task help.                            |      Happy to deliver my functional in time.                                              | Work a lot and the type of person we want on a team. Maybe take a little to much a project and his role at huge stake.                                                                                                                      |
-| Loïc NOGUES      | I didn't know what to do when Alexis finish his main task and what do give him.                                      |      First time manager and happy to deliver something that is not insane but quiet good. | Not a well experienced manager but a good transition between serious and not serious. He did only his role in heart  but not ohter task like code etc. He asked question about his role.                                                    |
-| Grégory PAGNOUX  | /                                                                                                                        | Happy of the work that I deliver.                                                    | Good worker but he is to much in his buble. He have his method of work and will always find work.                                                                                                                                           |
-| Lucas MEGNAN     | I didn't manage to do what I needed to do and ask for help to late.                                                  |      We got some good ideas but not always implemented.                                   | He did his work because we have a result. Good vibes but grumpy at some time. Waiting for Yann-Mael to generate AI code parts. Didn't try to search by himself. Bad comment and speak in other's back. Cutting people of because of an ego. |
-| Yann-Maël BOUTON | Was not happy about not working that much on the project because the project and other things gave me no motivation. |      /                                                                                    | Good vibes, a good element but can be distracted a lot. A bit too grumpy. Not motivated, just did his technical.                                                                                                                            |
-| Mathis LEBEL     | I didn't work that much and that can penalised the team. Its because I didn't want to.                                  | I did what I needed to do.                                                           | Good vibes but disctrated. Didn't care about the project. Not always a good work. No motivation about his work.                                                                                                                             |
+| **Team Member**      | **Mad**                                                                                                           | **Glad**                                                                            | **Overview by the Team**                                                                                                                                                                           |
+|----------------------|-------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Alexis SANTOS**    | After finishing my functional document, I didn’t know what to do and just waited for Lucas’s task to help.        | Happy to have delivered my functional document on time.                              | Works a lot and is the type of person we want on a team. However, he may take on too much responsibility, given the importance of his role in the project.                                      |
+| **Loïc NOGUES**      | I didn’t know what tasks to assign to Alexis once he finished his main task.                                      | First-time manager and happy to deliver something that, while not perfect, is solid. | Not an experienced manager, but a good balance between seriousness and a relaxed approach. Focused on his role but didn’t engage in other tasks like coding. Asked questions about his position.   |
+| **Grégory PAGNOUX**  | /                                                                                                                 | Happy with the work I delivered.                                                     | A dedicated worker, but tends to stay in his own bubble. He has his own methods and always finds tasks to work on.                                                                                   |
+| **Lucas MEGNAN**     | I didn’t complete what I needed to and asked for help too late.                                                  | We had some good ideas, though not all were implemented.                             | Completed his work, contributing to a tangible result. Brings good energy but can be grumpy at times. Relied on Yann-Maël for AI-generated code rather than researching independently. Tends to speak negatively about others and interrupt conversations due to ego.  |
+| **Yann-Maël BOUTON** | Frustrated about not contributing much to the project due to lack of motivation caused by the project and other factors. | /                                                                                    | A good presence in the team but easily distracted. Sometimes grumpy. Lacked motivation and only worked on his technical tasks.                                                                      |
+| **Mathis LEBEL**     | I didn’t contribute much, which could have impacted the team. I wasn’t really interested in the project.          | I did what I needed to do.                                                           | Generally brings good vibes but gets easily distracted. Lacked interest and motivation for the project, leading to inconsistent contributions.                                                       |
 
+---
 
-## Total of project time for each team members
-|Team members| Overtime | Absent | Project time | Total |
-| ------- | ------ |-----|------|-----|
-|Alexis|16h30|0h|46h30|63h|
-|Loïc|7h|0h30|45h30|52h30|
-|Yann-Maël|4h|7h|39h|43h|
-|Lucas|3h|3h|43h|46h|
-|Mathis|1h|3h30|42h30|43h30|
-|Gregory|2h|0h|46h|48h|
+## **Total Project Time per Team Member**  
 
-- The absent hours has already been taken in consideration on the project time.
-- I just add the overtime to the project time to have the total project time.
+| **Team Member** | **Overtime** | **Absent** | **Project Time** | **Total Time** |
+|----------------|------------|---------|--------------|------------|
+| **Alexis**     | 16h30      | 0h      | 46h30        | 63h        |
+| **Loïc**       | 7h         | 0h30    | 45h30        | 52h30      |
+| **Yann-Maël**  | 4h         | 7h      | 39h          | 43h        |
+| **Lucas**      | 3h         | 3h      | 43h          | 46h        |
+| **Mathis**     | 1h         | 3h30    | 42h30        | 43h30      |
+| **Grégory**    | 2h         | 0h      | 46h          | 48h        |
 
+- **Note:** Absence hours have already been deducted from the total project time.  
+- The **total project time** includes the overtime hours added to the standard project time.
 
+---
 
+## **Lessons Learned**  
+- **Collaboration is key:** Don’t just focus on individual tasks—helping teammates leads to a better overall product.  
+- **AI is a tool, not a crutch:** Never rely entirely on AI; independent research is crucial.  
+- **Team dynamics matter:** Maintaining a positive atmosphere is essential for productivity.  
 
-## Lessons Learned
-- Do not only do what you have to do but help other on their task to have a good product.
-- Never always count on AI and try to do some research
-- Having a good vibe in a team is very important.
+---
 
+## **Conclusion**  
+This project was overall a positive experience. Despite some challenges, we successfully delivered a product while tracking our progress.  
 
-
-## Conclusion
-This project was overall a good one, even with some complication, we manage to deliver a product and keep track of everything we have done.
-We learned a lot about method of work, orgaization , and as a first time having the role "project manager", I saw my mistakes and will be a better one in the future.
-
-
+We learned valuable lessons about **work methods, organization, and project management.** As a first-time project manager, I recognized my mistakes and will use this experience to improve in the future.  
