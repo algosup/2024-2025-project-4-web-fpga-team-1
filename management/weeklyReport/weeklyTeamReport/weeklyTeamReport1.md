@@ -4,9 +4,9 @@
 | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |                                                                                            | Alexis                                                                                                                                                                                    |
 | How was your week                                                                          | Very long, because I did a lot of overtime making the Functional.                                                                                                                            |
-| What was your task and did you manage to do it (if not, put the percentage of progression) | Functional 20% because i need to make it one, after review it and fix grammar issues and the AI generated text.                                                                     |
-| Your feeling about the project ?                                                           | Interesting I didn't think that we will do FPGA and web. I don't know the difficulties of this project becuse I am not in the developement team. I make the most effort to understand it. |
-| Its the end of the week are you happy for what you had done during this week ?             | Not really because I use a lot of AI. I finished a first version and I need to suppress  the AI influence.                                                                          |
+| What was your task and did you manage to do it (if not, put the percentage of progression) | Functional 20% because I need to make it one, after reviewing it and fixing grammar issues and the AI generated text.                                                                     |
+| Your feelings about the project ?                                                           | Interesting I didn't think that we would do FPGA and web. I don't know the difficulties of this project because I am not on the development team. I make the most effort to understand it. |
+| It's the end of the week are you happy for what you have done during this week ?             | Not really because I use a lot of AI. I finished the first version and I need to suppress  the AI influence.                                                                          |
 
 
 
@@ -24,9 +24,9 @@
 | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
 |                                                                                            | Lucas                                                                                                            |
 | How was your week                                                                          | Well, we worked correctly and successfully                                                                          |
-| What was your task and did you manage to do it (if not, put the percentage of progression) | I only tried to code with HTML,CSS,JS to learn. Because I will be ready when we are about to code because i am the software engieneer. 5% |
-| Your feeling about the project ?                                                           | The concept is really interesting, I hope we will do something cool and beatifull.                               |
-| Its the end of the week are you happy for what you had done during this week ?             | Yes, completly. I learn a lot.                                                                                                  |
+| What was your task and did you manage to do it (if not, put the percentage of progression) | I only tried to code with HTML,CSS,JS to learn. Because I will be ready when we are about to code because i am the software engiener. 5% |
+| Your feelings about the project ?                                                           | The concept is really interesting, I hope we will do something cool and beautifull.                               |
+| Its the end of the week are you happy for what you had done during this week ?             | Yes, completely. I learn a lot.                                                                                                  |
 
 | Questions                                                                                  | Names                                                                                                       |
 | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |

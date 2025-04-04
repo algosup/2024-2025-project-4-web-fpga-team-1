@@ -4,7 +4,7 @@
 | ----------- | --------------- |
 | NOGUES Loïc | Project Manager |
 # 1.Overview Of The Week
-Overall the week was productive for some members and other say tey are tired because, without many hours of project time this week and a lot of an other course.
+Overall the week was productive for some members and other say they are tired because, without many hours of project time this week and a lot of an others course.
 
 
 

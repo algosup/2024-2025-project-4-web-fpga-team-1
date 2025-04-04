@@ -41,11 +41,11 @@ The project scope for developping a web interface. This FPGA simulator will have
 
 # Cost
 
-For this project, we are limited to the material we are provided. For the time, we have 70 hours of project time without overtimes.
+For this project, we are limited to the material we are provided. For the time, we have 70 hours of project time without overtime.
 
 # Risk
 
-- Time: We have only 6 weeks/70 hours of project time. If we encounter to many issues, we might have not enough time to finish the project. To counter that we will prioritize the tasks according to the Deadlines order.
+- Time: We have only 6 weeks/70 hours of project time. If we encounter too many issues, we might have not enough time to finish the project. To counter that we will prioritize the tasks according to the Deadlines order.
 
-- Out of scope: This project is complex to understand for some people and we have a risk to be out of scope. To be in the scope, we will ask questions and do meetings with the client to be sure that we are not out of scope.
+- Out of scope: This project is complex to understand for some people and we have a risk to of being out of scope. To be in the scope, we will ask questions and do meetings with the client to be sure that we are not out of scope.
 
